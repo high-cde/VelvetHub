@@ -45,6 +45,8 @@ export const appRouter = router({
       livekit: { configured: livekitConfigured(), mode: "first_party_live_video" as const },
       humanChat: { configured: true, mode: "first_party_database_chat" as const },
       rubina: { configured: true, mode: "ai_companion" as const },
+      kali: { configured: true, mode: "ai_companion" as const },
+      discord: { configured: Boolean(process.env.DISCORD_BOT_TOKEN && process.env.DISCORD_GUILD_ID), mode: "gateway_bot_requires_secrets" as const, invite: "https://discord.gg/ZDPtFppTKW" },
       affiliates: affiliateDestinations.filter(destination => destination.enabled).map(({ id, label, href, disclosure }) => ({ id, label, href, disclosure })),
     })),
     livekitToken: protectedProcedure.input(z.object({ room: z.string().trim().min(1).max(128), role: z.enum(["viewer", "host", "moderator"]) })).mutation(({ ctx, input }) => {

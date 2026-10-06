@@ -6,7 +6,7 @@ Questa cartella contiene adapter reali basati sulle API ufficiali, ma **non atti
 
 | Canale | API | Stato iniziale |
 |---|---|---|
-| Discord | Bot REST API v10 | Predisposto; server ID `940846207222317057` da associare a un bot autorizzato |
+| Discord | Bot REST API v10 | Predisposto; usa l’invito pubblico <https://discord.gg/ZDPtFppTKW> e configura il server nel secret runtime |
 | Facebook | Graph API Page feed | Predisposto; richiede Page ID e Page Access Token |
 | WhatsApp | WhatsApp Cloud API | Predisposto; richiede numero business, token e consenso del destinatario |
 
