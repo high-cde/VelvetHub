@@ -1,6 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Route, Switch } from "wouter";
+import { Route, Router as WouterRouter, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { VelvetProvider } from "./contexts/VelvetContext";
@@ -27,7 +27,8 @@ import Radar from "./pages/Radar";
 function Protected({ children }: { children: React.ReactNode }) { return <MemberGate>{children}</MemberGate>; }
 
 function Router() {
-  return <Switch>
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  return <WouterRouter base={base}><Switch>
     <Route path="/" component={Home} />
     <Route path="/accesso" component={AuthScreen} />
     <Route path="/safety" component={Safety} />
@@ -49,7 +50,7 @@ function Router() {
     <Route path="/store">{() => <Protected><Store /></Protected>}</Route>
     <Route path="/404" component={NotFound} />
     <Route component={NotFound} />
-  </Switch>;
+  </Switch></WouterRouter>;
 }
 
 export default function App() {

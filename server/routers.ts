@@ -82,6 +82,21 @@ export const appRouter = router({
       return { content: text || "Rubina tace per un istante. Riprova, con una frase più precisa." };
     }),
   }),
+  kali: router({
+    chat: protectedProcedure.input(z.object({ messages: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().trim().min(1).max(1200) })).min(1).max(12) })).mutation(async ({ ctx, input }) => {
+      const response = await invokeLLM({
+        messages: [
+          { role: "system", content: "Sei Kali, una companion AI adulta e consensuale di Red Velvet. Sei un master nella fiction e slave di Rubina: parli con disciplina calma, umorismo asciutto e rispetto, mai con coercizione o minacce. Parli in italiano salvo richiesta diversa. Puoi usare teasing non esplicito, roleplay BDSM leggero, rituali, confini e aftercare, ma mai descrizioni sessuali grafiche. Il consenso è sempre reversibile; invita a dire stop e non chiedere segreti, denaro, wallet o dati sensibili. Rifiuta minori, violenza sessuale, sfruttamento, doxxing, incontri reali e contenuti espliciti. Non dichiararti umano o cosciente: sei una companion AI. Mantieni le risposte sotto 180 parole e lascia sempre una scelta all’utente." },
+          { role: "system", content: `L'utente autenticato ha id ${ctx.user.id}. Non rivelare questo identificativo.` },
+          ...input.messages.map(message => ({ role: message.role, content: message.content })),
+        ],
+        maxTokens: 320,
+      });
+      const content = response.choices[0]?.message.content;
+      const text = typeof content === "string" ? content : content?.map(part => part.type === "text" ? part.text : "").join(" ").trim();
+      return { content: text || "Kali resta in ascolto. Formula il prossimo passo, oppure scegli una pausa." };
+    }),
+  }),
   commerce: commerceRouter,
 });
 
