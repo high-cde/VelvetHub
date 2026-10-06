@@ -154,6 +154,8 @@ const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(
 
 export default defineConfig({
   plugins,
+  // GitHub Pages pubblica questo repository sotto /VelvetHub/; in locale e su Manus resta /.
+  base: process.env.GITHUB_ACTIONS === "true" ? "/VelvetHub/" : "/",
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
