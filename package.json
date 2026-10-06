@@ -95,6 +95,8 @@
   },
   "license": "MIT",
   "name": "red-velvet-live-club",
+  "description": "Red Velvet Live Club con Velvet Radar VR.Crew, community 18+ consensuale e integrazioni predisposte.",
+  "keywords": ["red-velvet", "velvet-radar", "vr-crew", "consent", "discord", "github-pages"],
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "pnpm": {
     "overrides": {
@@ -112,7 +114,8 @@
     "format": "prettier --write .",
     "shopify:probe": "tsx scripts/shopify-probe.runner.ts",
     "start": "NODE_ENV=production node dist/index.js",
-    "test": "vitest run"
+    "test": "vitest run",
+    "bot:self-test": "BOT_SELF_TEST=1 node integrations/velvet-bot.mjs"
   },
   "type": "module",
   "version": "1.0.0"
