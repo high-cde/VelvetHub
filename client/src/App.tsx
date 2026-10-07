@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Router as WouterRouter, Switch } from "wouter";
+import { useBrowserLocation } from "wouter/use-browser-location";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { VelvetProvider } from "./contexts/VelvetContext";
@@ -27,9 +28,15 @@ import OurVelvet from "./pages/OurVelvet";
 
 function Protected({ children }: { children: React.ReactNode }) { return <MemberGate>{children}</MemberGate>; }
 
+function useNormalizedBrowserLocation(): [string, ReturnType<typeof useBrowserLocation>[1]] {
+  const [location, navigate] = useBrowserLocation();
+  const normalizedLocation = location.replace(/\/+$/, "") || "/";
+  return [normalizedLocation, navigate];
+}
+
 function Router() {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-  return <WouterRouter base={base}><Switch>
+  return <WouterRouter base={base} hook={useNormalizedBrowserLocation}><Switch>
     <Route path="/" component={Home} />
     <Route path="/accesso" component={AuthScreen} />
     <Route path="/safety" component={Safety} />

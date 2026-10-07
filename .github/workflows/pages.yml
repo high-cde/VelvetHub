@@ -45,7 +45,7 @@ jobs:
 
       - name: Materialize static client routes
         run: |
-          for route in accesso safety policy live live-preview discover studio earnings admin community podcasts writing rewards store ourvelvet 404; do
+          for route in accesso safety policy live live-preview discover studio inbox settings earnings admin community podcasts writing rewards store ourvelvet 404; do
             mkdir -p "dist/public/$route"
             cp dist/public/index.html "dist/public/$route/index.html"
           done
