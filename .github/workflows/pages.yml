@@ -28,7 +28,7 @@ jobs:
       - run: pnpm build
       - name: Materialize client routes for GitHub Pages
         run: |
-          for route in accesso safety policy live live-preview discover studio inbox settings admin community earnings podcasts writing rewards store 404; do
+          for route in accesso safety policy live live-preview discover studio earnings admin community podcasts writing rewards store ourvelvet 404; do
             mkdir -p "dist/public/$route"
             cp dist/public/index.html "dist/public/$route/index.html"
           done
