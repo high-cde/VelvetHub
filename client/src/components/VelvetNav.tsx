@@ -1,7 +1,7 @@
 /* Velvet Salon: a quiet, tactile navigation rail with clear escape routes and compact mobile choreography. */
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { AudioLines, Bell, BookOpen, Compass, Crown, Gift, LogIn, LogOut, Menu, MessageCircle, Radio, ShieldCheck, ShoppingBag, Users, WalletCards, X } from "lucide-react";
+import { AudioLines, Bell, BookOpen, Compass, Crown, Gift, LogIn, LogOut, Menu, MessageCircle, Radio, ShieldCheck, ShoppingBag, Sparkles, Users, WalletCards, X } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
@@ -19,6 +19,7 @@ const links = [
   { href: "/store", label: "Store", icon: ShoppingBag },
   { href: "/safety", label: "Sicurezza", icon: ShieldCheck },
   { href: "/live", label: "Live Hub", icon: Radio },
+  { href: "/ourvelvet", label: "OurVelvet", icon: Sparkles },
 ];
 
 export default function VelvetNav({ compact = false }: { compact?: boolean }) {
