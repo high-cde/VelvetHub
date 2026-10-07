@@ -34,6 +34,9 @@ jobs:
           done
       - name: Add SPA fallback for Pages
         run: cp dist/public/index.html dist/public/404.html
+      - name: Normalize asset URLs for project Pages path
+        run: |
+          find dist/public -name '*.html' -type f -exec sed -i 's#"/assets/#"/VelvetHub/assets/#g; s#"/VelvetHub/VelvetHub/assets/#"/VelvetHub/assets/#g' {} +
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
