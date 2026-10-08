@@ -15,9 +15,11 @@ import { affiliateDestinations } from "./integrations/affiliates";
 
 const credentials = z.object({ email: z.string().trim().toLowerCase().email().max(320), password: z.string().min(8).max(200) });
 
+const dummyHashPromise = hashPassword("velvethub-dummy-password");
 const attempts = new Map<string, { count: number; resetAt: number }>();
 function throttle(key: string, limit = 10, windowMs = 15 * 60 * 1000) {
   const now = Date.now();
+  if (attempts.size > 5000) attempts.forEach((v, k) => { if (v.resetAt < now) attempts.delete(k); });
   const entry = attempts.get(key);
   if (!entry || entry.resetAt < now) { attempts.set(key, { count: 1, resetAt: now + windowMs }); return; }
   if (++entry.count > limit) throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Troppi tentativi, riprova più tardi" });
@@ -46,9 +48,11 @@ export const appRouter = router({
       return { success: true } as const;
     }),
     login: publicProcedure.input(credentials).mutation(async ({ ctx, input }) => {
+      throttle(`login-ip:${ctx.req.ip}`, 30);
       throttle(`login:${ctx.req.ip}:${input.email}`);
       const user = await getUserByEmail(input.email);
-      const ok = user?.passwordHash ? await verifyPassword(input.password, user.passwordHash) : false;
+      const dummyHash = await dummyHashPromise;
+      const ok = await verifyPassword(input.password, user?.passwordHash ?? dummyHash) && Boolean(user?.passwordHash);
       if (!user || !ok) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email o password non corretti" });
       await startSession(ctx, user.openId, user.name || "Velvet member");
       return { success: true } as const;
