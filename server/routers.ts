@@ -1,19 +1,58 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { randomUUID } from "node:crypto";
+import { hashPassword, verifyPassword } from "./_core/password";
+import { sdk } from "./_core/sdk";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { addMessage, banUserFromRoom, completeRubyLounge, createSafetyReport, getBalance, getUserByOpenId, grantWelcomeReward, joinRoom, listMessages, listRooms } from "./db";
+import { addMessage, banUserFromRoom, createLocalUser, getUserByEmail, completeRubyLounge, createSafetyReport, getBalance, getUserByOpenId, grantWelcomeReward, joinRoom, listMessages, listRooms } from "./db";
 import { commerceRouter } from "./routers/commerce";
 import { invokeLLM } from "./_core/llm";
 import { createLiveKitToken, livekitConfigured, muteLiveKitTrack, removeLiveKitParticipant } from "./integrations/livekit";
 import { affiliateDestinations } from "./integrations/affiliates";
 
+const credentials = z.object({ email: z.string().trim().toLowerCase().email().max(320), password: z.string().min(8).max(200) });
+
+const attempts = new Map<string, { count: number; resetAt: number }>();
+function throttle(key: string, limit = 10, windowMs = 15 * 60 * 1000) {
+  const now = Date.now();
+  const entry = attempts.get(key);
+  if (!entry || entry.resetAt < now) { attempts.set(key, { count: 1, resetAt: now + windowMs }); return; }
+  if (++entry.count > limit) throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Troppi tentativi, riprova più tardi" });
+}
+
+async function startSession(ctx: { req: Parameters<typeof getSessionCookieOptions>[0]; res: { cookie: (name: string, value: string, options: object) => unknown } }, openId: string, name: string) {
+  const token = await sdk.createSessionToken(openId, { name, expiresInMs: ONE_YEAR_MS });
+  ctx.res.cookie(COOKIE_NAME, token, { ...getSessionCookieOptions(ctx.req), maxAge: ONE_YEAR_MS });
+}
+
 export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
+    register: publicProcedure.input(credentials.extend({ name: z.string().trim().min(2).max(80) })).mutation(async ({ ctx, input }) => {
+      throttle(`reg:${ctx.req.ip}`);
+      if (await getUserByEmail(input.email)) throw new TRPCError({ code: "CONFLICT", message: "Email già registrata" });
+      let user;
+      try {
+        user = await createLocalUser({ openId: `local:${randomUUID()}`, email: input.email, name: input.name, passwordHash: await hashPassword(input.password) });
+      } catch (error) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Registrazione non disponibile", cause: error });
+      }
+      if (!user) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Registrazione non disponibile" });
+      await startSession(ctx, user.openId, user.name ?? input.name);
+      return { success: true } as const;
+    }),
+    login: publicProcedure.input(credentials).mutation(async ({ ctx, input }) => {
+      throttle(`login:${ctx.req.ip}:${input.email}`);
+      const user = await getUserByEmail(input.email);
+      const ok = user?.passwordHash ? await verifyPassword(input.password, user.passwordHash) : false;
+      if (!user || !ok) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email o password non corretti" });
+      await startSession(ctx, user.openId, user.name || "Velvet member");
+      return { success: true } as const;
+    }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });

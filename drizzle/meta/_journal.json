@@ -36,6 +36,13 @@
       "when": 1789577031775,
       "tag": "0004_cooing_silver_samurai",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1791478792380,
+      "tag": "0005_illegal_strong_guy",
+      "breakpoints": true
     }
   ]
 }
