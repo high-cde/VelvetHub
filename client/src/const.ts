@@ -4,8 +4,11 @@ export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
 export const AUTH_TIMEOUT_MS = 4000;
 
+// GitHub Pages serves static files only: /api/oauth/callback would 404 there.
+const isStaticHost = () => typeof window !== "undefined" && window.location.hostname.endsWith(".github.io");
+
 export const isOAuthConfigured = () =>
-  Boolean(import.meta.env.VITE_OAUTH_PORTAL_URL?.trim() && import.meta.env.VITE_APP_ID?.trim());
+  !isStaticHost() && Boolean(import.meta.env.VITE_OAUTH_PORTAL_URL?.trim() && import.meta.env.VITE_APP_ID?.trim());
 
 export const getLoginUrl = (type: "signIn" | "signUp" = "signIn") => {
   if (!isOAuthConfigured()) return `${import.meta.env.BASE_URL}accesso/`;
