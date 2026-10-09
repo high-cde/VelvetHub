@@ -4,7 +4,9 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { addMessage, banUserFromRoom, completeRubyLounge, createSafetyReport, getBalance, getUserByOpenId, grantWelcomeReward, joinRoom, listMessages, listRooms } from "./db";
+import { addMessage, banUserFromRoom, completeRubyLounge, createSafetyReport, getBalance, createLocalUser, getUserByOpenId, grantWelcomeReward, upsertUser, joinRoom, listMessages, listRooms } from "./db";
+import { loginSchema, signupSchema } from "@shared/authSchemas";
+import { hashPassword, localOpenId, startLocalSession, verifyPassword } from "./_core/localAuth";
 import { commerceRouter } from "./routers/commerce";
 import { invokeLLM } from "./_core/llm";
 import { createLiveKitToken, livekitConfigured, muteLiveKitTrack, removeLiveKitParticipant } from "./integrations/livekit";
@@ -13,7 +15,33 @@ import { affiliateDestinations } from "./integrations/affiliates";
 export const appRouter = router({
   system: systemRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
+    me: publicProcedure.query(({ ctx }) => {
+      if (!ctx.user) return ctx.user;
+      const { passwordHash: _passwordHash, ...user } = ctx.user;
+      return user;
+    }),
+    signup: publicProcedure.input(signupSchema).mutation(async ({ ctx, input }) => {
+      const openId = localOpenId(input.email);
+      if (await getUserByOpenId(openId)) throw new TRPCError({ code: "CONFLICT", message: "Esiste già un account con questa email." });
+      const name = input.email.split("@")[0] || "Velvet member";
+      try {
+        await createLocalUser({ openId, email: input.email, name, passwordHash: await hashPassword(input.password) });
+      } catch (error) {
+        if ((error as { code?: string; cause?: { code?: string } })?.code === "ER_DUP_ENTRY" || (error as { cause?: { code?: string } })?.cause?.code === "ER_DUP_ENTRY") throw new TRPCError({ code: "CONFLICT", message: "Esiste già un account con questa email." });
+        console.error("[Auth] Signup failed", error);
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Registrazione non disponibile. Riprova più tardi." });
+      }
+      await startLocalSession(ctx.req, ctx.res, openId, name);
+      return { success: true } as const;
+    }),
+    login: publicProcedure.input(loginSchema).mutation(async ({ ctx, input }) => {
+      const openId = localOpenId(input.email);
+      const user = await getUserByOpenId(openId);
+      if (!(await verifyPassword(input.password, user?.passwordHash)) || !user) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email o password non corretti." });
+      await upsertUser({ openId, lastSignedIn: new Date() });
+      await startLocalSession(ctx.req, ctx.res, openId, user.name || input.email);
+      return { success: true } as const;
+    }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });

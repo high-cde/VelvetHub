@@ -1,4 +1,4 @@
-import { AUTH_TIMEOUT_MS, isOAuthConfigured, startLogin } from "@/const";
+import { AUTH_TIMEOUT_MS, startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -16,23 +16,20 @@ export function useAuth(options?: UseAuthOptions) {
   const { redirectOnUnauthenticated = false, redirectPath } = options ?? {};
   const utils = trpc.useUtils();
 
-  const oauthConfigured = isOAuthConfigured();
   const [timedOut, setTimedOut] = useState(false);
 
   const meQuery = trpc.auth.me.useQuery(undefined, {
     retry: false,
     refetchOnWindowFocus: false,
-    enabled: oauthConfigured,
   });
 
   useEffect(() => {
-    if (!oauthConfigured || !meQuery.isLoading) return;
+    if (!meQuery.isLoading) return;
     const timer = window.setTimeout(() => setTimedOut(true), AUTH_TIMEOUT_MS);
     return () => window.clearTimeout(timer);
-  }, [oauthConfigured, meQuery.isLoading]);
+  }, [meQuery.isLoading]);
 
   const backendUnavailable =
-    !oauthConfigured ||
     (meQuery.isLoading && timedOut) ||
     (meQuery.isError && !(meQuery.error instanceof TRPCClientError && meQuery.error.data?.code === "UNAUTHORIZED"));
 
