@@ -26,9 +26,9 @@ export default function VelvetNav({ compact = false }: { compact?: boolean }) {
   const [location] = useLocation();
   const [open, setOpen] = useState(false);
   const { profile } = useVelvet();
-  const { user, isAuthenticated, logout } = useAuth();
-  const signIn = () => { window.location.href = getLoginUrl("signIn"); };
-  const signUp = () => { window.location.href = getLoginUrl("signUp"); };
+  const { user, isAuthenticated, logout, previewMode } = useAuth();
+  const signIn = () => { if (previewMode) { window.location.href = `${import.meta.env.BASE_URL}accesso/`; return; } window.location.href = getLoginUrl("signIn"); };
+  const signUp = () => { if (previewMode) { window.location.href = `${import.meta.env.BASE_URL}accesso/`; return; } window.location.href = getLoginUrl("signUp"); };
   const signOut = async () => { await logout(); toast("Sessione chiusa", { description: "Puoi tornare quando vuoi." }); };
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#08060b]/90 backdrop-blur-xl">
