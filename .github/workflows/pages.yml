@@ -1,4 +1,4 @@
-name: Validate VelvetHub
+name: Deploy VelvetHub to GitHub Pages
 
 on:
   workflow_dispatch:
@@ -7,10 +7,12 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-  group: validate-velvethub
-  cancel-in-progress: true
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   validate:
@@ -40,21 +42,55 @@ jobs:
       - name: Bot safe-mode self-test
         run: pnpm bot:self-test
 
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
       - name: Production build
         run: pnpm build
 
       - name: Materialize static client routes
         run: |
+          # radar/ is a standalone static build shipped from client/public and must not be overwritten.
           for route in accesso safety policy live live-preview discover studio inbox settings earnings admin community podcasts writing rewards store ourvelvet 404; do
             mkdir -p "dist/public/$route"
             cp dist/public/index.html "dist/public/$route/index.html"
           done
           cp dist/public/index.html dist/public/404.html
-          find dist/public -name '*.html' -type f -exec sed -i 's#"/assets/#"/VelvetHub/assets/#g; s#"/VelvetHub/VelvetHub/assets/#"/VelvetHub/assets/#g' {} +
+          # Idempotent: only rewrites root-relative /assets/ (never already-prefixed paths).
+          find dist/public -maxdepth 2 -name '*.html' -not -path 'dist/public/radar/*' -type f -exec sed -i 's#"/assets/#"/VelvetHub/assets/#g' {} +
+          touch dist/public/.nojekyll
 
-      - name: Upload build artifact for inspection
-        uses: actions/upload-artifact@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: velvethub-static-build
           path: dist/public
-          retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -33,17 +33,11 @@ export async function getUserByOpenId(openId: string) {
   return result[0];
 }
 
-export async function getUserByEmail(email: string) {
-  const db = await getDb(); if (!db) return undefined;
-  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
-  return result[0];
-}
-
-export async function createLocalUser(input: { openId: string; email: string; name: string; passwordHash: string }) {
-  const db = await getDb(); if (!db) throw new Error("Database not configured (DATABASE_URL)");
-  const role = input.openId === ENV.ownerOpenId ? "admin" : "user";
-  await db.insert(users).values({ ...input, loginMethod: "password", role, lastSignedIn: new Date() });
-  return getUserByOpenId(input.openId);
+export async function createLocalUser(user: { openId: string; email: string; name: string; passwordHash: string }) {
+  const db = await getDb(); if (!db) throw new Error("Database not configured");
+  const role = user.openId === ENV.ownerOpenId ? "admin" : "user";
+  await db.insert(users).values({ ...user, loginMethod: "email", role });
+  return getUserByOpenId(user.openId);
 }
 
 export async function listRooms() {

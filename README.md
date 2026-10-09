@@ -23,3 +23,13 @@ Per chiudere il primo capitolo bisogna superare l’age-gate 18+, scegliere un r
 Il livello non premia la sottomissione né l’obbedienza. Riconosce invece la capacità di mantenere una via d’uscita, cambiare idea e concludere la scena con maggiore chiarezza. **Pausa sicura** resta sempre disponibile e interrompere non annulla il percorso.
 
 La storia è integrata nel client Three.js del Radar e viene distribuita anche nella build `/radar/` di VelvetHub.
+
+## Deploy
+
+Il sito statico viene pubblicato su GitHub Pages (https://high-cde.github.io/VelvetHub/) **solo** dalla build CI: i file `index.html`, `404.html` e le cartelle di route non sono più versionati nella root.
+
+1. Abilita **Settings → Pages → Source: GitHub Actions**.
+2. Il workflow `.github/workflows/pages.yml` esegue typecheck, test e build, copia `index.html` in ogni route statica (+ `404.html` come fallback SPA) e pubblica `dist/public` con `actions/deploy-pages`. `/radar/` è la build statica separata inclusa da `client/public/radar`.
+3. Variabili opzionali di build (`VITE_*`, es. `VITE_OAUTH_PORTAL_URL`, `VITE_APP_ID`, `VITE_ANALYTICS_ENDPOINT`, `VITE_ANALYTICS_WEBSITE_ID`) possono essere impostate come variabili d'ambiente del workflow.
+4. Senza backend (o senza `VITE_OAUTH_PORTAL_URL`/`VITE_APP_ID`) il client entra in modalità **anteprima**: nessun redirect OAuth, nessuno spinner infinito (timeout 4s), age-gate 18+ e accesso anteprima.
+5. Le funzioni live e l'autenticazione richiedono il server Express (`server/_core/index.ts`) ospitato separatamente.
