@@ -18,7 +18,7 @@ export default function Radar() {
           <div className="rounded-2xl border border-white/10 bg-white/[.03] p-4"><ArrowUpRight size={18} className="text-[#d7b46a]" /><p className="mt-3 text-xs font-bold text-white">Social predisposti</p><p className="mt-1 text-[11px] leading-5 text-[#aa9aaa]">Discord, Facebook, WhatsApp e $DSN restano verificabili e separati.</p></div>
         </div>
         <div className="overflow-hidden rounded-[1.5rem] border border-[#d7b46a]/25 bg-[#0d080f] shadow-[0_30px_110px_rgba(0,0,0,.45)]">
-          <iframe title="Velvet Radar VR.Crew" src="/radar/index.html" className="h-[78vh] min-h-[640px] w-full border-0" allow="fullscreen" />
+          <iframe title="Velvet Radar VR.Crew" src={`${import.meta.env.BASE_URL}radar/index.html`} className="h-[78vh] min-h-[640px] w-full border-0" allow="fullscreen" />
         </div>
         <p className="mt-4 text-center text-[10px] leading-5 text-[#806e80]">Le guide Rubina e Kali sono personaggi AI finzionali. Il bot multipiattaforma e gli stream live non sono attivi senza credenziali, opt-in, moderazione e policy.</p>
       </div>
