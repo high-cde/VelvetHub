@@ -36,11 +36,12 @@ function StaticAuthForm() {
 }
 
 function AuthForm() {
-  if (isStaticHost()) return <StaticAuthForm />;
-  return <ServerAuthForm />;
+  const [offline, setOffline] = useState(false);
+  if (isStaticHost() || offline) return <StaticAuthForm />;
+  return <ServerAuthForm onUnavailable={() => setOffline(true)} />;
 }
 
-function ServerAuthForm() {
+function ServerAuthForm({ onUnavailable }: { onUnavailable: () => void }) {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const utils = trpc.useUtils();
   const form = useForm<SignupInput>({ resolver: zodResolver(mode === "signup" ? signupSchema : loginSchema) as Resolver<SignupInput>, defaultValues: { email: "", password: "", ageVerified: false, consentAccepted: false, marketingOptIn: false } });
@@ -48,7 +49,14 @@ function ServerAuthForm() {
     toast.success(mode === "signup" ? "Account creato. Benvenuto in Velvet!" : "Accesso effettuato.");
     await utils.auth.me.invalidate();
   };
-  const onError = (error: { message: string }) => toast.error(error.message);
+  const onError = (error: { message: string }) => {
+    if (/JSON|Unexpected token|<!DOCTYPE|Failed to fetch|NetworkError/i.test(error.message)) {
+      toast.message("Server non raggiungibile: uso un profilo locale su questo dispositivo.");
+      onUnavailable();
+      return;
+    }
+    toast.error(error.message);
+  };
   const signup = trpc.auth.signup.useMutation({ onSuccess, onError });
   const login = trpc.auth.login.useMutation({ onSuccess, onError });
   const pending = signup.isPending || login.isPending;
