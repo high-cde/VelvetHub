@@ -34,6 +34,19 @@ async function startServer() {
   // Dietro Caddy/nginx: usa X-Forwarded-For per req.ip
   app.set("trust proxy", 1);
   // Configure body parser with larger size limit for file uploads
+  const allowedOrigins = (process.env.CORS_ORIGINS ?? "").split(",").map(o => o.trim()).filter(Boolean);
+  app.use("/api", (req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+      res.setHeader("Access-Control-Allow-Credentials", "true");
+      res.setHeader("Access-Control-Allow-Headers", "content-type, authorization, trpc-accept");
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      res.setHeader("Vary", "Origin");
+      if (req.method === "OPTIONS") return res.sendStatus(204);
+    }
+    next();
+  });
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   registerStorageProxy(app);

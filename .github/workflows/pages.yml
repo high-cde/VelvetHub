@@ -69,6 +69,8 @@ jobs:
 
       - name: Production build
         run: pnpm build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
 
       - name: Materialize static client routes
         run: |
