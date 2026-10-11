@@ -1,20 +1,67 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { COOKIE_NAME } from "@shared/const";
+import { CONSENT_REQUIRED_ERR_MSG, COOKIE_NAME } from "@shared/const";
+import { hasRequiredConsent } from "@shared/access";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { addMessage, banUserFromRoom, completeRubyLounge, createSafetyReport, getBalance, getUserByOpenId, grantWelcomeReward, joinRoom, listMessages, listRooms } from "./db";
+import { adminProcedure, authenticatedProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { addMessage, banUserFromRoom, completeRubyLounge, createSafetyReport, getBalance, createLocalUser, getUserByOpenId, grantWelcomeReward, recordConsent, upsertUser, joinRoom, listMessages, listRooms } from "./db";
+import { consentSchema, loginSchema, signupSchema } from "@shared/authSchemas";
+import { hashPassword, localOpenId, startLocalSession, verifyPassword } from "./_core/localAuth";
 import { commerceRouter } from "./routers/commerce";
 import { crewRouter } from "./routers/crew";
 import { invokeLLM } from "./_core/llm";
 import { createLiveKitToken, livekitConfigured, muteLiveKitTrack, removeLiveKitParticipant } from "./integrations/livekit";
 import { affiliateDestinations } from "./integrations/affiliates";
 
+const attempts = new Map<string, { count: number; resetAt: number }>();
+function throttle(key: string, limit = 10, windowMs = 15 * 60 * 1000) {
+  const now = Date.now();
+  if (attempts.size > 5000) attempts.forEach((v, k) => { if (v.resetAt < now) attempts.delete(k); });
+  const entry = attempts.get(key);
+  if (!entry || entry.resetAt < now) { attempts.set(key, { count: 1, resetAt: now + windowMs }); return; }
+  if (++entry.count > limit) throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Troppi tentativi, riprova più tardi." });
+}
+
 export const appRouter = router({
   system: systemRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
+    me: publicProcedure.query(({ ctx }) => {
+      if (!ctx.user) return ctx.user;
+      const { passwordHash: _passwordHash, ...user } = ctx.user;
+      return user;
+    }),
+    signup: publicProcedure.input(signupSchema).mutation(async ({ ctx, input }) => {
+      throttle(`signup:${ctx.req.ip}`);
+      const openId = localOpenId(input.email);
+      if (await getUserByOpenId(openId)) throw new TRPCError({ code: "CONFLICT", message: "Esiste già un account con questa email." });
+      const name = input.email.split("@")[0] || "Velvet member";
+      let created;
+      try {
+        created = await createLocalUser({ openId, email: input.email, name, passwordHash: await hashPassword(input.password), marketingOptIn: input.marketingOptIn });
+      } catch (error) {
+        if ((error as { code?: string; cause?: { code?: string } })?.code === "ER_DUP_ENTRY" || (error as { cause?: { code?: string } })?.cause?.code === "ER_DUP_ENTRY") throw new TRPCError({ code: "CONFLICT", message: "Esiste già un account con questa email." });
+        console.error("[Auth] Signup failed", error);
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Registrazione non disponibile. Riprova più tardi." });
+      }
+      if (!created) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Registrazione non disponibile. Riprova più tardi." });
+      await startLocalSession(ctx.req, ctx.res, created);
+      return { success: true } as const;
+    }),
+    login: publicProcedure.input(loginSchema).mutation(async ({ ctx, input }) => {
+      throttle(`login:${ctx.req.ip}:${input.email}`);
+      const openId = localOpenId(input.email);
+      const user = await getUserByOpenId(openId);
+      if (!(await verifyPassword(input.password, user?.passwordHash)) || !user) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email o password non corretti." });
+      if (!hasRequiredConsent(user)) throw new TRPCError({ code: "FORBIDDEN", message: CONSENT_REQUIRED_ERR_MSG });
+      await upsertUser({ openId, lastSignedIn: new Date() });
+      await startLocalSession(ctx.req, ctx.res, { ...user, name: user.name || input.email });
+      return { success: true } as const;
+    }),
+    acceptConsent: authenticatedProcedure.input(consentSchema).mutation(async ({ ctx, input }) => {
+      await recordConsent(ctx.user.openId, input.marketingOptIn);
+      return { success: true } as const;
+    }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
@@ -56,14 +103,12 @@ export const appRouter = router({
     }),
   }),
   moderation: router({
-    ban: protectedProcedure.input(z.object({ roomId: z.number().int().positive(), room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), reason: z.string().trim().min(2).max(240) })).mutation(async ({ ctx, input }) => {
-      if (ctx.user.role !== "admin") throw new TRPCError({ code: "FORBIDDEN", message: "Solo moderator autorizzati possono bannare." });
+    ban: adminProcedure.input(z.object({ roomId: z.number().int().positive(), room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), reason: z.string().trim().min(2).max(240) })).mutation(async ({ ctx, input }) => {
       const ban = await banUserFromRoom(input.roomId, input.userId, input.reason);
       const livekit = await removeLiveKitParticipant(input.room, `user-${input.userId}`);
       return { ban, livekit };
     }),
-    mute: protectedProcedure.input(z.object({ room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), trackSid: z.string().trim().min(1).max(128), muted: z.boolean().default(true) })).mutation(async ({ ctx, input }) => {
-      if (ctx.user.role !== "admin") throw new TRPCError({ code: "FORBIDDEN", message: "Solo moderator autorizzati possono silenziare." });
+    mute: adminProcedure.input(z.object({ room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), trackSid: z.string().trim().min(1).max(128), muted: z.boolean().default(true) })).mutation(async ({ ctx, input }) => {
       return muteLiveKitTrack({ room: input.room, identity: `user-${input.userId}`, trackSid: input.trackSid, muted: input.muted });
     }),
   }),

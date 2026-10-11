@@ -5,7 +5,7 @@ import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
-import { startLogin } from "./const";
+import { isOAuthConfigured, startLogin } from "./const";
 import { CartProvider } from "./contexts/CartContext";
 import "./index.css";
 
@@ -27,6 +27,7 @@ loadConfiguredAnalytics();
 const redirectToLoginIfUnauthorized = (error: unknown) => {
   if (!(error instanceof TRPCClientError)) return;
   if (typeof window === "undefined") return;
+  if (!isOAuthConfigured()) return;
 
   const isUnauthorized = error.message === UNAUTHED_ERR_MSG;
 

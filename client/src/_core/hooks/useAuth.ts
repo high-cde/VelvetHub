@@ -1,7 +1,7 @@
-import { startLogin } from "@/const";
+import { AUTH_TIMEOUT_MS, startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type UseAuthOptions = {
   redirectOnUnauthenticated?: boolean;
@@ -16,10 +16,22 @@ export function useAuth(options?: UseAuthOptions) {
   const { redirectOnUnauthenticated = false, redirectPath } = options ?? {};
   const utils = trpc.useUtils();
 
+  const [timedOut, setTimedOut] = useState(false);
+
   const meQuery = trpc.auth.me.useQuery(undefined, {
     retry: false,
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    if (!meQuery.isLoading) return;
+    const timer = window.setTimeout(() => setTimedOut(true), AUTH_TIMEOUT_MS);
+    return () => window.clearTimeout(timer);
+  }, [meQuery.isLoading]);
+
+  const backendUnavailable =
+    (meQuery.isLoading && timedOut) ||
+    (meQuery.isError && !(meQuery.error instanceof TRPCClientError && meQuery.error.data?.code === "UNAUTHORIZED"));
 
   const logoutMutation = trpc.auth.logout.useMutation({
     onSuccess: () => {
@@ -57,7 +69,8 @@ export function useAuth(options?: UseAuthOptions) {
     );
     return {
       user: meQuery.data ?? null,
-      loading: meQuery.isLoading || logoutMutation.isPending,
+      loading: !backendUnavailable && (meQuery.isLoading || logoutMutation.isPending),
+      previewMode: backendUnavailable,
       error: meQuery.error ?? logoutMutation.error ?? null,
       isAuthenticated: Boolean(meQuery.data),
     };
@@ -65,6 +78,7 @@ export function useAuth(options?: UseAuthOptions) {
     meQuery.data,
     meQuery.error,
     meQuery.isLoading,
+    backendUnavailable,
     logoutMutation.error,
     logoutMutation.isPending,
   ]);
@@ -72,6 +86,7 @@ export function useAuth(options?: UseAuthOptions) {
   useEffect(() => {
     if (!redirectOnUnauthenticated) return;
     if (meQuery.isLoading || logoutMutation.isPending) return;
+    if (backendUnavailable) return;
     if (state.user) return;
     if (typeof window === "undefined") return;
     if (redirectPath && window.location.pathname === redirectPath) return;
@@ -87,6 +102,7 @@ export function useAuth(options?: UseAuthOptions) {
     redirectPath,
     logoutMutation.isPending,
     meQuery.isLoading,
+    backendUnavailable,
     state.user,
   ]);
 
