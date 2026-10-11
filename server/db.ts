@@ -33,11 +33,17 @@ export async function getUserByOpenId(openId: string) {
   return result[0];
 }
 
-export async function createLocalUser(user: { openId: string; email: string; name: string; passwordHash: string }) {
+export async function createLocalUser(user: { openId: string; email: string; name: string; passwordHash: string; marketingOptIn?: boolean }) {
   const db = await getDb(); if (!db) throw new Error("Database not configured");
   const role = user.openId === ENV.ownerOpenId ? "admin" : "user";
-  await db.insert(users).values({ ...user, loginMethod: "email", role });
+  await db.insert(users).values({ ...user, loginMethod: "email", role, ageVerified: true, consentAcceptedAt: new Date() });
   return getUserByOpenId(user.openId);
+}
+
+export async function recordConsent(openId: string, marketingOptIn = false) {
+  const db = await getDb(); if (!db) throw new Error("Database not configured");
+  await db.update(users).set({ ageVerified: true, consentAcceptedAt: new Date(), marketingOptIn }).where(eq(users.openId, openId));
+  return getUserByOpenId(openId);
 }
 
 export async function listRooms() {

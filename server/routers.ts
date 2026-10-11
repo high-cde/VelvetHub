@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { COOKIE_NAME } from "@shared/const";
+import { CONSENT_REQUIRED_ERR_MSG, COOKIE_NAME } from "@shared/const";
+import { hasRequiredConsent } from "@shared/access";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { addMessage, banUserFromRoom, completeRubyLounge, createSafetyReport, getBalance, createLocalUser, getUserByOpenId, grantWelcomeReward, upsertUser, joinRoom, listMessages, listRooms } from "./db";
-import { loginSchema, signupSchema } from "@shared/authSchemas";
+import { adminProcedure, authenticatedProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { addMessage, banUserFromRoom, completeRubyLounge, createSafetyReport, getBalance, createLocalUser, getUserByOpenId, grantWelcomeReward, recordConsent, upsertUser, joinRoom, listMessages, listRooms } from "./db";
+import { consentSchema, loginSchema, signupSchema } from "@shared/authSchemas";
 import { hashPassword, localOpenId, startLocalSession, verifyPassword } from "./_core/localAuth";
 import { commerceRouter } from "./routers/commerce";
 import { invokeLLM } from "./_core/llm";
@@ -34,14 +35,16 @@ export const appRouter = router({
       const openId = localOpenId(input.email);
       if (await getUserByOpenId(openId)) throw new TRPCError({ code: "CONFLICT", message: "Esiste già un account con questa email." });
       const name = input.email.split("@")[0] || "Velvet member";
+      let created;
       try {
-        await createLocalUser({ openId, email: input.email, name, passwordHash: await hashPassword(input.password) });
+        created = await createLocalUser({ openId, email: input.email, name, passwordHash: await hashPassword(input.password), marketingOptIn: input.marketingOptIn });
       } catch (error) {
         if ((error as { code?: string; cause?: { code?: string } })?.code === "ER_DUP_ENTRY" || (error as { cause?: { code?: string } })?.cause?.code === "ER_DUP_ENTRY") throw new TRPCError({ code: "CONFLICT", message: "Esiste già un account con questa email." });
         console.error("[Auth] Signup failed", error);
         throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Registrazione non disponibile. Riprova più tardi." });
       }
-      await startLocalSession(ctx.req, ctx.res, openId, name);
+      if (!created) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Registrazione non disponibile. Riprova più tardi." });
+      await startLocalSession(ctx.req, ctx.res, created);
       return { success: true } as const;
     }),
     login: publicProcedure.input(loginSchema).mutation(async ({ ctx, input }) => {
@@ -49,8 +52,13 @@ export const appRouter = router({
       const openId = localOpenId(input.email);
       const user = await getUserByOpenId(openId);
       if (!(await verifyPassword(input.password, user?.passwordHash)) || !user) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email o password non corretti." });
+      if (!hasRequiredConsent(user)) throw new TRPCError({ code: "FORBIDDEN", message: CONSENT_REQUIRED_ERR_MSG });
       await upsertUser({ openId, lastSignedIn: new Date() });
-      await startLocalSession(ctx.req, ctx.res, openId, user.name || input.email);
+      await startLocalSession(ctx.req, ctx.res, { ...user, name: user.name || input.email });
+      return { success: true } as const;
+    }),
+    acceptConsent: authenticatedProcedure.input(consentSchema).mutation(async ({ ctx, input }) => {
+      await recordConsent(ctx.user.openId, input.marketingOptIn);
       return { success: true } as const;
     }),
     logout: publicProcedure.mutation(({ ctx }) => {
@@ -94,14 +102,12 @@ export const appRouter = router({
     }),
   }),
   moderation: router({
-    ban: protectedProcedure.input(z.object({ roomId: z.number().int().positive(), room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), reason: z.string().trim().min(2).max(240) })).mutation(async ({ ctx, input }) => {
-      if (ctx.user.role !== "admin") throw new TRPCError({ code: "FORBIDDEN", message: "Solo moderator autorizzati possono bannare." });
+    ban: adminProcedure.input(z.object({ roomId: z.number().int().positive(), room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), reason: z.string().trim().min(2).max(240) })).mutation(async ({ ctx, input }) => {
       const ban = await banUserFromRoom(input.roomId, input.userId, input.reason);
       const livekit = await removeLiveKitParticipant(input.room, `user-${input.userId}`);
       return { ban, livekit };
     }),
-    mute: protectedProcedure.input(z.object({ room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), trackSid: z.string().trim().min(1).max(128), muted: z.boolean().default(true) })).mutation(async ({ ctx, input }) => {
-      if (ctx.user.role !== "admin") throw new TRPCError({ code: "FORBIDDEN", message: "Solo moderator autorizzati possono silenziare." });
+    mute: adminProcedure.input(z.object({ room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), trackSid: z.string().trim().min(1).max(128), muted: z.boolean().default(true) })).mutation(async ({ ctx, input }) => {
       return muteLiveKitTrack({ room: input.room, identity: `user-${input.userId}`, trackSid: input.trackSid, muted: input.muted });
     }),
   }),
