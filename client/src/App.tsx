@@ -1,3 +1,4 @@
+import VelvetDreamApp from "./pages/Creator/VelvetDreamApp";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
@@ -58,6 +59,7 @@ function Router() {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   return <WouterRouter base={base} hook={useNormalizedBrowserLocation}><Switch>
     <Route path="/" component={Home} />
+        <Route path="/creator" component={VelvetDreamApp} />
     <Route path="/accesso" component={AuthScreen} />
     <Route path="/login" component={AuthScreen} />
     <Route path="/accedi" component={AuthScreen} />
