@@ -39,7 +39,7 @@ function useNormalizedBrowserLocation(): [string, ReturnType<typeof useBrowserLo
 }
 
 const TITLES: Record<string, string> = {
-  "/": "Red Velvet Live Club", "/gioco": "Vic Velluto · gioco", "/radar": "Velvet Radar VR.Crew", "/accesso": "Accesso", "/safety": "Sicurezza",
+  "/": "Red Velvet Live Club", "/gioco": "Vic Velluto · gioco", "/radar": "Velvet Radar VR.Crew", "/login": "Accesso · VelvetHub", "/accedi": "Accesso · VelvetHub", "/accesso": "Accesso", "/safety": "Sicurezza",
   "/policy": "Privacy e termini", "/live": "Live Hub", "/discover": "Scopri", "/studio": "Creator studio", "/inbox": "Messaggi", "/settings": "Account",
   "/community": "Community", "/earnings": "Guadagni", "/podcasts": "Podcast", "/writing": "Scrittura", "/rewards": "VIP e affiliazione", "/store": "Store", "/ourvelvet": "OurVelvet",
 };
@@ -59,6 +59,8 @@ function Router() {
   return <WouterRouter base={base} hook={useNormalizedBrowserLocation}><Switch>
     <Route path="/" component={Home} />
     <Route path="/accesso" component={AuthScreen} />
+    <Route path="/login" component={AuthScreen} />
+    <Route path="/accedi" component={AuthScreen} />
     <Route path="/safety" component={Safety} />
     <Route path="/policy" component={Policies} />
     <Route path="/live">{() => <Protected><LiveHub /></Protected>}</Route>
