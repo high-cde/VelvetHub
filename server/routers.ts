@@ -6,6 +6,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { addMessage, banUserFromRoom, completeRubyLounge, createSafetyReport, getBalance, getUserByOpenId, grantWelcomeReward, joinRoom, listMessages, listRooms } from "./db";
 import { commerceRouter } from "./routers/commerce";
+import { crewRouter } from "./routers/crew";
 import { invokeLLM } from "./_core/llm";
 import { createLiveKitToken, livekitConfigured, muteLiveKitTrack, removeLiveKitParticipant } from "./integrations/livekit";
 import { affiliateDestinations } from "./integrations/affiliates";
@@ -100,6 +101,7 @@ export const appRouter = router({
     }),
   }),
   commerce: commerceRouter,
+  crew: crewRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -19,6 +19,7 @@ const links = [
   { href: "/store", label: "Store", icon: ShoppingBag },
   { href: "/safety", label: "Sicurezza", icon: ShieldCheck },
   { href: "/live", label: "Live Hub", icon: Radio },
+  { href: "/gioco", label: "Gioca", icon: Sparkles },
   { href: "/ourvelvet", label: "OurVelvet", icon: Sparkles },
 ];
 

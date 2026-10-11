@@ -24,6 +24,8 @@ import { AuthScreen, MemberGate } from "./pages/Auth";
 import Policies from "./pages/Policies";
 import LiveHub from "./pages/LiveHub";
 import Radar from "./pages/Radar";
+import Crew from "./pages/Crew";
+import Game from "./pages/Game";
 import OurVelvet from "./pages/OurVelvet";
 
 function Protected({ children }: { children: React.ReactNode }) { return <MemberGate>{children}</MemberGate>; }
@@ -44,6 +46,8 @@ function Router() {
     <Route path="/live">{() => <Protected><LiveHub /></Protected>}</Route>
     <Route path="/live-preview" component={LiveHub} />
     <Route path="/radar" component={Radar} />
+    <Route path="/gioco" component={Game} />
+    <Route path="/crew">{() => <Protected><Crew /></Protected>}</Route>
     <Route path="/ourvelvet" component={OurVelvet} />
     <Route path="/discover">{() => <Protected><Discover /></Protected>}</Route>
     <Route path="/studio">{() => <Protected><Studio /></Protected>}</Route>
