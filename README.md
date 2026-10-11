@@ -24,12 +24,25 @@ Il livello non premia la sottomissione né l’obbedienza. Riconosce invece la c
 
 La storia è integrata nel client Three.js del Radar e viene distribuita anche nella build `/radar/` di VelvetHub.
 
+## Qualità del codice
+
+ESLint (flat config in `eslint.config.js`) copre i file TypeScript/React di `client/`, `server/` e `shared/`.
+
+```bash
+pnpm lint      # analisi locale
+pnpm lint:ci   # usato in CI: fallisce con errori o con più di 100 warning
+pnpm check     # typecheck
+pnpm test
+```
+
+Regole: `@eslint/js` + `typescript-eslint` recommended, `react-hooks` sul client. Le variabili inutilizzate con prefisso `_` sono ignorate e i blocchi `catch {}` vuoti sono consentiti.
+
 ## Deploy
 
 Il sito statico viene pubblicato su GitHub Pages (https://high-cde.github.io/VelvetHub/) **solo** dalla build CI: i file `index.html`, `404.html` e le cartelle di route non sono più versionati nella root.
 
 1. Abilita **Settings → Pages → Source: GitHub Actions**.
-2. Il workflow `.github/workflows/pages.yml` esegue typecheck, test e build, copia `index.html` in ogni route statica (+ `404.html` come fallback SPA) e pubblica `dist/public` con `actions/deploy-pages`. `/radar/` è la build statica separata inclusa da `client/public/radar`.
+2. Il workflow `.github/workflows/pages.yml` esegue lint, typecheck, test e build, copia `index.html` in ogni route statica (+ `404.html` come fallback SPA) e pubblica `dist/public` con `actions/deploy-pages`. `/radar/` è la build statica separata inclusa da `client/public/radar`.
 3. Variabili opzionali di build (`VITE_*`, es. `VITE_OAUTH_PORTAL_URL`, `VITE_APP_ID`, `VITE_ANALYTICS_ENDPOINT`, `VITE_ANALYTICS_WEBSITE_ID`) possono essere impostate come variabili d'ambiente del workflow.
 4. Senza backend (o senza `VITE_OAUTH_PORTAL_URL`/`VITE_APP_ID`) il client entra in modalità **anteprima**: nessun redirect OAuth, nessuno spinner infinito (timeout 4s), age-gate 18+ e accesso anteprima.
 5. Le funzioni live e l'autenticazione richiedono il server Express (`server/_core/index.ts`) ospitato separatamente.
