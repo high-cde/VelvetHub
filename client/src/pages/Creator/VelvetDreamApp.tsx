@@ -12,17 +12,17 @@ export default function VelvetDreamApp() {
   const [gameState, setGameState] = useState('playing');
   const [walletAddress, setWalletAddress] = useState('');
   const [hueEnabled, setHueEnabled] = useState(false);
-  const [bpm, setBpm] = useState<number | null>(null);
-  const [ipfsHash, setIpfsHash] = useState<string | null>(null);
+  const [bpm, setBpm] = useState(null);
+  const [ipfsHash, setIpfsHash] = useState(null);
   const [audioEnabled, setAudioEnabled] = useState(false);
   
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const oscRef = useRef<OscillatorNode | null>(null);
+  const audioCtxRef = useRef(null);
+  const oscRef = useRef(null);
 
   useEffect(() => {
     if (audioEnabled && gameState !== 'stopped') {
       if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
       }
       if (oscRef.current) oscRef.current.disconnect();
       
@@ -69,7 +69,7 @@ export default function VelvetDreamApp() {
   const saveToIPFS = () => {
     const fakeHash = 'Qm' + Array.from({length: 44}, () => Math.floor(Math.random() * 36).toString(36)).join('');
     setIpfsHash(fakeHash);
-    alert(`Stato criptato e ancorato su IPFS.\nHash: ${fakeHash}`);
+    alert('Stato criptato e ancorato su IPFS.\nHash: ' + fakeHash);
   };
 
   const connectWallet = async () => {
@@ -85,7 +85,7 @@ export default function VelvetDreamApp() {
     }
   };
 
-  const handleSafeword = (type: 'yellow' | 'red') => {
+  const handleSafeword = (type) => {
     if (type === 'yellow') {
       setGameState('paused');
     } else if (type === 'red') {
@@ -125,7 +125,7 @@ export default function VelvetDreamApp() {
       <div className="bg-gradient-to-r from-[#2a1122] to-[#16121a] p-4 rounded-2xl border border-pink-500/30 mb-4 flex justify-between items-center">
         <div>
           <h4 className="text-white font-bold text-sm flex items-center gap-2"><Coins className="w-4 h-4 text-pink-500"/> $DSN</h4>
-          <p className="text-xs text-gray-400">{walletAddress ? `${walletAddress.substring(0,6)}...` : 'Wallet non connesso'}</p>
+          <p className="text-xs text-gray-400">{walletAddress ? walletAddress.substring(0,6) + '...' : 'Wallet non connesso'}</p>
         </div>
         <button onClick={connectWallet} className="px-3 py-1.5 bg-pink-500 rounded-lg text-white text-xs font-bold shadow-[0_0_10px_rgba(236,72,153,0.5)]">
           {walletAddress ? 'Connesso' : 'Connetti Web3'}
@@ -135,7 +135,7 @@ export default function VelvetDreamApp() {
       <div className="grid grid-cols-2 gap-3 mb-6">
         <button onClick={connectBiometrics} className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#16121a] border border-[#2e212b] hover:border-pink-500/50">
           <HeartPulse className={`w-6 h-6 mb-1 ${bpm ? 'text-red-500 animate-pulse' : 'text-gray-500'}`} />
-          <span className="text-xs text-gray-400">Z-Pulse {bpm ? `${bpm} BPM` : 'Off'}</span>
+          <span className="text-xs text-gray-400">Z-Pulse {bpm ? bpm + ' BPM' : 'Off'}</span>
         </button>
         <button onClick={() => setAudioEnabled(!audioEnabled)} className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#16121a] border border-[#2e212b] hover:border-pink-500/50">
           {audioEnabled ? <Volume2 className="w-6 h-6 mb-1 text-pink-500" /> : <VolumeX className="w-6 h-6 mb-1 text-gray-500" />}
