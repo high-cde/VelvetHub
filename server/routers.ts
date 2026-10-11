@@ -12,6 +12,15 @@ import { invokeLLM } from "./_core/llm";
 import { createLiveKitToken, livekitConfigured, muteLiveKitTrack, removeLiveKitParticipant } from "./integrations/livekit";
 import { affiliateDestinations } from "./integrations/affiliates";
 
+const attempts = new Map<string, { count: number; resetAt: number }>();
+function throttle(key: string, limit = 10, windowMs = 15 * 60 * 1000) {
+  const now = Date.now();
+  if (attempts.size > 5000) attempts.forEach((v, k) => { if (v.resetAt < now) attempts.delete(k); });
+  const entry = attempts.get(key);
+  if (!entry || entry.resetAt < now) { attempts.set(key, { count: 1, resetAt: now + windowMs }); return; }
+  if (++entry.count > limit) throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Troppi tentativi, riprova più tardi." });
+}
+
 export const appRouter = router({
   system: systemRouter,
   auth: router({
@@ -21,6 +30,7 @@ export const appRouter = router({
       return user;
     }),
     signup: publicProcedure.input(signupSchema).mutation(async ({ ctx, input }) => {
+      throttle(`signup:${ctx.req.ip}`);
       const openId = localOpenId(input.email);
       if (await getUserByOpenId(openId)) throw new TRPCError({ code: "CONFLICT", message: "Esiste già un account con questa email." });
       const name = input.email.split("@")[0] || "Velvet member";
@@ -35,6 +45,7 @@ export const appRouter = router({
       return { success: true } as const;
     }),
     login: publicProcedure.input(loginSchema).mutation(async ({ ctx, input }) => {
+      throttle(`login:${ctx.req.ip}:${input.email}`);
       const openId = localOpenId(input.email);
       const user = await getUserByOpenId(openId);
       if (!(await verifyPassword(input.password, user?.passwordHash)) || !user) throw new TRPCError({ code: "UNAUTHORIZED", message: "Email o password non corretti." });
