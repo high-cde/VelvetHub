@@ -1,5 +1,5 @@
 /* Velvet Salon: shared local state makes each core interaction persist without server dependencies. */
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { creators, readLocal, starterMessages, writeLocal, type Creator } from "@/lib/mockData";
 
 type Profile = {
@@ -43,24 +43,25 @@ export function VelvetProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotificationsState] = useState(() => readLocal("velvet-notifications", true));
   const [privateMode, setPrivateModeState] = useState(() => readLocal("velvet-private-mode", false));
 
-  const setSignedIn = (value: boolean) => { setSignedInState(value); writeLocal("velvet-signed-in", value); };
-  const confirmAdult = () => { setAdultConfirmed(true); setSignedIn(true); writeLocal("velvet-adult", true); };
-  const toggleSaved = (id: string) => setSavedIds((current) => {
+  const setSignedIn = useCallback((value: boolean) => { setSignedInState(value); writeLocal("velvet-signed-in", value); }, []);
+  const confirmAdult = useCallback(() => { setAdultConfirmed(true); setSignedIn(true); writeLocal("velvet-adult", true); }, [setSignedIn]);
+  const toggleSaved = useCallback((id: string) => setSavedIds((current) => {
     const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
     writeLocal("velvet-saved", next);
     return next;
-  });
-  const updateProfile = (next: Profile) => { setProfile(next); writeLocal("velvet-profile", next); };
-  const sendMessage = (conversationId: string, text: string) => {
+  }), []);
+  const isSaved = useCallback((id: string) => savedIds.includes(id), [savedIds]);
+  const updateProfile = useCallback((next: Profile) => { setProfile(next); writeLocal("velvet-profile", next); }, []);
+  const sendMessage = useCallback((conversationId: string, text: string) => {
     const clean = text.trim();
     if (!clean) return;
     const next = { ...messages, [conversationId]: [...(messages[conversationId] ?? []), { from: "me" as const, text: clean, time: "ora" }] };
     setMessages(next); writeLocal("velvet-messages", next);
-  };
-  const setNotifications = (value: boolean) => { setNotificationsState(value); writeLocal("velvet-notifications", value); };
-  const setPrivateMode = (value: boolean) => { setPrivateModeState(value); writeLocal("velvet-private-mode", value); };
+  }, [messages]);
+  const setNotifications = useCallback((value: boolean) => { setNotificationsState(value); writeLocal("velvet-notifications", value); }, []);
+  const setPrivateMode = useCallback((value: boolean) => { setPrivateModeState(value); writeLocal("velvet-private-mode", value); }, []);
 
-  const value = useMemo(() => ({ signedIn, setSignedIn, adultConfirmed, confirmAdult, savedIds, toggleSaved, isSaved: (id: string) => savedIds.includes(id), profile, updateProfile, messages, sendMessage, notifications, setNotifications, privateMode, setPrivateMode, creators }), [adultConfirmed, messages, notifications, privateMode, profile, savedIds, signedIn]);
+  const value = useMemo(() => ({ signedIn, setSignedIn, adultConfirmed, confirmAdult, savedIds, toggleSaved, isSaved, profile, updateProfile, messages, sendMessage, notifications, setNotifications, privateMode, setPrivateMode, creators }), [adultConfirmed, confirmAdult, isSaved, messages, notifications, privateMode, profile, savedIds, sendMessage, setNotifications, setPrivateMode, setSignedIn, signedIn, toggleSaved, updateProfile]);
   return <VelvetContext.Provider value={value}>{children}</VelvetContext.Provider>;
 }
 

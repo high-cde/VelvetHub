@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { TRPCError } from "@trpc/server";
 import type { TrpcContext } from "./_core/context";
 import { appRouter } from "./routers";
 

@@ -102,12 +102,12 @@ export const appRouter = router({
     }),
   }),
   moderation: router({
-    ban: adminProcedure.input(z.object({ roomId: z.number().int().positive(), room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), reason: z.string().trim().min(2).max(240) })).mutation(async ({ ctx, input }) => {
+    ban: adminProcedure.input(z.object({ roomId: z.number().int().positive(), room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), reason: z.string().trim().min(2).max(240) })).mutation(async ({ input }) => {
       const ban = await banUserFromRoom(input.roomId, input.userId, input.reason);
       const livekit = await removeLiveKitParticipant(input.room, `user-${input.userId}`);
       return { ban, livekit };
     }),
-    mute: adminProcedure.input(z.object({ room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), trackSid: z.string().trim().min(1).max(128), muted: z.boolean().default(true) })).mutation(async ({ ctx, input }) => {
+    mute: adminProcedure.input(z.object({ room: z.string().trim().min(1).max(128), userId: z.number().int().positive(), trackSid: z.string().trim().min(1).max(128), muted: z.boolean().default(true) })).mutation(async ({ input }) => {
       return muteLiveKitTrack({ room: input.room, identity: `user-${input.userId}`, trackSid: input.trackSid, muted: input.muted });
     }),
   }),

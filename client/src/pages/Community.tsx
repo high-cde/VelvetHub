@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AudioLines, Camera, Check, Heart, Lock, MessageCircle, Mic2, Play, Radio, Send, ShieldCheck, Sparkles, Users, Video, WandSparkles } from "lucide-react";
+import { AudioLines, Camera, Check, Heart, Lock, MessageCircle, Mic2, Play, Radio, Send, ShieldCheck, Users, Video, WandSparkles } from "lucide-react";
 import { toast } from "sonner";
 import VelvetNav from "@/components/VelvetNav";
 

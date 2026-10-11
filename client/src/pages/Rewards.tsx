@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ArrowUpRight, Check, Coins, Copy, ExternalLink, Gift, LockKeyhole, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
 import VelvetNav from "@/components/VelvetNav";
 import { toast } from "sonner";
@@ -15,7 +15,6 @@ export default function Rewards() {
   const total = activeTab === "creator" ? 1840 : 790;
   const pending = activeTab === "creator" ? 310 : 80;
   const share = activeTab === "creator" ? "70%" : "30%";
-  const progress = useMemo(() => Math.min(100, Math.round((total / 3000) * 100)), [total]);
   const saveWallet = () => { const normalized = wallet.trim(); if (!/^0x[a-fA-F0-9]{40}$/.test(normalized)) { toast.error("Inserisci un indirizzo wallet Polygon valido"); return; } setWalletSaved(true); toast.success("Wallet salvato", { description: "Sarà usato solo come destinazione del payout, mai come custodia." }); };
   const copyToken = async () => { await navigator.clipboard?.writeText(DEXSCREENER); setCopied(true); toast("Link DSN copiato"); setTimeout(() => setCopied(false), 1800); };
   return <div className="velvet-shell min-h-screen"><VelvetNav /><main className="container py-12 md:py-16">

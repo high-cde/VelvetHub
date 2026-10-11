@@ -1,7 +1,7 @@
 /* Velvet Salon: creator profiles read like a small editorial room, with clear boundaries around private and premium content. */
 import { useMemo } from "react";
 import { Link, useLocation, useParams } from "wouter";
-import { ArrowLeft, ArrowUpRight, BadgeCheck, Bookmark, CheckCircle2, Crown, Lock, MapPin, MessageCircle, ShieldCheck } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Bookmark, CheckCircle2, Crown, Lock, MapPin, MessageCircle, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import VelvetNav from "@/components/VelvetNav";

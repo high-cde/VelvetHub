@@ -37,7 +37,6 @@ describe.skipIf(!configured)("shopify smoke (live)", () => {
       firstImage: p.images[0]?.url ?? null,
       variantCount: p.variants.length,
     }));
-    // eslint-disable-next-line no-console
     console.log("[shopify smoke] products:", JSON.stringify(preview, null, 2));
 
     expect(products.length).toBeGreaterThanOrEqual(1);

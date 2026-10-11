@@ -10,7 +10,7 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { Link } from "wouter";
 import { sitePath } from "@/lib/site-path";
-import { ArrowUpRight, BadgeCheck, Bell, ChevronRight, CircleHelp, Coins, Eye, Gamepad2, Heart, LockKeyhole, MessageCircle, Mic2, Minus, MoreHorizontal, Plus, Radio, ShieldCheck, ShoppingBag, Sparkles, Trophy, Users, Video, Volume2, X } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, ChevronRight, CircleHelp, Coins, Eye, Gamepad2, Heart, LockKeyhole, MessageCircle, Mic2, Minus, MoreHorizontal, Plus, Radio, ShieldCheck, ShoppingBag, Sparkles, Trophy, Users, Video, Volume2, X } from "lucide-react";
 
 const facebookPage = "https://www.facebook.com/share/1ELDEy8pUZ/";
 

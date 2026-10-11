@@ -1,6 +1,6 @@
 import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, Room, RewardBalance, InsertUser as UserInsert, users, rooms, roomMembers, roomMessages, rewardBalances, safetyReports, roomBans, gameRewards } from "../drizzle/schema";
+import { InsertUser, Room, RewardBalance, users, rooms, roomMembers, roomMessages, rewardBalances, safetyReports, roomBans, gameRewards } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;

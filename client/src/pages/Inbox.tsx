@@ -1,7 +1,7 @@
 /* Velvet Salon: inbox interactions are calm, readable and consent-aware, with persistence limited to the local browser session. */
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, LockKeyhole, MessageCircle, Send, ShieldCheck } from "lucide-react";
+import { ArrowLeft, LockKeyhole, Send, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import VelvetNav from "@/components/VelvetNav";
