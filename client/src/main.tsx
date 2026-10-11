@@ -77,11 +77,18 @@ const trpcClient = trpc.createClient({
         }
         return {};
       },
-      fetch(input, init) {
-        return globalThis.fetch(input, {
+      async fetch(input, init) {
+        const response = await globalThis.fetch(input, {
           ...(init ?? {}),
           credentials: "include",
         });
+        const contentType = response.headers.get("content-type") ?? "";
+        if (!contentType.includes("json")) {
+          throw new Error(
+            "Servizio non disponibile: il server API non ha risposto. Riprova più tardi."
+          );
+        }
+        return response;
       },
     }),
   ],
