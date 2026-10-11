@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Link } from "wouter";
@@ -18,7 +18,7 @@ import VelvetRail from "@/components/VelvetRail";
 function AuthForm() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const utils = trpc.useUtils();
-  const form = useForm<SignupInput>({ resolver: zodResolver(mode === "signup" ? signupSchema : loginSchema), defaultValues: { email: "", password: "" } });
+  const form = useForm<SignupInput>({ resolver: zodResolver(mode === "signup" ? signupSchema : loginSchema) as Resolver<SignupInput>, defaultValues: { email: "", password: "", ageVerified: false, consentAccepted: false, marketingOptIn: false } });
   const onSuccess = async () => {
     toast.success(mode === "signup" ? "Account creato. Benvenuto in Velvet!" : "Accesso effettuato.");
     await utils.auth.me.invalidate();
@@ -27,10 +27,10 @@ function AuthForm() {
   const signup = trpc.auth.signup.useMutation({ onSuccess, onError });
   const login = trpc.auth.login.useMutation({ onSuccess, onError });
   const pending = signup.isPending || login.isPending;
-  const submit = form.handleSubmit(values => (mode === "signup" ? signup : login).mutate(values));
+  const submit = form.handleSubmit(values => (mode === "signup" ? signup : login).mutate(values as SignupInput));
   const switchMode = () => { setMode(mode === "login" ? "signup" : "login"); form.clearErrors(); };
   const errors = form.formState.errors;
-  return <form onSubmit={submit} noValidate className="mt-9 w-full max-w-md space-y-4"><div><Input type="email" autoComplete="email" placeholder="Email" aria-invalid={Boolean(errors.email)} {...form.register("email")} />{errors.email && <p role="alert" className="mt-1 text-xs text-red-300">{errors.email.message}</p>}</div><div><Input type="password" autoComplete={mode === "signup" ? "new-password" : "current-password"} placeholder="Password" aria-invalid={Boolean(errors.password)} {...form.register("password")} />{errors.password && <p role="alert" className="mt-1 text-xs text-red-300">{errors.password.message}</p>}</div><Button type="submit" disabled={pending} className="h-12 w-full rounded-full bg-[#d7b46a] px-6 font-extrabold text-[#0b0908] hover:bg-[#f1d58f]">{pending ? "Attendi…" : mode === "signup" ? "Crea account" : "Accedi"}<ArrowRight size={17} /></Button><button type="button" onClick={switchMode} className="text-sm font-bold text-[#d7b46a] hover:underline">{mode === "login" ? "Non hai un account? Registrati" : "Hai già un account? Accedi"}</button></form>;
+  return <form onSubmit={submit} noValidate className="mt-9 w-full max-w-md space-y-4"><div><Input type="email" autoComplete="email" placeholder="Email" aria-invalid={Boolean(errors.email)} {...form.register("email")} />{errors.email && <p role="alert" className="mt-1 text-xs text-red-300">{errors.email.message}</p>}</div><div><Input type="password" autoComplete={mode === "signup" ? "new-password" : "current-password"} placeholder="Password" aria-invalid={Boolean(errors.password)} {...form.register("password")} />{errors.password && <p role="alert" className="mt-1 text-xs text-red-300">{errors.password.message}</p>}</div>{mode === "signup" && <><label className="flex items-start gap-2 text-sm text-white/80"><input type="checkbox" {...form.register("ageVerified")} />Confermo di avere almeno 18 anni.</label>{errors.ageVerified && <p role="alert" className="text-xs text-red-300">{errors.ageVerified.message}</p>}<label className="flex items-start gap-2 text-sm text-white/80"><input type="checkbox" {...form.register("consentAccepted")} />Accetto termini e privacy policy.</label>{errors.consentAccepted && <p role="alert" className="text-xs text-red-300">{errors.consentAccepted.message}</p>}<label className="flex items-start gap-2 text-sm text-white/80"><input type="checkbox" {...form.register("marketingOptIn")} />Desidero ricevere comunicazioni (facoltativo).</label></>}<Button type="submit" disabled={pending} className="h-12 w-full rounded-full bg-[#d7b46a] px-6 font-extrabold text-[#0b0908] hover:bg-[#f1d58f]">{pending ? "Attendi…" : mode === "signup" ? "Crea account" : "Accedi"}<ArrowRight size={17} /></Button><button type="button" onClick={switchMode} className="text-sm font-bold text-[#d7b46a] hover:underline">{mode === "login" ? "Non hai un account? Registrati" : "Hai già un account? Accedi"}</button></form>;
 }
 
 export function AuthScreen() {
