@@ -1,3 +1,4 @@
+import { assetPath } from "./site-path";
 /* Velvet Salon: curated local data keeps the static experience usable while preserving privacy-first language. */
 
 export type Creator = {
@@ -27,11 +28,11 @@ export type Space = {
 };
 
 export const assetUrls = {
-  hero: "/manus-storage/soft-hero-final_7c5ea9e1.jpg",
-  editorial: "/manus-storage/soft-creator-final-1_215a24a4.jpg",
-  detail: "/manus-storage/soft-creator-final-2_c1e5a410.jpg",
-  card: "/manus-storage/velvet-hub-card_1f4c3383.jpg",
-  mark: "/manus-storage/velvet-hub-mark_6c93adcd.png",
+  hero: assetPath("assets/red-velvet-hero-luxe.jpg"),
+  editorial: assetPath("assets/rubina-editorial.jpg"),
+  detail: assetPath("assets/red-velvet-room-after-dark.jpg"),
+  card: assetPath("assets/red-velvet-garden-ritual.jpg"),
+  mark: assetPath("assets/velvet-mark.svg"),
 };
 
 export const creators: Creator[] = [

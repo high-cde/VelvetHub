@@ -69,6 +69,8 @@ jobs:
 
       - name: Production build
         run: pnpm build
+        env:
+          VITE_STATIC_SITE: "true"
 
       - name: Materialize static client routes
         run: |

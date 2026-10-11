@@ -1,3 +1,4 @@
+import { assetPath } from "@/lib/site-path";
 import { useState } from "react";
 import { MessageCircle, Send, Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
@@ -43,7 +44,7 @@ export default function RubinaWidget() {
     </button>
     {open && <div className="fixed inset-0 z-50 bg-black/65 p-4 backdrop-blur-sm" onClick={() => setOpen(false)}>
       <section role="dialog" aria-modal="true" aria-label="Chat con Rubina" className="rubina-panel absolute bottom-4 right-4 flex h-[min(680px,calc(100vh-2rem))] w-[min(420px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[2rem] border border-[#e25c93]/35 bg-[#160b16] shadow-2xl" onClick={event => event.stopPropagation()}>
-        <header className="flex items-center justify-between border-b border-white/10 bg-cover bg-center p-5" style={{ backgroundImage: "linear-gradient(90deg, rgba(58,16,44,.92), rgba(26,13,27,.72)), url('/assets/rubina-editorial.jpg')" }}>
+        <header className="flex items-center justify-between border-b border-white/10 bg-cover bg-center p-5" style={{ backgroundImage: "linear-gradient(90deg, rgba(58,16,44,.92), rgba(26,13,27,.72)), url('" + assetPath("assets/rubina-editorial.jpg") + "')" }}>
           <div className="flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-[#ff7ba9] via-[#c52567] to-[#5b092f] text-white shadow-[inset_-5px_-5px_10px_rgba(0,0,0,.35)]"><Sparkles size={19} /></div><div><p className="text-[10px] font-bold uppercase tracking-[.22em] text-[#f2a1c0]">Rubina / companion</p><h2 className="display-font mt-1 text-2xl text-white">La tua mistress.</h2></div></div>
           <button onClick={() => setOpen(false)} className="rounded-full border border-white/10 p-2 text-[#cdbdcc] hover:text-white" aria-label="Chiudi Rubina"><X size={18} /></button>
         </header>

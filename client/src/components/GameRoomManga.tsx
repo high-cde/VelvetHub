@@ -1,3 +1,4 @@
+import { assetPath } from "@/lib/site-path";
 import { useEffect, useMemo, useState } from "react";
 import { Heart, LockKeyhole, RotateCcw, Sparkles, Stars } from "lucide-react";
 import { useVelvet } from "@/contexts/VelvetContext";
@@ -42,7 +43,7 @@ export default function GameRoomManga() {
 
   return <div className="mt-8 overflow-hidden rounded-[1.5rem] border border-[#e25c93]/35 bg-[#100813]">
     <div className="grid md:grid-cols-[1.15fr_.85fr]">
-      <div className="min-h-[300px] bg-cover bg-center p-6 md:min-h-[390px] md:p-8" style={{ backgroundImage: "linear-gradient(90deg, rgba(16,8,19,.84), rgba(16,8,19,.35)), url('/manus-storage/rubina-manga-arena_9bb20e80.jpg')" }}>
+      <div className="min-h-[300px] bg-cover bg-center p-6 md:min-h-[390px] md:p-8" style={{ backgroundImage: "linear-gradient(90deg, rgba(16,8,19,.84), rgba(16,8,19,.35)), url('" + assetPath("assets/red-velvet-garden-ritual.jpg") + "')" }}>
         <div className="flex items-center justify-between"><span className="rounded-full border border-[#f08db4]/30 bg-[#55122f]/60 px-3 py-1 text-[10px] font-bold uppercase tracking-[.18em] text-[#f4b3cc]">18+ / manga night</span><span className="flex items-center gap-1 text-[10px] text-[#f0d18a]"><Heart size={12} fill="currentColor" /> {score} pts</span></div>
         <div className="mt-24 max-w-sm md:mt-32"><p className="text-[10px] font-bold uppercase tracking-[.22em] text-[#f0d18a]">Ruby Lounge</p><h3 className="display-font mt-3 text-4xl text-white">Il patto di Rubina</h3><p className="mt-3 text-sm leading-6 text-[#eadbe6]">Visual novel interattiva: scegli il ritmo, definisci i confini, conquista il prossimo capitolo.</p></div>
       </div>

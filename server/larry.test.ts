@@ -39,3 +39,15 @@ describe("larry adventure", () => {
     expect(s.level).toBe(0);
   });
 });
+
+import { hintFor, levelProgress } from "../shared/larry";
+describe("larry hints", () => {
+  it("guides step by step", () => {
+    let s = initialState();
+    expect(levelProgress(s)).toEqual({ done: 0, total: 3 });
+    expect(hintFor(s)).toMatch(/cestino/);
+    s = act(s, { type: "take", target: "cestino" });
+    expect(levelProgress(s).done).toBe(1);
+    expect(hintFor(s)).toMatch(/Kali/);
+  });
+});

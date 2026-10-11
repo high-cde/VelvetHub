@@ -242,3 +242,43 @@ export function act(prev: GameState, a: Action): GameState {
   }
   return s;
 }
+
+const STEPS: Record<number, { flag: string; hint: string }[]> = {
+  1: [
+    { flag: "has_busta", hint: "In strada c'è qualcosa di interessante nel cestino." },
+    { flag: "kali_ok", hint: "Entra nell'Anticamera e mostra l'invito a Kali." },
+    { flag: "l1_done", hint: "Vai in Sala Live e parla con Rubina: chiedi, non pretendere." },
+  ],
+  2: [
+    { flag: "has_gettoni", hint: "Nel magazzino c'è un cassetto che tintinna." },
+    { flag: "has_guanti", hint: "Porta i gettoni a Mara, alla cassa." },
+    { flag: "l2_done", hint: "Parla con Mara e salutala con garbo." },
+  ],
+  3: [
+    { flag: "has_penna", hint: "Una penna è rimasta su un tavolo della piazza." },
+    { flag: "has_regolamento", hint: "Firma il regolamento sulla bacheca usando la penna." },
+    { flag: "l3_done", hint: "Al Caffè, Teo accoglie chi ha firmato le regole." },
+  ],
+  4: [
+    { flag: "has_racconto", hint: "Sulla scrivania c'è un racconto incompiuto." },
+    { flag: "has_microfono", hint: "In cabina di registrazione trovi un microfono." },
+    { flag: "bea_ok", hint: "Fai ascoltare il microfono a Bea, in redazione." },
+    { flag: "l4_done", hint: "Parla di nuovo con Bea e chiedi il suo parere." },
+  ],
+  5: [
+    { flag: "has_chiave", hint: "Nella sala sicurezza c'è un armadietto con una chiave." },
+    { flag: "caveau_open", hint: "Usa la chiave sulla porta del caveau." },
+    { flag: "l5_done", hint: "Sulla terrazza, scegli di fermarti subito." },
+  ],
+};
+
+export function levelProgress(s: GameState) {
+  const steps = STEPS[currentLevel(s).id] ?? [];
+  const doneCount = steps.filter(x => has(s, x.flag)).length;
+  return { done: doneCount, total: steps.length };
+}
+
+export function hintFor(s: GameState): string {
+  const next = (STEPS[currentLevel(s).id] ?? []).find(x => !has(s, x.flag));
+  return next ? next.hint : "Livello completato: premi «Prossimo livello».";
+}

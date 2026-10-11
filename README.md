@@ -22,6 +22,11 @@ Apri <https://high-cde.github.io/VelvetHub/>. Non serve installare nulla.
 5. Completa l'obiettivo per ottenere il Sigillo e premi **Prossimo livello**. I livelli rispecchiano le sezioni del sito: Live Club, Store, Community, Podcast/Scrittura, Caveau dei Sigilli.
 6. I progressi si salvano nel browser; **Ricomincia** azzera la partita.
 
+Nel gioco c'è anche la barra di avanzamento e il pulsante **Suggerimento** (−2 punti).
+
+### Accesso su GitHub Pages
+Il sito online è statico: senza server, l'accesso crea un **profilo locale** (email e nome salvati solo nel tuo browser, nessuna password, nessun dato inviato). Per l'accesso con account reale serve il backend (vedi deploy VPS).
+
 I Sigilli sono punti di gioco locali: non sono denaro, token né promesse finanziarie.
 
 ### Sviluppo in locale

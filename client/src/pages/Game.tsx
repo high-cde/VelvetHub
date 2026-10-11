@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronRight, MapPin, RotateCcw, ShieldCheck, Star } from "lucide-react";
+import { ChevronRight, Lightbulb, MapPin, RotateCcw, ShieldCheck, Star } from "lucide-react";
 import VelvetNav from "@/components/VelvetNav";
-import { ITEMS, LEVELS, act, currentLevel, currentRoom, initialState, visibleHotspots, type Action, type GameState } from "@shared/larry";
+import { ITEMS, LEVELS, act, currentLevel, currentRoom, hintFor, initialState, levelProgress, visibleHotspots, type Action, type GameState } from "@shared/larry";
 
 const AGE_KEY = "velvet-crew-adult";
 const SAVE_KEY = "velvet-larry-save";
@@ -43,6 +43,7 @@ export default function Game() {
   const spots = visibleHotspots(state);
   const spot = spots.find(h => h.id === selected);
   const talk = talking ? spots.find(h => h.id === talking)?.talk : undefined;
+  const progress = levelProgress(state);
   const done = state.flags.includes(`${level.goalFlag}_scored`);
   const reset = () => { setState(initialState()); setSelected(null); setTalking(null); setItem(null); };
 
@@ -54,9 +55,11 @@ export default function Game() {
         <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-[#b9aaba]">
           <span className="flex items-center gap-1"><Star size={14} className="text-[#d7b46a]" /> {state.score} punti</span>
           <a href={`${import.meta.env.BASE_URL}${level.mirrors.replace(/^\//, "")}`} className="underline">Sezione del sito rispecchiata: {level.mirrors}</a>
+          <button onClick={() => setState(s => ({ ...s, log: [...s.log.slice(-39), `💡 ${hintFor(s)}`], score: Math.max(0, s.score - 2) }))} className="flex items-center gap-1 text-[#d7b46a]"><Lightbulb size={12} /> Suggerimento (-2)</button>
           <button onClick={reset} className="flex items-center gap-1 text-[#e2a0bd]"><RotateCcw size={12} /> Ricomincia</button>
         </div>
 
+        <div className="mt-3 h-1.5 max-w-sm overflow-hidden rounded-full bg-white/10" role="progressbar" aria-valuemin={0} aria-valuemax={progress.total} aria-valuenow={progress.done} aria-label="Progresso del livello"><div className="h-full bg-[#d7b46a] transition-all" style={{ width: `${(progress.done / Math.max(1, progress.total)) * 100}%` }} /></div>
         {state.finished ? (
           <div className="mt-8 rounded-2xl border border-[#d7b46a]/30 bg-[#d7b46a]/[.06] p-8 text-center">
             <h2 className="display-font text-3xl text-white">Cavaliere del Velluto</h2>

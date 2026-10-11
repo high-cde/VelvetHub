@@ -1,6 +1,8 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Route, Router as WouterRouter, Switch } from "wouter";
+import { useEffect } from "react";
+import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
+import SiteFooter from "./components/SiteFooter";
 import { useBrowserLocation } from "wouter/use-browser-location";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -36,6 +38,22 @@ function useNormalizedBrowserLocation(): [string, ReturnType<typeof useBrowserLo
   return [normalizedLocation, navigate];
 }
 
+const TITLES: Record<string, string> = {
+  "/": "Red Velvet Live Club", "/gioco": "Vic Velluto · gioco", "/radar": "Velvet Radar VR.Crew", "/accesso": "Accesso", "/safety": "Sicurezza",
+  "/policy": "Privacy e termini", "/live": "Live Hub", "/discover": "Scopri", "/studio": "Creator studio", "/inbox": "Messaggi", "/settings": "Account",
+  "/community": "Community", "/earnings": "Guadagni", "/podcasts": "Podcast", "/writing": "Scrittura", "/rewards": "VIP e affiliazione", "/store": "Store", "/ourvelvet": "OurVelvet",
+};
+
+function RouteEffects() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const title = TITLES[location];
+    document.title = title ? `${title} · VelvetHub` : "Pagina non trovata · VelvetHub";
+  }, [location]);
+  return location === "/" || location === "/ourvelvet" ? null : <SiteFooter />;
+}
+
 function Router() {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   return <WouterRouter base={base} hook={useNormalizedBrowserLocation}><Switch>
@@ -63,7 +81,7 @@ function Router() {
     <Route path="/store">{() => <Protected><Store /></Protected>}</Route>
     <Route path="/404" component={NotFound} />
     <Route component={NotFound} />
-  </Switch></WouterRouter>;
+  </Switch><RouteEffects /></WouterRouter>;
 }
 
 export default function App() {

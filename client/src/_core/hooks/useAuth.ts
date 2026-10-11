@@ -1,5 +1,6 @@
 import { AUTH_TIMEOUT_MS, startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
+import { clearLocalAccount, isStaticHost, useLocalAccount } from "@/lib/localAccount";
 import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -18,7 +19,11 @@ export function useAuth(options?: UseAuthOptions) {
 
   const [timedOut, setTimedOut] = useState(false);
 
+  const staticMode = isStaticHost();
+  const localAccount = useLocalAccount();
+
   const meQuery = trpc.auth.me.useQuery(undefined, {
+    enabled: !staticMode,
     retry: false,
     refetchOnWindowFocus: false,
   });
@@ -40,6 +45,7 @@ export function useAuth(options?: UseAuthOptions) {
   });
 
   const logout = useCallback(async () => {
+    if (staticMode) { clearLocalAccount(); return; }
     try {
       await logoutMutation.mutateAsync();
     } catch (error: unknown) {
@@ -60,9 +66,12 @@ export function useAuth(options?: UseAuthOptions) {
       utils.auth.me.setData(undefined, null);
       await utils.auth.me.invalidate();
     }
-  }, [logoutMutation, utils]);
+  }, [logoutMutation, staticMode, utils]);
 
   const state = useMemo(() => {
+    if (staticMode) {
+      return { user: localAccount, loading: false, previewMode: true, error: null, isAuthenticated: Boolean(localAccount) };
+    }
     localStorage.setItem(
       "manus-runtime-user-info",
       JSON.stringify(meQuery.data)
@@ -75,6 +84,8 @@ export function useAuth(options?: UseAuthOptions) {
       isAuthenticated: Boolean(meQuery.data),
     };
   }, [
+    staticMode,
+    localAccount,
     meQuery.data,
     meQuery.error,
     meQuery.isLoading,

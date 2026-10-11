@@ -9,13 +9,38 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { trpc } from "@/lib/trpc";
+import { isStaticHost, saveLocalAccount } from "@/lib/localAccount";
 import { loginSchema, signupSchema, type SignupInput } from "@shared/authSchemas";
 import { useVelvet } from "@/contexts/VelvetContext";
 import { canConfirmAdult, canEnterMemberArea } from "@shared/access";
 import VelvetNav from "@/components/VelvetNav";
+import { assetPath } from "@/lib/site-path";
 import VelvetRail from "@/components/VelvetRail";
 
+function StaticAuthForm() {
+  const { confirmAdult } = useVelvet();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [adult, setAdult] = useState(false);
+  const [consent, setConsent] = useState(false);
+  const valid = /^\S+@\S+\.\S+$/.test(email.trim());
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!valid) { toast.error("Inserisci un'email valida."); return; }
+    if (!adult || !consent) { toast.error("Conferma 18+ e accetta termini e privacy."); return; }
+    saveLocalAccount({ email, name });
+    confirmAdult();
+    toast.success("Profilo creato su questo dispositivo. Benvenuto in Velvet!");
+  };
+  return <form onSubmit={submit} noValidate className="mt-9 w-full max-w-md space-y-4"><Input type="email" autoComplete="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} /><Input type="text" autoComplete="nickname" placeholder="Nome visibile (facoltativo)" maxLength={40} value={name} onChange={e => setName(e.target.value)} /><label className="flex items-start gap-2 text-sm text-white/80"><input type="checkbox" checked={adult} onChange={e => setAdult(e.target.checked)} />Confermo di avere almeno 18 anni.</label><label className="flex items-start gap-2 text-sm text-white/80"><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} />Accetto termini e privacy policy.</label><Button type="submit" className="h-12 w-full rounded-full bg-[#d7b46a] px-6 font-extrabold text-[#0b0908] hover:bg-[#f1d58f]">Entra<ArrowRight size={17} /></Button><p className="text-xs leading-5 text-[#9b8c9b]">Questa versione online è statica: il profilo resta salvato solo in questo browser, senza password né invio di dati. Per account condivisi serve il server.</p></form>;
+}
+
 function AuthForm() {
+  if (isStaticHost()) return <StaticAuthForm />;
+  return <ServerAuthForm />;
+}
+
+function ServerAuthForm() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const utils = trpc.useUtils();
   const form = useForm<SignupInput>({ resolver: zodResolver(mode === "signup" ? signupSchema : loginSchema) as Resolver<SignupInput>, defaultValues: { email: "", password: "", ageVerified: false, consentAccepted: false, marketingOptIn: false } });
@@ -35,7 +60,7 @@ function AuthForm() {
 
 export function AuthScreen() {
   const { isAuthenticated } = useAuth();
-  return <div className="velvet-shell min-h-screen"><VelvetNav compact /><main className="container grid min-h-[calc(100vh-76px)] items-center gap-10 py-12 lg:grid-cols-[1.02fr_.98fr]"><section className="max-w-xl"><VelvetRail label="Accesso / 01"><p className="section-kicker">Spazio riservato</p><h1 className="display-font mt-4 text-6xl leading-[.96] text-white md:text-7xl">Entra nel lato più <span className="text-[#d7b46a]">intenzionale</span> di Velvet.</h1></VelvetRail><p className="mt-7 max-w-lg text-lg leading-8 text-[#c8bdc8]">Registrati o accedi con il tuo account per esplorare gli spazi membri, salvare i tuoi riferimenti e gestire la tua privacy.</p>{isAuthenticated ? <div className="mt-9 flex flex-wrap items-center gap-3"><span className="flex items-center gap-2 text-sm font-bold text-[#d7b46a]"><Check size={16} /> Sessione attiva</span><Link href="/" className="rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-[#efe5ec] hover:bg-white/10">Torna alla home</Link></div> : <><AuthForm /><Link href="/" className="mt-4 inline-block rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-[#efe5ec] hover:bg-white/10">Torna alla home</Link></>}<div className="mt-8 rounded-3xl border border-[#d7b46a]/20 bg-[#190e22] p-5"><p className="section-kicker">Red Velvet Identify · 18+</p><p className="mt-2 text-sm leading-6 text-[#c8bdc8]">Profilo narrativo per scegliere un ruolo, limiti e preferenze. Non è una verifica dell’identità reale e non abilita automaticamente pagamenti.</p><div className="mt-4 flex flex-wrap gap-2"><a href="https://discord.com/login" target="_blank" rel="noreferrer" className="rounded-full border border-white/15 px-4 py-2 text-xs font-extrabold text-white">Apri Discord</a><a href="https://github.com/login" target="_blank" rel="noreferrer" className="rounded-full border border-white/15 px-4 py-2 text-xs font-extrabold text-white">Apri GitHub</a><span className="rounded-full border border-[#d7b46a]/25 px-4 py-2 text-xs font-extrabold text-[#f1d58f]">OAuth provider: da configurare</span></div></div><div className="mt-10 grid gap-3 text-sm text-[#bdb1bc] sm:grid-cols-2"><span className="flex items-center gap-2"><LockKeyhole size={16} className="text-[#d7b46a]" /> Sessione protetta</span><span className="flex items-center gap-2"><ShieldCheck size={16} className="text-[#d7b46a]" /> Privacy leggibile</span></div></section><div className="relative min-h-[420px] overflow-hidden rounded-[2rem] border border-[#d7b46a]/30 bg-[#120e0b] shadow-[0_30px_100px_rgba(0,0,0,.45)]"><img src="/manus-storage/velvet-members_c5d42225.jpg" alt="Ritratto editoriale di una persona adulta in un salone Art Déco" className="absolute inset-0 h-full w-full object-cover opacity-75" /><div className="absolute inset-0 bg-gradient-to-t from-[#0b0908] via-transparent to-[#0b0908]/20" /><div className="absolute bottom-0 left-0 right-0 p-7"><p className="section-kicker">Velvet membership</p><p className="display-font mt-2 text-4xl text-white">Un invito, non un rumore.</p></div></div></main></div>;
+  return <div className="velvet-shell min-h-screen"><VelvetNav compact /><main className="container grid min-h-[calc(100vh-76px)] items-center gap-10 py-12 lg:grid-cols-[1.02fr_.98fr]"><section className="max-w-xl"><VelvetRail label="Accesso / 01"><p className="section-kicker">Spazio riservato</p><h1 className="display-font mt-4 break-words text-4xl leading-[1.02] text-white sm:text-6xl md:text-7xl">Entra nel lato più <span className="text-[#d7b46a]">intenzionale</span> di Velvet.</h1></VelvetRail><p className="mt-7 max-w-lg text-lg leading-8 text-[#c8bdc8]">Registrati o accedi con il tuo account per esplorare gli spazi membri, salvare i tuoi riferimenti e gestire la tua privacy.</p>{isAuthenticated ? <div className="mt-9 flex flex-wrap items-center gap-3"><span className="flex items-center gap-2 text-sm font-bold text-[#d7b46a]"><Check size={16} /> Sessione attiva</span><Link href="/" className="rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-[#efe5ec] hover:bg-white/10">Torna alla home</Link></div> : <><AuthForm /><Link href="/" className="mt-4 inline-block rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-[#efe5ec] hover:bg-white/10">Torna alla home</Link></>}<div className="mt-8 rounded-3xl border border-[#d7b46a]/20 bg-[#190e22] p-5"><p className="section-kicker">Red Velvet Identify · 18+</p><p className="mt-2 text-sm leading-6 text-[#c8bdc8]">Profilo narrativo per scegliere un ruolo, limiti e preferenze. Non è una verifica dell’identità reale e non abilita automaticamente pagamenti.</p><div className="mt-4 flex flex-wrap gap-2"><a href="https://discord.com/login" target="_blank" rel="noreferrer" className="rounded-full border border-white/15 px-4 py-2 text-xs font-extrabold text-white">Apri Discord</a><a href="https://github.com/login" target="_blank" rel="noreferrer" className="rounded-full border border-white/15 px-4 py-2 text-xs font-extrabold text-white">Apri GitHub</a><span className="rounded-full border border-[#d7b46a]/25 px-4 py-2 text-xs font-extrabold text-[#f1d58f]">OAuth provider: da configurare</span></div></div><div className="mt-10 grid gap-3 text-sm text-[#bdb1bc] sm:grid-cols-2"><span className="flex items-center gap-2"><LockKeyhole size={16} className="text-[#d7b46a]" /> Sessione protetta</span><span className="flex items-center gap-2"><ShieldCheck size={16} className="text-[#d7b46a]" /> Privacy leggibile</span></div></section><div className="relative min-h-[420px] overflow-hidden rounded-[2rem] border border-[#d7b46a]/30 bg-[#120e0b] shadow-[0_30px_100px_rgba(0,0,0,.45)]"><img src={assetPath("assets/red-velvet-room-after-dark.jpg")} alt="Ritratto editoriale di una persona adulta in un salone Art Déco" className="absolute inset-0 h-full w-full object-cover opacity-75" /><div className="absolute inset-0 bg-gradient-to-t from-[#0b0908] via-transparent to-[#0b0908]/20" /><div className="absolute bottom-0 left-0 right-0 p-7"><p className="section-kicker">Velvet membership</p><p className="display-font mt-2 text-4xl text-white">Un invito, non un rumore.</p></div></div></main></div>;
 }
 
 export function MemberGate({ children }: { children: React.ReactNode }) {
