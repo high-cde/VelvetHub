@@ -1,0 +1,29 @@
+{
+  "routes": [
+    { "path": "/", "title": "Red Velvet Live Club" },
+    { "path": "/creator", "title": "Creator" },
+    { "path": "/accesso", "title": "Accesso" },
+    { "path": "/login", "title": "Accesso" },
+    { "path": "/accedi", "title": "Accesso" },
+    { "path": "/safety", "title": "Sicurezza" },
+    { "path": "/policy", "title": "Privacy e termini" },
+    { "path": "/live", "title": "Live Hub" },
+    { "path": "/live-preview", "title": "Live preview" },
+    { "path": "/radar", "title": "Velvet Radar" },
+    { "path": "/gioco", "title": "Gioco" },
+    { "path": "/crew", "title": "Crew" },
+    { "path": "/ourvelvet", "title": "OurVelvet" },
+    { "path": "/discover", "title": "Scopri" },
+    { "path": "/studio", "title": "Creator studio" },
+    { "path": "/creator/:handle", "title": "Profilo creator" },
+    { "path": "/inbox", "title": "Messaggi" },
+    { "path": "/settings", "title": "Account" },
+    { "path": "/admin", "title": "Admin" },
+    { "path": "/community", "title": "Community" },
+    { "path": "/earnings", "title": "Guadagni" },
+    { "path": "/podcasts", "title": "Podcast" },
+    { "path": "/writing", "title": "Scrittura" },
+    { "path": "/rewards", "title": "VIP e affiliazione" },
+    { "path": "/store", "title": "Store" }
+  ]
+}

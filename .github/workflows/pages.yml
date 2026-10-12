@@ -75,7 +75,7 @@ jobs:
       - name: Materialize static client routes
         run: |
           # radar/ is a standalone static build shipped from client/public and must not be overwritten.
-          for route in accesso safety policy live live-preview discover studio inbox settings earnings admin community podcasts writing rewards store ourvelvet gioco login accedi 404; do
+          for route in accesso safety policy live live-preview radar gioco crew ourvelvet discover studio creator inbox settings admin community earnings podcasts writing rewards store login accedi; do
             mkdir -p "dist/public/$route"
             cp dist/public/index.html "dist/public/$route/index.html"
           done

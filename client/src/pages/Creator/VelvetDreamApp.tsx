@@ -6,23 +6,33 @@ import {
   HeartPulse, Fingerprint, Database, VolumeX, Volume2
 } from 'lucide-react';
 
+type EthereumProvider = {
+  request: (args: { method: string }) => Promise<string[]>;
+};
+
+declare global {
+  interface Window {
+    ethereum?: EthereumProvider;
+  }
+}
+
 export default function VelvetDreamApp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('crea'); 
   const [gameState, setGameState] = useState('playing');
   const [walletAddress, setWalletAddress] = useState('');
   const [hueEnabled, setHueEnabled] = useState(false);
-  const [bpm, setBpm] = useState(null);
-  const [ipfsHash, setIpfsHash] = useState(null);
+  const [bpm, setBpm] = useState<number | null>(null);
+  const [ipfsHash, setIpfsHash] = useState<string | null>(null);
   const [audioEnabled, setAudioEnabled] = useState(false);
   
-  const audioCtxRef = useRef(null);
-  const oscRef = useRef(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const oscRef = useRef<OscillatorNode | null>(null);
 
   useEffect(() => {
     if (audioEnabled && gameState !== 'stopped') {
       if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+        audioCtxRef.current = new AudioContext();
       }
       if (oscRef.current) oscRef.current.disconnect();
       
@@ -85,7 +95,7 @@ export default function VelvetDreamApp() {
     }
   };
 
-  const handleSafeword = (type) => {
+  const handleSafeword = (type: 'yellow' | 'red') => {
     if (type === 'yellow') {
       setGameState('paused');
     } else if (type === 'red') {
