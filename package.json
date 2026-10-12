@@ -112,7 +112,7 @@
   ],
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "scripts": {
-    "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && cp dist/index.html dist/404.html || true",
+    "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && cp dist/public/index.html dist/public/404.html",
     "check": "tsc --noEmit",
     "lint": "echo 'Lint bypassed'",
     "lint:ci": "eslint . --max-warnings=100",
