@@ -58,8 +58,8 @@ function RouteEffects() {
 function Router() {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   return <WouterRouter base={base} hook={useNormalizedBrowserLocation}><Switch>
-    <Route path="/" component={Home} />
-        <Route path="/creator" component={VelvetDreamApp} />
+    <Route path="/old-home" component={Home} />
+        <Route path="/" component={VelvetDreamApp} />
     <Route path="/accesso" component={AuthScreen} />
     <Route path="/login" component={AuthScreen} />
     <Route path="/accedi" component={AuthScreen} />
