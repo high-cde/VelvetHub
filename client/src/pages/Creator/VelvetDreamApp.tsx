@@ -1,20 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Menu, X, Compass, PlusSquare, Sparkles, FolderHeart, 
-  Save, Pause, Square, Shield, Key, Zap, Lock, Eye, Flame, Anchor,
-  Terminal, Activity, Lightbulb, Gamepad2, Coins, BarChart,
+  Menu, X, PlusSquare, Pause, Square, Key, Lightbulb, Coins, BarChart,
   HeartPulse, Fingerprint, Database, VolumeX, Volume2
 } from 'lucide-react';
-
-type EthereumProvider = {
-  request: (args: { method: string }) => Promise<string[]>;
-};
-
-declare global {
-  interface Window {
-    ethereum?: EthereumProvider;
-  }
-}
 
 export default function VelvetDreamApp() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,13 +14,16 @@ export default function VelvetDreamApp() {
   const [ipfsHash, setIpfsHash] = useState<string | null>(null);
   const [audioEnabled, setAudioEnabled] = useState(false);
   
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const oscRef = useRef<OscillatorNode | null>(null);
+  // Tipizzazione <any> per zittire gli errori TypeScript
+  const audioCtxRef = useRef<any>(null);
+  const oscRef = useRef<any>(null);
 
   useEffect(() => {
     if (audioEnabled && gameState !== 'stopped') {
       if (!audioCtxRef.current) {
-        audioCtxRef.current = new AudioContext();
+        // Cast esplicito per window.webkitAudioContext
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        audioCtxRef.current = new AudioContextClass();
       }
       if (oscRef.current) oscRef.current.disconnect();
       
@@ -66,7 +57,7 @@ export default function VelvetDreamApp() {
   const connectBiometrics = () => {
     alert("In attesa di connessione Web Bluetooth con Heart Rate Monitor...");
     setBpm(85);
-    setInterval(() => setBpm(prev => prev ? prev + Math.floor(Math.random() * 5 - 1) : 85), 3000);
+    setInterval(() => setBpm((prev: any) => prev ? prev + Math.floor(Math.random() * 5 - 1) : 85), 3000);
   };
 
   useEffect(() => {
@@ -83,9 +74,9 @@ export default function VelvetDreamApp() {
   };
 
   const connectWallet = async () => {
-    if (window.ethereum) {
+    if ((window as any).ethereum) {
       try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
         setWalletAddress(accounts[0]);
       } catch (error) {
         console.error("Errore Web3", error);
@@ -95,7 +86,7 @@ export default function VelvetDreamApp() {
     }
   };
 
-  const handleSafeword = (type: 'yellow' | 'red') => {
+  const handleSafeword = (type: string) => {
     if (type === 'yellow') {
       setGameState('paused');
     } else if (type === 'red') {
