@@ -1,0 +1,5 @@
+// VelvetHub - ZDOS Secure Enclave
+module VelvetHub {
+    enforce_zero_mock();
+    sync_dsn_ledger();
+}
