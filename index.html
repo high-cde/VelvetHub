@@ -3,20 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RED VELVET // OurVelvet Supreme Ecosystem</title>
+    <title>OURVELVET & ROSE // SUPREME EMPIRE</title>
     <style>
-        body { background-color: #020002; color: #ff1f5b; font-family: monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
-        .box { background: rgba(18, 2, 9, 0.95); border: 1px solid #ff1f5b; padding: 30px; border-radius: 15px; box-shadow: 0 0 30px rgba(255, 31, 91, 0.4); max-width: 600px; }
-        h1 { font-size: 24px; margin-bottom: 15px; color: #fff; text-shadow: 0 0 10px #ff1f5b; }
-        p { font-size: 14px; color: #ff88a5; line-height: 1.5; }
-        .badge { display: inline-block; background: #ff0055; color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 11px; margin-top: 15px; font-weight: bold; }
+        :root {
+            --bg-deep: #020002;
+            --accent-pink: #ff1f5b;
+            --accent-glow: rgba(255, 31, 91, 0.4);
+            --card-bg: rgba(18, 2, 9, 0.92);
+            --text-main: #ffffff;
+            --text-sub: #ff88a5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(255, 31, 91, 0.15) 0%, transparent 60%),
+                linear-gradient(rgba(255, 31, 91, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 31, 91, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin: 40px 0 30px;
+            animation: fadeInDown 1.2s ease-out;
+        }
+
+        h1 {
+            font-size: clamp(22px, 4vw, 36px);
+            letter-spacing: 3px;
+            color: var(--text-main);
+            text-shadow: 0 0 15px var(--accent-pink), 0 0 30px var(--accent-glow);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-sub);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-pink);
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 0 25px var(--accent-glow);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-pink));
+            animation: scanline 4s linear infinite;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px rgba(255, 31, 91, 0.7);
+            border-color: #ff5c8a;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed rgba(255, 31, 91, 0.3);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent-pink);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px var(--accent-pink);
+        }
+
+        .interactive-btn {
+            background: transparent;
+            color: var(--accent-pink);
+            border: 1px solid var(--accent-pink);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .interactive-btn:hover {
+            background: var(--accent-pink);
+            color: #fff;
+            box-shadow: 0 0 15px var(--accent-pink);
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 136, 165, 0.6);
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 31, 91, 0.1);
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scanline {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>🔥 OURVELVET & ROSE // SUPREME EMPIRE 🔥</h1>
-        <p>Il backend sovrano, il generatore OurVelvet AGI e la Videoteca Reale sono perfettamente operativi sulla VPS.</p>
-        <div class="badge">STATUS: ONLINE 100000</div>
+
+    <header>
+        <h1>🔥 OURVELVET & ROSE 🔥</h1>
+        <div class="subtitle">Sovereign Ecosystem // AGI Core & VelvetHub</div>
+    </header>
+
+    <div class="grid-container">
+        <!-- Sezione AGI Generator -->
+        <div class="card">
+            <h2>AGI Core Engine <span class="badge">ACTIVE</span></h2>
+            <p>Generatore neurale avanzato e sintesi autonoma in tempo reale. Elaborazione flussi distribuiti ZLB2 e architettura ibrida cross-node.</p>
+            <button class="interactive-btn" onclick="alert('AGI Neural Link: Sincronizzazione attiva con i nodi VPS.')">Avvia Analisi Neurale</button>
+        </div>
+
+        <!-- Sezione Videoteca Reale & Masterpiece Adult Art -->
+        <div class="card">
+            <h2>Videoteca Reale & Velvet Vault <span class="badge">CURATED</span></h2>
+            <p>Iniezione estetica d'avanguardia: cinematografia erotica d'autore, estetica sensoriale dark-velvet, narrazioni visive intime e produzioni ad alto impatto emotivo e sensoriale.</p>
+            <button class="interactive-btn" onclick="alert('Velvet Vault: Accesso alle collezioni visive protette autorizzato.')">Esplora Archivio Master</button>
+        </div>
+
+        <!-- Sezione Creator Hub & Feed -->
+        <div class="card">
+            <h2>Creator Hub & Feed <span class="badge">LIVE</span></h2>
+            <p>Piattaforma di distribuzione indipendente e feed notizie in tempo reale. Gestione contenuti protetti, script e streaming senza intermediari.</p>
+            <button class="interactive-btn" onclick="alert('Creator Hub: Connessione protetta stabilita.')">Sincronizza Feed</button>
+        </div>
     </div>
+
+    <footer>
+        OURVELVET SOVEREIGN INFRASTRUCTURE // SECURE CLOUD NODE 5.189.180.13
+    </footer>
+
 </body>
 </html>
