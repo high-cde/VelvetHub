@@ -488,3 +488,36 @@
     </script>
 </body>
 </html>
+
+<script>
+// K.I.R.A. LIVE BACKEND ACTIVATION
+const KIRA_STATUS = "http://5.189.180.13:8080/status";
+const KIRA_VOICE  = "http://5.189.180.13:8081/";
+
+async function pingKira() {
+  try {
+    const r = await fetch(KIRA_STATUS);
+    const d = await r.json();
+    document.querySelectorAll('[data-kira]').forEach(el => {
+      el.textContent = "K.I.R.A. LIVE · Hybrid: " + (d.hybrid || "running");
+    });
+  } catch(e) {}
+}
+
+// Attiva il generatore AGI (placeholder che chiama il backend)
+document.addEventListener("DOMContentLoaded", () => {
+  pingKira();
+  setInterval(pingKira, 10000);
+
+  const genBtn = document.querySelector("button, .btn, [onclick*='genera']") || document.body;
+  if (genBtn) {
+    genBtn.addEventListener("click", async () => {
+      try {
+        const v = await fetch(KIRA_VOICE);
+        const j = await v.json();
+        alert(j.voice || "Mistress Kira: generazione avviata.");
+      } catch(e) { alert("K.I.R.A. in ascolto."); }
+    });
+  }
+});
+</script>
