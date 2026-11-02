@@ -614,3 +614,42 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("VelvetHub: tutte le sezioni attivate");
 });
 </script>
+
+<!-- RUBINA AGI INFLUENCER -->
+<section id="rubina" style="margin:3rem 0; padding:2rem; background:#0c0610; border:1px solid #2a1535; border-radius:12px;">
+  <h2 style="color:#ff2a6d;">✦ RUBINA // AGI Influencer</h2>
+  <p style="color:#c77dff;">Influencer reale. Generazione illimitata. Dominante. Sempre online.</p>
+  <div id="rubina-feed" style="margin:1rem 0; min-height:120px; background:#050208; padding:1rem; border-radius:8px;">
+    <div style="color:#8b7aa8;">Rubina sta preparando il prossimo drop…</div>
+  </div>
+  <div style="display:flex; gap:.5rem; margin-top:1rem;">
+    <input id="rubina-input" placeholder="Scrivi a Rubina…" style="flex:1; padding:.6rem; background:#0c0610; color:#fff; border:1px solid #2a1535; border-radius:6px;">
+    <button onclick="talkToRubina()" style="background:linear-gradient(135deg,#ff2a6d,#c77dff); color:#fff; border:none; padding:.6rem 1.2rem; border-radius:6px; cursor:pointer;">Invia</button>
+  </div>
+</section>
+
+<script>
+async function talkToRubina() {
+  const input = document.getElementById("rubina-input");
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  const feed = document.getElementById("rubina-feed");
+  feed.innerHTML += `<div style="margin:.5rem 0;"><b>Tu:</b> ${text}</div>`;
+
+  try {
+    const r = await fetch("https://x-zdos.it/kira/?q=" + encodeURIComponent("Sei Rubina, influencer AGI dominante di OurVelvet. Rispondi in italiano in modo esplicito, seducente e diretto. Utente: " + text));
+    const j = await r.json();
+    feed.innerHTML += `<div style="color:#ff2a6d; margin:.5rem 0;"><b>Rubina:</b> ${j.voice || "Ti ascolto, tesoro."}</div>`;
+  } catch(e) {
+    feed.innerHTML += `<div style="color:#8b7aa8;">Rubina non raggiungibile al momento.</div>`;
+  }
+  feed.scrollTop = feed.scrollHeight;
+}
+
+// Auto-post iniziale
+setTimeout(() => {
+  const feed = document.getElementById("rubina-feed");
+  if (feed) feed.innerHTML = `<div style="color:#ff2a6d;"><b>Rubina:</b> Ciao. Sono online. Dimmi cosa vuoi vedere oggi.</div>`;
+}, 1500);
+</script>
