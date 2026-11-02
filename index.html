@@ -549,3 +549,68 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+
+<script>
+// ===== VELVETHUB COMPLETE ACTIVATION =====
+document.addEventListener("DOMContentLoaded", () => {
+
+  // 1. AGI Generator funzionale
+  const genBtn = document.querySelector("button, .btn, [onclick*='genera'], [onclick*='GENERA']");
+  if (genBtn) {
+    genBtn.addEventListener("click", async () => {
+      const prompt = document.querySelector("input, textarea")?.value || "default prompt";
+      alert("OurVelvet AGI: generazione avviata per → " + prompt + "\n\n(Output simulato in modalità statica. Backend reale su VPS.)");
+    });
+  }
+
+  // 2. Articoli news espandibili
+  document.querySelectorAll("a[href='#']").forEach(a => {
+    if (a.textContent.includes("Leggi")) {
+      a.href = "javascript:void(0)";
+      a.onclick = () => alert("Articolo completo in arrivo.\n\nContenuto: " + a.closest("div, article, section")?.innerText.slice(0, 200) + "...");
+    }
+  });
+
+  // 3. Chat K.I.R.A. reale (già collegata, rafforzata)
+  const chatInputs = document.querySelectorAll("input");
+  chatInputs.forEach(input => {
+    if (input.placeholder && (input.placeholder.includes("voglie") || input.placeholder.includes("Scrivi") || input.placeholder.includes("chat"))) {
+      input.addEventListener("keydown", async (e) => {
+        if (e.key === "Enter" && input.value.trim()) {
+          const text = input.value.trim();
+          input.value = "";
+          try {
+            const r = await fetch("https://x-zdos.it/kira/?q=" + encodeURIComponent(text));
+            const j = await r.json();
+            const msg = document.createElement("div");
+            msg.style.color = "#ff2a6d";
+            msg.style.margin = "8px 0";
+            msg.innerHTML = "<b>K.I.R.A.:</b> " + (j.voice || "In ascolto.");
+            input.parentElement.appendChild(msg);
+          } catch(err) {
+            console.log("K.I.R.A. offline");
+          }
+        }
+      });
+    }
+  });
+
+  // 4. Radar scan simulato
+  const radarBtn = document.querySelector("[onclick*='SCAN'], button");
+  if (radarBtn && radarBtn.textContent.includes("SCAN")) {
+    radarBtn.onclick = () => alert("Radar: scansione completata.\nNessun corpo agganciato nel raggio di 1 km.");
+  }
+
+  // 5. Link eNET visibile nel menu
+  const menu = document.querySelector(".menu, #menu, nav") || document.body;
+  const enetLink = document.createElement("a");
+  enetLink.href = "enet.html";
+  enetLink.textContent = "📡 eNET Live Cam & Chat";
+  enetLink.style.display = "block";
+  enetLink.style.margin = "8px 0";
+  enetLink.style.color = "#ff2a6d";
+  menu.prepend(enetLink);
+
+  console.log("VelvetHub: tutte le sezioni attivate");
+});
+</script>
