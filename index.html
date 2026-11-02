@@ -525,3 +525,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+<script>
+// Override chat per K.I.R.A. reale
+document.addEventListener("DOMContentLoaded", () => {
+  const chatInput = document.querySelector("input[placeholder*='voglie'], input[placeholder*='Scrivi'], #chat-input") || document.querySelector("input");
+  const chatBox = document.querySelector("#chat, .chat, [class*='chat']") || document.body;
+  
+  if (chatInput) {
+    chatInput.addEventListener("keydown", async (e) => {
+      if (e.key === "Enter" && chatInput.value.trim()) {
+        const text = chatInput.value.trim();
+        chatInput.value = "";
+        try {
+          const r = await fetch("https://x-zdos.it/kira/?q=" + encodeURIComponent(text));
+          const j = await r.json();
+          const msg = document.createElement("div");
+          msg.innerHTML = "<b>K.I.R.A.:</b> " + (j.voice || "...");
+          msg.style.color = "#ff2a6d";
+          chatBox.appendChild(msg);
+        } catch(e) {}
+      }
+    });
+  }
+});
+</script>
