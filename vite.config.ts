@@ -5,7 +5,7 @@ import path from 'node:path';
 export default defineConfig({
   root: 'client',
   plugins: [react()],
-  base: '/VelvetHub/',
+  base: "/",
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'client/src'),
