@@ -1,5 +1,9 @@
 # VelvetHub Supreme // Red Velvet & ZDOS Sovereign Ecosystem
 
+> **STATUS: MAINNET ONLINE** ⚡⚖️
+> Branch `main` allineato, pulito e sincronizzato.
+> Ultimo allineamento: 2026-11-18
+
 Hub multimediale e Telegram Mini App nativa (18+ / BDSM / Game-Fi) integrata con i progetti creativi **Red Velvet**, guidata dal bytecode **ZLang** e protetta dal protocollo di comunicazione cifrata E2E **ZComm**.
 
 ## 📂 Struttura del Repository
@@ -11,3 +15,8 @@ Hub multimediale e Telegram Mini App nativa (18+ / BDSM / Game-Fi) integrata con
 
 ## 🚀 Deployment
 Progettato per l'esecuzione nativa su VPS (utente `xdosdev`) e sincronizzato con l'ecosistema **ZDOS**.
+
+## Mainnet
+- Default branch: `main`
+- Stato: **LIVE / MAINNET**
+- Sincronizzazione: Completa
