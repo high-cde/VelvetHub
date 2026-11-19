@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelvetHub // Creator Studio & Comics</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --card-bg: #161616;
+            --accent-red: #ff1a40;
+            --text-main: #f0f0f0;
+            --text-muted: #888;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: var(--accent-red);
+            text-align: center;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 24px rgba(255, 26, 64, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        button {
+            width: 100%;
+            background: var(--accent-red);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #e01438;
+        }
+        .preview-box {
+            background: #000;
+            border: 1px dashed #444;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 10px;
+            color: #ff8093;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 VelvetHub Creator Studio</h1>
+        
+        <div class="card">
+            <label for="promptContent">Concept / Trama Foto o Fumetto:</label>
+            <textarea id="promptContent" rows="3" placeholder="Es. Kali nella stanza rossa con catene e neon..."></textarea>
+            
+            <label for="captionStyle">Stile Didascalia:</label>
+            <input type="text" id="captionStyle" value="Cyberpunk, Oscuro, Dominante">
+            
+            <button onclick="generatePost()">Genera Post & Testo per Community</button>
+        </div>
+
+        <div class="card" id="resultCard" style="display:none;">
+            <label>Anteprima Post per Telegram / X:</label>
+            <div class="preview-box" id="outputPreview"></div>
+            <button style="margin-top: 15px; background: #22a7f0;" onclick="shareToTelegram()">Invia alla Community Telegram</button>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function generatePost() {
+            const concept = document.getElementById('promptContent').value || "Stanza chiusa e terminali attivi";
+            const style = document.getElementById('captionStyle').value;
+            
+            const emojis = ["🥀", "⛓️", "🔥", "🖤", "⚡", "🍷"];
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+            const generatedText = `${randomEmoji} **VELVETHUB // NEW DROP**\n\n` +
+                `"${concept}"\n\n` +
+                `Stile: *${style}*\n` +
+                `La Loggia osserva. Esegui il tuo compito, suddito.\n\n` +
+                `🔗 Accedi al Portale VIP: https://velvet.x-zdos.it/\n` +
+                `💎 Token Ufficiale: \`$OV\`\n\n` +
+                `#RedVelvet #VelvetHub #CyberBDSM #NFT #Web3`;
+
+            document.getElementById('outputPreview').innerText = generatedText;
+            document.getElementById('resultCard').style.display = 'block';
+        }
+
+        function shareToTelegram() {
+            const text = document.getElementById('outputPreview').innerText;
+            // Sfrutta la WebApp per passare i dati al bot o aprire la condivisione
+            tg.openTelegramLink(`https://t.me/share/url?url=https://velvet.x-zdos.it/&text=${encodeURIComponent(text)}`);
+        }
+    </script>
+</body>
+</html>
