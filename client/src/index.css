@@ -21,12 +21,20 @@ button:disabled { cursor: not-allowed; }
 @media (min-width: 768px) { .container { max-width: 1240px; padding: 0 2rem; } }
 .display-font { font-family: "Playfair Display", serif; }
 .mono { font-family: "DM Mono", monospace; }
-.velvet-shell { min-height: 100vh; background: radial-gradient(circle at 80% 8%, rgba(116,45,91,.25), transparent 32rem), radial-gradient(circle at 10% 60%, rgba(215,180,106,.07), transparent 30rem), #0b070d; }
+.velvet-shell { min-height: 100vh; background: radial-gradient(circle at 82% 5%, rgba(154,67,122,.28), transparent 30rem), radial-gradient(circle at 5% 35%, rgba(215,180,106,.09), transparent 24rem), linear-gradient(180deg, #0b070d 0%, #100912 48%, #0b070d 100%); }
+.velvet-shell::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .22; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px); background-size: 72px 72px; mask-image: linear-gradient(to bottom, black, transparent 70%); }
 .grain { position: relative; overflow: hidden; }
 .grain::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .14; mix-blend-mode: soft-light; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E"); }
 .live-dot { width: 8px; height: 8px; border-radius: 999px; background: #ef7185; box-shadow: 0 0 0 5px rgba(239,113,133,.12), 0 0 20px rgba(239,113,133,.65); }
 .room-card { transition: transform .22s cubic-bezier(.23,1,.32,1), border-color .22s ease, background .22s ease; }
-.room-card:hover { transform: translateY(-4px); border-color: rgba(215,180,106,.5); background: #1d1320; }
+.room-card { position: relative; overflow: hidden; }
+.room-card::after { content: ""; position: absolute; inset: -40% auto auto -25%; width: 55%; height: 180%; transform: rotate(25deg); background: linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent); opacity: 0; transition: opacity .3s, transform .5s; pointer-events: none; }
+.room-card:hover { transform: translateY(-5px); border-color: rgba(215,180,106,.5); background: #1d1320; box-shadow: 0 18px 50px rgba(0,0,0,.24); }
+.room-card:hover::after { opacity: 1; transform: translateX(240%) rotate(25deg); }
+.room-card:active { transform: translateY(-2px) scale(.995); }
+.velvet-shell button, .velvet-shell a { transition: color .2s ease, border-color .2s ease, background-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+.velvet-shell input:focus, .velvet-shell textarea:focus { border-color: rgba(215,180,106,.65); box-shadow: 0 0 0 4px rgba(215,180,106,.08); }
+.stage-glow { box-shadow: 0 0 0 1px rgba(215,180,106,.08), 0 30px 100px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06); }
 .pressable { transition: transform .16s ease, filter .16s ease; }
 .pressable:active { transform: scale(.97); }
 .scrollbar-thin::-webkit-scrollbar { width: 4px; } .scrollbar-thin::-webkit-scrollbar-thumb { background: #4a3045; border-radius: 9px; }
@@ -37,3 +45,25 @@ button:disabled { cursor: not-allowed; }
 .rubina-panel { animation: rubina-in 180ms cubic-bezier(.23,1,.32,1); }
 @keyframes rubina-in { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @media (prefers-reduced-motion: reduce) { .rubina-panel { animation: none; } }
+
+/* Soft noir direction: sensuale, delicata, adulta e mai esplicita. */
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; background: radial-gradient(ellipse at center, transparent 42%, rgba(4,2,6,.34) 100%); mix-blend-mode: multiply; }
+.velvet-shell { isolation: isolate; background: radial-gradient(circle at 75% 0%, rgba(164,84,133,.20), transparent 25rem), radial-gradient(circle at 16% 24%, rgba(245,185,204,.06), transparent 22rem), linear-gradient(145deg, #09060c 0%, #150b18 48%, #0a060c 100%); }
+.velvet-shell::before { opacity: .16; background-size: 96px 96px; }
+.velvet-shell header { background: linear-gradient(180deg, rgba(11,7,13,.94), rgba(11,7,13,.74)) !important; border-color: rgba(226,160,189,.16) !important; box-shadow: 0 10px 38px rgba(0,0,0,.22); }
+.velvet-shell header a:hover { text-shadow: 0 0 18px rgba(226,160,189,.42); }
+.velvet-shell h1, .velvet-shell h2, .velvet-shell h3 { text-wrap: balance; }
+.velvet-shell h1 em, .velvet-shell h2 em { text-shadow: 0 0 34px rgba(226,160,189,.22); }
+.velvet-shell .rounded-\[2rem\], .velvet-shell .rounded-3xl { box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 18px 70px rgba(0,0,0,.16); }
+.velvet-shell .border-\[\#d7b46a\]\/25 { border-color: rgba(226,160,189,.27); }
+.velvet-shell .bg-\[\#d7b46a\] { background: linear-gradient(135deg, #e3bd78, #c99b59) !important; box-shadow: 0 8px 24px rgba(215,180,106,.15); }
+.velvet-shell .bg-\[\#e2a0bd\] { background: linear-gradient(135deg, #e9b4ca, #c8799d) !important; }
+.velvet-shell .text-\[\#d7b46a\], .velvet-shell .text-\[\#f0d18a\] { color: #e8c27f !important; }
+.velvet-shell .text-\[\#e2a0bd\], .velvet-shell .text-\[\#f0bed2\] { color: #f0b8cf !important; }
+.velvet-shell .bg-\[\#140c17\], .velvet-shell .bg-\[\#130b16\], .velvet-shell .bg-\[\#120a15\] { background-color: rgba(25,13,29,.78); }
+.velvet-shell .room-card { backdrop-filter: blur(10px); border-color: rgba(255,255,255,.10); }
+.velvet-shell .room-card:hover { border-color: rgba(226,160,189,.54); box-shadow: 0 22px 60px rgba(93,31,75,.22); }
+.velvet-shell .pressable:hover { filter: saturate(1.12) brightness(1.06); box-shadow: 0 8px 28px rgba(226,160,189,.13); }
+.velvet-shell .live-dot { background: #e88aa8; box-shadow: 0 0 0 5px rgba(232,138,168,.10), 0 0 22px rgba(232,138,168,.70); }
+.velvet-shell .mono { letter-spacing: .13em; }
+@media (max-width: 767px) { .velvet-shell h1 { font-size: clamp(3.5rem, 18vw, 6rem); } .velvet-shell header { backdrop-filter: blur(18px); } }

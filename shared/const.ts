@@ -2,6 +2,7 @@ export const COOKIE_NAME = "app_session_id";
 export const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
 export const AXIOS_TIMEOUT_MS = 30_000;
 export const UNAUTHED_ERR_MSG = 'Please login (10001)';
+export const CONSENT_REQUIRED_ERR_MSG = 'Age confirmation and consent are required (10003)';
 export const NOT_ADMIN_ERR_MSG = 'You do not have required permission (10002)';
 
 // One-time nonce cookie that binds an OAuth login to the browser that started

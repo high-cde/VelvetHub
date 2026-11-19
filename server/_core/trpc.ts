@@ -1,4 +1,5 @@
-import { NOT_ADMIN_ERR_MSG, UNAUTHED_ERR_MSG } from '@shared/const';
+import { CONSENT_REQUIRED_ERR_MSG, NOT_ADMIN_ERR_MSG, UNAUTHED_ERR_MSG } from '@shared/const';
+import { hasRequiredConsent } from '@shared/access';
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import type { TrpcContext } from "./context";
@@ -25,21 +26,31 @@ const requireUser = t.middleware(async opts => {
   });
 });
 
-export const protectedProcedure = t.procedure.use(requireUser);
+const requireConsent = t.middleware(async opts => {
+  const { ctx, next } = opts;
 
-export const adminProcedure = t.procedure.use(
+  if (!ctx.user || !hasRequiredConsent(ctx.user)) {
+    throw new TRPCError({ code: "FORBIDDEN", message: CONSENT_REQUIRED_ERR_MSG });
+  }
+
+  return next({ ctx: { ...ctx, user: ctx.user } });
+});
+
+/** Logged in only; consent not required (e.g. to let a user record consent). */
+export const authenticatedProcedure = t.procedure.use(requireUser);
+
+/** Logged in AND age/consent confirmed. Use for all member features. */
+export const protectedProcedure = authenticatedProcedure.use(requireConsent);
+
+/** Protected + admin role. */
+export const adminProcedure = protectedProcedure.use(
   t.middleware(async opts => {
     const { ctx, next } = opts;
 
-    if (!ctx.user || ctx.user.role !== 'admin') {
+    if (ctx.user?.role !== 'admin') {
       throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
     }
 
-    return next({
-      ctx: {
-        ...ctx,
-        user: ctx.user,
-      },
-    });
+    return next({ ctx: { ...ctx, user: ctx.user } });
   }),
 );

@@ -1,7 +1,7 @@
 /* Velvet Salon: a quiet, tactile navigation rail with clear escape routes and compact mobile choreography. */
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { AudioLines, Bell, BookOpen, Compass, Crown, Gift, LogIn, LogOut, Menu, MessageCircle, Radio, ShieldCheck, ShoppingBag, Users, WalletCards, X } from "lucide-react";
+import { AudioLines, Bell, BookOpen, Compass, Crown, Gift, LogIn, LogOut, Menu, MessageCircle, Radio, ShieldCheck, ShoppingBag, Sparkles, Users, WalletCards, X } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
@@ -19,15 +19,17 @@ const links = [
   { href: "/store", label: "Store", icon: ShoppingBag },
   { href: "/safety", label: "Sicurezza", icon: ShieldCheck },
   { href: "/live", label: "Live Hub", icon: Radio },
+  { href: "/gioco", label: "Gioca", icon: Sparkles },
+  { href: "/ourvelvet", label: "OurVelvet", icon: Sparkles },
 ];
 
 export default function VelvetNav({ compact = false }: { compact?: boolean }) {
   const [location] = useLocation();
   const [open, setOpen] = useState(false);
   const { profile } = useVelvet();
-  const { user, isAuthenticated, logout } = useAuth();
-  const signIn = () => { window.location.href = getLoginUrl("signIn"); };
-  const signUp = () => { window.location.href = getLoginUrl("signUp"); };
+  const { user, isAuthenticated, logout, previewMode } = useAuth();
+  const signIn = () => { if (previewMode) { window.location.href = `${import.meta.env.BASE_URL}accesso/`; return; } window.location.href = getLoginUrl("signIn"); };
+  const signUp = () => { if (previewMode) { window.location.href = `${import.meta.env.BASE_URL}accesso/`; return; } window.location.href = getLoginUrl("signUp"); };
   const signOut = async () => { await logout(); toast("Sessione chiusa", { description: "Puoi tornare quando vuoi." }); };
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#08060b]/90 backdrop-blur-xl">

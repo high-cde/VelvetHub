@@ -1,0 +1,5 @@
+# Sostituisci con il tuo dominio. Caddy gestisce HTTPS (Let's Encrypt) e inoltra X-Forwarded-Proto.
+velvet.example.com {
+	encode gzip
+	reverse_proxy 127.0.0.1:3100
+}

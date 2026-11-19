@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>VelvetHub</title>
+    <!-- Script di reindirizzamento per far funzionare React Router su GitHub Pages -->
+    <script type="text/javascript">
+      var pathSegmentsToKeep = 1; // 1 perché il repo si chiama /VelvetHub/
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body>
+    <!-- Se vedi questo, il redirect sta partendo... -->
+  </body>
+</html>

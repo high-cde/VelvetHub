@@ -1,6 +1,10 @@
+import VelvetDreamApp from "./pages/Creator/VelvetDreamApp";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Route, Switch } from "wouter";
+import { useEffect } from "react";
+import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
+import SiteFooter from "./components/SiteFooter";
+import { useBrowserLocation } from "wouter/use-browser-location";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { VelvetProvider } from "./contexts/VelvetContext";
@@ -22,17 +26,51 @@ import NotFound from "./pages/NotFound";
 import { AuthScreen, MemberGate } from "./pages/Auth";
 import Policies from "./pages/Policies";
 import LiveHub from "./pages/LiveHub";
+import Radar from "./pages/Radar";
+import Crew from "./pages/Crew";
+import Game from "./pages/Game";
+import OurVelvet from "./pages/OurVelvet";
 
 function Protected({ children }: { children: React.ReactNode }) { return <MemberGate>{children}</MemberGate>; }
 
+function useNormalizedBrowserLocation(): [string, ReturnType<typeof useBrowserLocation>[1]] {
+  const [location, navigate] = useBrowserLocation();
+  const normalizedLocation = location.replace(/\/+$/, "") || "/";
+  return [normalizedLocation, navigate];
+}
+
+const TITLES: Record<string, string> = {
+  "/": "Red Velvet Live Club", "/gioco": "Vic Velluto · gioco", "/radar": "Velvet Radar VR.Crew", "/login": "Accesso · VelvetHub", "/accedi": "Accesso · VelvetHub", "/accesso": "Accesso", "/safety": "Sicurezza",
+  "/policy": "Privacy e termini", "/live": "Live Hub", "/discover": "Scopri", "/studio": "Creator studio", "/inbox": "Messaggi", "/settings": "Account",
+  "/community": "Community", "/earnings": "Guadagni", "/podcasts": "Podcast", "/writing": "Scrittura", "/rewards": "VIP e affiliazione", "/store": "Store", "/ourvelvet": "OurVelvet",
+};
+
+function RouteEffects() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const title = TITLES[location];
+    document.title = title ? `${title} · VelvetHub` : "Pagina non trovata · VelvetHub";
+  }, [location]);
+  return location === "/" || location === "/ourvelvet" ? null : <SiteFooter />;
+}
+
 function Router() {
-  return <Switch>
-    <Route path="/" component={Home} />
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  return <WouterRouter base={base} hook={useNormalizedBrowserLocation}><Switch>
+    <Route path="/old-home" component={Home} />
+        <Route path="/" component={VelvetDreamApp} />
     <Route path="/accesso" component={AuthScreen} />
+    <Route path="/login" component={AuthScreen} />
+    <Route path="/accedi" component={AuthScreen} />
     <Route path="/safety" component={Safety} />
     <Route path="/policy" component={Policies} />
     <Route path="/live">{() => <Protected><LiveHub /></Protected>}</Route>
     <Route path="/live-preview" component={LiveHub} />
+    <Route path="/radar" component={Radar} />
+    <Route path="/gioco" component={Game} />
+    <Route path="/crew">{() => <Protected><Crew /></Protected>}</Route>
+    <Route path="/ourvelvet" component={OurVelvet} />
     <Route path="/discover">{() => <Protected><Discover /></Protected>}</Route>
     <Route path="/studio">{() => <Protected><Studio /></Protected>}</Route>
     <Route path="/creator/:handle">{() => <Protected><CreatorProfile /></Protected>}</Route>
@@ -47,7 +85,7 @@ function Router() {
     <Route path="/store">{() => <Protected><Store /></Protected>}</Route>
     <Route path="/404" component={NotFound} />
     <Route component={NotFound} />
-  </Switch>;
+  </Switch><RouteEffects /></WouterRouter>;
 }
 
 export default function App() {

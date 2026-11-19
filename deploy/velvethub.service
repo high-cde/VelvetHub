@@ -1,0 +1,18 @@
+[Unit]
+Description=VelvetHub (Express + tRPC)
+After=network.target mysql.service mariadb.service
+
+[Service]
+Type=simple
+User=velvethub
+WorkingDirectory=/opt/velvethub
+Environment=NODE_ENV=production
+EnvironmentFile=/opt/velvethub/.env
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

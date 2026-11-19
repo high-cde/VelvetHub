@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "publicationOrigin": "https://velvetradar-eycigqwk.manus.game",
+  "title": "Velvet Radar: VR.Crew",
+  "description": "Esperienza narrativa 18+ di consenso, scelta e segnali virtuali.",
+  "defaultCaptions": {
+    "x": "Velvet Radar: VR.Crew — un rito virtuale 18+ dove il consenso viene prima di tutto.",
+    "facebook": "Velvet Radar: VR.Crew — esperienza narrativa 18+ basata su consenso, privacy e scelta.",
+    "reddit": "Velvet Radar: VR.Crew, gioco browser 3D adulto non esplicito, con consenso e privacy al centro.",
+    "discord": "Velvet Radar: VR.Crew è online come esperienza narrativa 18+ consensuale."
+  },
+  "assets": {
+    "og": {
+      "digest": "sha256:b56cec4f21accddcfcbbaf79e37858bf032b2426c173979c05582c831bd7166f",
+      "path": "share/b56cec4f21accddcfcbbaf79e37858bf032b2426c173979c05582c831bd7166f.png",
+      "mime": "image/png",
+      "width": 1200,
+      "height": 675,
+      "sizeBytes": 1083065,
+      "sourcePath": "assets/share/og-1200.png"
+    },
+    "favicon": {
+      "digest": "sha256:45d5b3a70e591bae7228d0424b9b6546cd62a4d31e68da8e6d0c22814ca3fd95",
+      "path": "share/45d5b3a70e591bae7228d0424b9b6546cd62a4d31e68da8e6d0c22814ca3fd95.png",
+      "mime": "image/png",
+      "width": 256,
+      "height": 256,
+      "sizeBytes": 22734,
+      "sourcePath": "assets/share/favicon.png"
+    }
+  }
+}
