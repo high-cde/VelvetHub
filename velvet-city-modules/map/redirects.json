@@ -1,0 +1,408 @@
+{
+  "updated": "2026-11-21 02:16:47",
+  "domains": [
+    {
+      "server_name": "velvet.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "velvet.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "/var/www/velvethub/dist/public",
+      "server_returns": [
+        "301 /hub/"
+      ],
+      "locations": [
+        {
+          "path": "= /lodge-card.html",
+          "rules": [
+            "alias /var/www/ourvelvet/lodge-card.html"
+          ]
+        },
+        {
+          "path": "^~ /assets/",
+          "rules": [
+            "root /var/www/velvethub/dist/public",
+            "try_files $uri @ourvelvet_assets"
+          ]
+        },
+        {
+          "path": "@ourvelvet_assets",
+          "rules": [
+            "root /var/www/ourvelvet",
+            "try_files $uri =404"
+          ]
+        },
+        {
+          "path": "^~ /api/solana/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "^~ /api/auth/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "^~ /api/access/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "^~ /api/velvet/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "^~ /api/verify-ov/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "= /badge",
+          "rules": [
+            "alias /var/www/velvethub/dist/public/badge.html"
+          ]
+        },
+        {
+          "path": "/api/meat-radar/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "/api/bridge/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "/api/global-id/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "= /api/solana-rpc",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "= /api/geo/ip-radar",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "/api/geo/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "/api/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8000"
+          ]
+        },
+        {
+          "path": "= /dashboard.html",
+          "rules": [
+            "alias /var/www/ourvelvet/dashboard.html"
+          ]
+        },
+        {
+          "path": "= /shop.html",
+          "rules": [
+            "alias /var/www/ourvelvet/shop.html"
+          ]
+        },
+        {
+          "path": "/api/shop/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8899"
+          ]
+        },
+        {
+          "path": "= /invite-gate.html",
+          "rules": [
+            "alias /var/www/ourvelvet/invite-gate.html"
+          ]
+        },
+        {
+          "path": "= /hub",
+          "rules": [
+            "return 301 /hub/"
+          ]
+        },
+        {
+          "path": "^~ /hub/assets/",
+          "rules": [
+            "alias /root/velvet-hub/client/dist/public/assets/",
+            "try_files $uri =404"
+          ]
+        },
+        {
+          "path": "^~ /hub/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:3000/"
+          ]
+        },
+        {
+          "path": "^~ /ai-directory/api/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:4188/api/"
+          ]
+        },
+        {
+          "path": "^~ /map/",
+          "rules": [
+            "alias /var/www/velvethub/dist/public/map/",
+            "try_files $uri $uri/ /map/index.html"
+          ]
+        },
+        {
+          "path": "^~ /command-deck/",
+          "rules": [
+            "alias /var/www/velvethub/dist/public/command-deck/",
+            "try_files $uri $uri/ /command-deck/index.html"
+          ]
+        },
+        {
+          "path": "^~ /ai-directory/",
+          "rules": [
+            "alias /opt/velvet-hub-app/public/ai-directory/",
+            "try_files $uri $uri/ /ai-directory/index.html"
+          ]
+        },
+        {
+          "path": "/",
+          "rules": [
+            "try_files $uri $uri/ /index.html"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "x-zdos.it www.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "x-zdos.it www.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "/var/www/x-zdos-portal/current",
+      "server_returns": [
+        "301 /ide/",
+        "301 /discord/verify/",
+        "301 /xcloud/",
+        "301 /zdesk/"
+      ],
+      "locations": [
+        {
+          "path": "= /ide",
+          "rules": [
+            "return 301 /ide/"
+          ]
+        },
+        {
+          "path": "^~ /ide/",
+          "rules": [
+            "alias /var/www/zlang-ide/current/"
+          ]
+        },
+        {
+          "path": "= /discord/verify",
+          "rules": [
+            "return 301 /discord/verify/"
+          ]
+        },
+        {
+          "path": "^~ /discord/verify/",
+          "rules": [
+            "alias /var/www/zdiscord/verify/"
+          ]
+        },
+        {
+          "path": "^~ /discord/api/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8790"
+          ]
+        },
+        {
+          "path": "= /xcloud",
+          "rules": [
+            "return 301 /xcloud/"
+          ]
+        },
+        {
+          "path": "^~ /xcloud/",
+          "rules": [
+            "alias /var/www/xcloud/current/"
+          ]
+        },
+        {
+          "path": "= /zdesk",
+          "rules": [
+            "return 301 /zdesk/"
+          ]
+        },
+        {
+          "path": "/zdesk/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8787/"
+          ]
+        },
+        {
+          "path": "/",
+          "rules": [
+            "try_files $uri $uri/ =404"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "swap.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "swap.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "/var/www/zswap",
+      "server_returns": [],
+      "locations": [
+        {
+          "path": "/",
+          "rules": [
+            "try_files $uri $uri/ /index.html =404"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "quest.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "quest.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "",
+      "server_returns": [],
+      "locations": [
+        {
+          "path": "/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:3200"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "zdesk.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "zdesk.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "",
+      "server_returns": [],
+      "locations": [
+        {
+          "path": "/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8787"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "app.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "app.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "/var/www/app.x-zdos.it",
+      "server_returns": [],
+      "locations": [
+        {
+          "path": "/",
+          "rules": [
+            "try_files $uri $uri/ /index.html =404"
+          ]
+        }
+      ]
+    }
+  ]
+}
