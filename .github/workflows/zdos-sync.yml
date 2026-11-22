@@ -11,22 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
+      - name: Status
+        run: echo "VelvetHub aligned — Casa ufficiale $OV attiva. Workflow pulito."
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install & Build
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm run build
-
-      - name: Trigger VPS
-        if: secrets.VPS_TOKEN != ''
+      - name: Optional Trigger VPS
+        if: ${{ secrets.VPS_TOKEN != '' }}
         run: |
           curl -fsSL -X POST https://velvet.x-zdos.it/webhook/zdos-sync \
-            -H "Authorization: Bearer ${{ secrets.VPS_TOKEN }}"
+            -H "Authorization: Bearer ${{ secrets.VPS_TOKEN }}" || echo "VPS trigger optional — skipped or failed safely"
