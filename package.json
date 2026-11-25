@@ -99,7 +99,7 @@
     "vite-plugin-manus-runtime": "0.0.59",
     "vitest": "^2.1.4"
   },
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "name": "red-velvet-live-club",
   "description": "Red Velvet Live Club con Velvet Radar VR.Crew, community 18+ consensuale e integrazioni predisposte.",
   "keywords": [
@@ -120,10 +120,11 @@
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
     "format": "prettier --write .",
     "shopify:probe": "tsx scripts/shopify-probe.runner.ts",
-    "start": "NODE_ENV=production node dist/index.js",
+    "start": "NODE_ENV=production node dist/index.cjs",
     "test": "vitest run",
     "bot:self-test": "BOT_SELF_TEST=1 node integrations/velvet-bot.mjs"
   },
   "type": "module",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "main": "dist/index.cjs"
 }
