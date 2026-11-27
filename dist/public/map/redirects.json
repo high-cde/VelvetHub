@@ -1,0 +1,705 @@
+{
+  "updated": "2026-11-24 23:27:22",
+  "domains": [
+    {
+      "server_name": "pay.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://ourvelvet.online/pay/"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "pay.x-zdos.it",
+      "listen": [
+        "443 ssl http2",
+        "[::]:443 ssl http2"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://ourvelvet.online/pay/"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "x-zdos.it www.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri",
+        "301 https://x-zdos.it$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "www.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://x-zdos.it$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "/var/www/x-zdos-portal/current",
+      "server_returns": [
+        "301 /ide/",
+        "301 /discord/verify/",
+        "301 /xcloud/",
+        "301 https://swap.x-zdos.it/zroute/",
+        "301 https://swap.x-zdos.it/zroute/",
+        "301 https://x-zdos.it/#token",
+        "301 https://x-zdos.it/#token",
+        "301 /zdesk/",
+        "301 /dev/",
+        "301 /hub/",
+        "301 /fomo/",
+        "301 /our-vault/",
+        "301 /our-vault/",
+        "301 /zlang/linguaggio/",
+        "301 /forge/",
+        "301 /pay/",
+        "301 https://ourvelvet.online/magazine/",
+        "301 https://ourvelvet.online$request_uri",
+        "301 https://ourvelvet.online/ai-directory/",
+        "301 https://ourvelvet.online$request_uri",
+        "301 /our-vault/",
+        "301 https://agency.x-zdos.it/",
+        "301 https://agency.x-zdos.it/$1$is_args$args"
+      ],
+      "locations": [
+        {
+          "path": "^~ /assets/fonts/",
+          "rules": []
+        },
+        {
+          "path": "^~ /assets/",
+          "rules": [
+            "try_files $uri =404"
+          ]
+        },
+        {
+          "path": "= /favicon.ico",
+          "rules": [
+            "try_files $uri =404"
+          ]
+        },
+        {
+          "path": "~* ^/(nav\\.js|sessions\\.css)$",
+          "rules": [
+            "try_files $uri =404"
+          ]
+        },
+        {
+          "path": "= /ide",
+          "rules": [
+            "return 301 /ide/"
+          ]
+        },
+        {
+          "path": "^~ /ide/",
+          "rules": [
+            "alias /var/www/zlang-ide/current/"
+          ]
+        },
+        {
+          "path": "= /discord/verify",
+          "rules": [
+            "return 301 /discord/verify/"
+          ]
+        },
+        {
+          "path": "^~ /discord/verify/",
+          "rules": [
+            "alias /var/www/zdiscord/verify/"
+          ]
+        },
+        {
+          "path": "^~ /discord/api/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8790"
+          ]
+        },
+        {
+          "path": "= /xcloud",
+          "rules": [
+            "return 301 /xcloud/"
+          ]
+        },
+        {
+          "path": "^~ /xcloud/",
+          "rules": [
+            "alias /var/www/xcloud/current/"
+          ]
+        },
+        {
+          "path": "= /zroute",
+          "rules": [
+            "return 301 https://swap.x-zdos.it/zroute/"
+          ]
+        },
+        {
+          "path": "^~ /zroute/",
+          "rules": [
+            "return 301 https://swap.x-zdos.it/zroute/"
+          ]
+        },
+        {
+          "path": "= /dsn",
+          "rules": [
+            "return 301 https://x-zdos.it/#token"
+          ]
+        },
+        {
+          "path": "= /dsn/",
+          "rules": [
+            "return 301 https://x-zdos.it/#token"
+          ]
+        },
+        {
+          "path": "= /zdesk",
+          "rules": [
+            "return 301 /zdesk/"
+          ]
+        },
+        {
+          "path": "/zdesk/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8787/"
+          ]
+        },
+        {
+          "path": "= /dev",
+          "rules": [
+            "return 301 /dev/"
+          ]
+        },
+        {
+          "path": "^~ /dev/",
+          "rules": [
+            "alias /var/www/zlang-dev/current/"
+          ]
+        },
+        {
+          "path": "^~ /zdos-assets/",
+          "rules": [
+            "alias /var/www/zdos-portal/"
+          ]
+        },
+        {
+          "path": "= /hub",
+          "rules": [
+            "return 301 /hub/"
+          ]
+        },
+        {
+          "path": "^~ /hub/",
+          "rules": [
+            "alias /var/www/zdos-portal/",
+            "try_files $uri $uri/ /hub/index.html"
+          ]
+        },
+        {
+          "path": "= /fomo",
+          "rules": [
+            "return 301 /fomo/"
+          ]
+        },
+        {
+          "path": "^~ /fomo/",
+          "rules": [
+            "alias /var/www/zdos-portal/",
+            "try_files /fomo.html =404"
+          ]
+        },
+        {
+          "path": "= /our-vault",
+          "rules": [
+            "return 301 /our-vault/"
+          ]
+        },
+        {
+          "path": "= /mining",
+          "rules": [
+            "return 301 /our-vault/"
+          ]
+        },
+        {
+          "path": "^~ /api/vault/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8846/"
+          ]
+        },
+        {
+          "path": "= /zlang",
+          "rules": [
+            "return 301 /zlang/linguaggio/"
+          ]
+        },
+        {
+          "path": "^~ /zlang/",
+          "rules": [
+            "alias /var/www/zlang-dev/releases/20261121-165144-znft/",
+            "try_files $uri $uri/ =404"
+          ]
+        },
+        {
+          "path": "= /forge",
+          "rules": [
+            "return 301 /forge/"
+          ]
+        },
+        {
+          "path": "^~ /forge/",
+          "rules": [
+            "alias /var/www/zdos-portal/",
+            "try_files /forge.html =404"
+          ]
+        },
+        {
+          "path": "^~ /api/forge/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8833/"
+          ]
+        },
+        {
+          "path": "^~ /pay/",
+          "rules": [
+            "alias /var/www/velvet-pay/",
+            "try_files $uri $uri/ /pay/index.html"
+          ]
+        },
+        {
+          "path": "= /pay",
+          "rules": [
+            "return 301 /pay/"
+          ]
+        },
+        {
+          "path": "= /api/zlang/eval",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8833/api/zlang/eval"
+          ]
+        },
+        {
+          "path": "^~ /api/zpool/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8844/api/zpool/"
+          ]
+        },
+        {
+          "path": "^~ /wallet/",
+          "rules": [
+            "alias /var/www/zpool-ai/wallet/",
+            "try_files $uri $uri/ /wallet/index.html"
+          ]
+        },
+        {
+          "path": "^~ /explorer/",
+          "rules": [
+            "alias /var/www/zpool-ai/explorer/",
+            "try_files $uri $uri/ /explorer/index.html"
+          ]
+        },
+        {
+          "path": "= /rpc",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8895"
+          ]
+        },
+        {
+          "path": "^~ /zpool/",
+          "rules": [
+            "alias /var/www/zpool-ai/",
+            "try_files $uri $uri/ /zpool/index.html"
+          ]
+        },
+        {
+          "path": "= /magazine",
+          "rules": [
+            "return 301 https://ourvelvet.online/magazine/"
+          ]
+        },
+        {
+          "path": "^~ /magazine/",
+          "rules": [
+            "return 301 https://ourvelvet.online$request_uri"
+          ]
+        },
+        {
+          "path": "= /ai-directory",
+          "rules": [
+            "return 301 https://ourvelvet.online/ai-directory/"
+          ]
+        },
+        {
+          "path": "^~ /ai-directory/",
+          "rules": [
+            "return 301 https://ourvelvet.online$request_uri"
+          ]
+        },
+        {
+          "path": "^~ /mining/",
+          "rules": [
+            "return 301 /our-vault/"
+          ]
+        },
+        {
+          "path": "^~ /our-vault/",
+          "rules": [
+            "alias /var/www/zpool-ai/",
+            "try_files $uri $uri/ /our-vault/index.html"
+          ]
+        },
+        {
+          "path": "/",
+          "rules": [
+            "try_files $uri $uri/ =404"
+          ]
+        },
+        {
+          "path": "= /agency",
+          "rules": [
+            "return 301 https://agency.x-zdos.it/"
+          ]
+        },
+        {
+          "path": "~ ^/agency/(.*)$",
+          "rules": [
+            "return 301 https://agency.x-zdos.it/$1$is_args$args"
+          ]
+        },
+        {
+          "path": "= /merito-api/summary",
+          "rules": []
+        }
+      ]
+    },
+    {
+      "server_name": "agency.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "/var/www/letsencrypt",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": [
+        {
+          "path": "^~ /.well-known/acme-challenge/",
+          "rules": [
+            "root /var/www/letsencrypt"
+          ]
+        },
+        {
+          "path": "/",
+          "rules": [
+            "return 301 https://$host$request_uri"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "agency.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "/var/www/zdos-agency",
+      "server_returns": [
+        "301 /forge/"
+      ],
+      "locations": [
+        {
+          "path": "^~ /api/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8760/api/"
+          ]
+        },
+        {
+          "path": "~ /\\.",
+          "rules": []
+        },
+        {
+          "path": "= /forge",
+          "rules": [
+            "return 301 /forge/"
+          ]
+        },
+        {
+          "path": "^~ /forge/",
+          "rules": [
+            "alias /var/www/zdos-portal/",
+            "try_files /forge.html =404"
+          ]
+        },
+        {
+          "path": "^~ /api/forge/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8833/"
+          ]
+        },
+        {
+          "path": "/",
+          "rules": [
+            "try_files $uri $uri/ =404"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "swap.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "swap.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "/var/www/zswap",
+      "server_returns": [],
+      "locations": [
+        {
+          "path": "/",
+          "rules": [
+            "try_files $uri $uri/ /index.html =404"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "quest.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "quest.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "",
+      "server_returns": [],
+      "locations": [
+        {
+          "path": "/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:3200"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "zdesk.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri",
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "zdesk.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "",
+      "server_returns": [],
+      "locations": [
+        {
+          "path": "/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8787"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "app.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://$host$request_uri"
+      ],
+      "locations": []
+    },
+    {
+      "server_name": "app.x-zdos.it",
+      "listen": [
+        "443 ssl",
+        "[::]:443 ssl"
+      ],
+      "root": "",
+      "server_returns": [
+        "301 https://x-zdos.it/downloads.html",
+        "301 /forge/",
+        "301 https://x-zdos.it/"
+      ],
+      "locations": [
+        {
+          "path": "= /downloads.html",
+          "rules": [
+            "return 301 https://x-zdos.it/downloads.html"
+          ]
+        },
+        {
+          "path": "= /forge",
+          "rules": [
+            "return 301 /forge/"
+          ]
+        },
+        {
+          "path": "^~ /forge/",
+          "rules": [
+            "alias /var/www/zdos-portal/",
+            "try_files /forge.html =404"
+          ]
+        },
+        {
+          "path": "^~ /api/forge/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8833/"
+          ]
+        },
+        {
+          "path": "/",
+          "rules": [
+            "return 301 https://x-zdos.it/"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "beta.x-zdos.it zx.x-zdos.it",
+      "listen": [
+        "80",
+        "[::]:80"
+      ],
+      "root": "/var/www/zxstore-beta",
+      "server_returns": [
+        "301 https://$host$request_uri",
+        "301 https://$host$request_uri"
+      ],
+      "locations": [
+        {
+          "path": "^~ /.well-known/acme-challenge/",
+          "rules": [
+            "root /var/www/zxstore-beta"
+          ]
+        },
+        {
+          "path": "/",
+          "rules": [
+            "return 301 https://$host$request_uri"
+          ]
+        }
+      ]
+    },
+    {
+      "server_name": "beta.x-zdos.it zx.x-zdos.it",
+      "listen": [
+        "443 ssl http2",
+        "[::]:443 ssl http2"
+      ],
+      "root": "/var/www/zxstore-beta",
+      "server_returns": [
+        "301 /forge/"
+      ],
+      "locations": [
+        {
+          "path": "^~ /.well-known/acme-challenge/",
+          "rules": [
+            "root /var/www/zxstore-beta"
+          ]
+        },
+        {
+          "path": "= /robots.txt",
+          "rules": [
+            "try_files /robots.txt =404"
+          ]
+        },
+        {
+          "path": "/api/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8742"
+          ]
+        },
+        {
+          "path": "~* ^/(server|career|\\.venv|node_modules|\\.git|_deploy)(/|$)",
+          "rules": []
+        },
+        {
+          "path": "= /forge",
+          "rules": [
+            "return 301 /forge/"
+          ]
+        },
+        {
+          "path": "^~ /forge/",
+          "rules": [
+            "alias /var/www/zdos-portal/",
+            "try_files /forge.html =404"
+          ]
+        },
+        {
+          "path": "^~ /api/forge/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8833/"
+          ]
+        },
+        {
+          "path": "/",
+          "rules": [
+            "try_files $uri $uri/ =404"
+          ]
+        },
+        {
+          "path": "/api/zx/",
+          "rules": [
+            "proxy_pass http://127.0.0.1:8860/api/zx/"
+          ]
+        }
+      ]
+    }
+  ]
+}

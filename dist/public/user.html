@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<!-- Google Tag Manager (GTM-T9NHG4R3) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T9NHG4R3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OUR VELVET // PANNELLO UTENTE MULTI-RUOLO 18+</title>
+  <style>
+    :root {
+      --bg: #070409;
+      --panel: rgba(18, 10, 24, 0.92);
+      --card: rgba(11, 7, 15, 0.86);
+      --border: rgba(225, 29, 72, 0.36);
+      --crimson: #e11d48;
+      --emerald: #10b981;
+      --gold: #eab308;
+      --cyan: #06b6d4;
+      --purple: #a855f7;
+      --text: #f8f5fa;
+      --muted: #a392ad;
+      --mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: 'Manrope', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background:
+        radial-gradient(circle at 12% 6%, rgba(225, 29, 72, 0.15), transparent 42%),
+        radial-gradient(circle at 88% 92%, rgba(16, 185, 129, 0.08), transparent 45%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      padding: 0.65rem;
+      font-size: 13px;
+      line-height: 1.38;
+    }
+
+    .wrap { max-width: 1020px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.58rem; }
+
+    .header {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 0.62rem 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .id-badge { display: flex; align-items: center; gap: 0.5rem; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 10px var(--emerald); }
+    .id-badge h1 { font-size: 0.92rem; font-weight: 800; letter-spacing: 0.03em; }
+    .id-badge span { font-family: var(--mono); font-size: 0.67rem; color: #fda4af; display: block; }
+
+    .quick-links { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .pill {
+      text-decoration: none; font-family: var(--mono); font-size: 0.66rem; font-weight: 600;
+      padding: 0.25rem 0.52rem; border-radius: 7px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12); color: var(--text);
+    }
+    .pill:hover { border-color: var(--crimson); background: rgba(225,29,72,0.18); }
+
+    /* SELETTORE RAPIDO 6 VERSIONI / RUOLI */
+    .role-bar {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.5rem 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+    }
+    .role-bar-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: #fda4af;
+    }
+    .role-pills {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.35rem;
+    }
+    @media (max-width: 780px) { .role-pills { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 440px) { .role-pills { grid-template-columns: repeat(2, 1fr); } }
+
+    .role-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 0.42rem 0.45rem;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.14s ease;
+    }
+    .role-btn.active {
+      background: linear-gradient(135deg, rgba(225,29,72,0.28), rgba(168,85,247,0.22));
+      border-color: var(--crimson);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(225,29,72,0.24);
+    }
+
+    .auth-bar {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 0.52rem 0.7rem;
+      display: grid;
+      grid-template-columns: 1.4fr auto auto;
+      gap: 0.42rem;
+      align-items: center;
+    }
+    @media (max-width: 560px) { .auth-bar { grid-template-columns: 1fr 1fr; } .auth-bar input { grid-column: 1 / -1; } }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.35rem;
+    }
+    @media (max-width: 720px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+    .tab-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 9px;
+      padding: 0.46rem 0.38rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: rgba(225, 29, 72, 0.2);
+      border-color: var(--crimson);
+      color: #fff;
+    }
+
+    .section {
+      display: none;
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px;
+      padding: 0.8rem;
+      flex-direction: column;
+      gap: 0.52rem;
+    }
+    .section.active { display: flex; }
+
+    .sec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding-bottom: 0.4rem;
+    }
+    .sec-head h2 { font-size: 0.86rem; font-weight: 800; }
+    .tag {
+      font-family: var(--mono); font-size: 0.62rem; padding: 0.15rem 0.44rem;
+      border-radius: 5px; background: rgba(225,29,72,0.16); color: #fda4af;
+      border: 1px solid rgba(225,29,72,0.3);
+    }
+
+    .persona-banner {
+      background: var(--card);
+      border: 1px solid rgba(225,29,72,0.28);
+      border-radius: 10px;
+      padding: 0.58rem 0.72rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .persona-banner strong { font-size: 0.82rem; color: #fff; display: block; }
+    .persona-banner p { font-size: 0.74rem; color: var(--muted); }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.42rem;
+    }
+    @media (max-width: 600px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .kpi {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 9px;
+      padding: 0.46rem 0.58rem;
+    }
+    .kpi small { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); display: block; }
+    .kpi strong { font-family: var(--mono); font-size: 0.78rem; color: #fff; word-break: break-all; }
+
+    .r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.42rem; }
+    .r3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.42rem; }
+    @media (max-width: 600px) { .r2, .r3 { grid-template-columns: 1fr; } }
+
+    input, select {
+      width: 100%;
+      background: rgba(0,0,0,0.52);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px;
+      padding: 0.46rem 0.62rem;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: var(--crimson); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.34rem;
+      width: 100%; padding: 0.48rem 0.68rem; border-radius: 8px; font-weight: 700;
+      font-size: 0.75rem; text-decoration: none; cursor: pointer; border: 1px solid transparent;
+    }
+    .btn:hover { filter: brightness(1.09); }
+    .b-red { background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; }
+    .b-wa { background: linear-gradient(135deg, #10b981, #059669); color: #03150e; }
+    .b-gold { background: rgba(234,179,8,0.14); border-color: rgba(234,179,8,0.42); color: #fde047; }
+    .b-cyan { background: rgba(6,182,212,0.14); border-color: rgba(6,182,212,0.42); color: #67e8f9; }
+    .b-purp { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.42); color: #d8b4fe; }
+    .b-dim { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.13); color: var(--text); }
+
+    .out {
+      font-family: var(--mono); font-size: 0.7rem; background: #050307;
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem 0.62rem;
+      color: #d6cce0; min-height: 2.2rem; word-break: break-word;
+    }
+    .out.ok { border-color: rgba(16,185,129,0.45); color: #a7f3d0; }
+    .out.err { border-color: rgba(225,29,72,0.45); color: #fecdd3; }
+
+    .list-box { display: flex; flex-direction: column; gap: 0.38rem; max-height: 220px; overflow-y: auto; }
+    .row-item {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.4rem;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(225,29,72,0.24);
+      border-radius: 8px; padding: 0.44rem 0.62rem; font-family: var(--mono); font-size: 0.71rem;
+    }
+    .row-item strong { color: #fda4af; }
+
+    .statute-list { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.75rem; color: #dcd2e3; }
+    .statute-item { background: var(--card); border-left: 3px solid var(--crimson); padding: 0.45rem 0.62rem; border-radius: 6px; }
+  </style>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script id="ov-sw-cleaner">if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));if("caches"in window)caches.keys().then(k=>k.forEach(x=>caches.delete(x)));</script>
+</head>
+<body>
+  <div class="wrap">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="id-badge">
+        <span class="dot"></span>
+        <div>
+          <h1 id="hdrTitle">OUR VELVET // PANNELLO UTENTE</h1>
+          <span id="hdrSub">VERSIONE ATTIVA: OSPITE 18+ · DIRECT REALITY · ZDOS</span>
+        </div>
+      </div>
+      <nav class="quick-links">
+        <a class="pill" href="https://ourvelvet.online/">Portale</a>
+        <a class="pill" href="/dashboard.html">Command Deck</a>
+        <a class="pill" href="/shop.html">Shop 18+</a>
+        <a class="pill" id="topLodgeLink" href="/lodge-card.html" target="_blank">Lodge Card ↗</a>
+      </nav>
+    </header>
+
+    <!-- SELETTORE 6 VERSIONI / RUOLI INTEGRATI -->
+    <div class="role-bar">
+      <div class="role-bar-top">
+        <span>🎭 SELETTORE VERSIONE / RUOLO (6 MODALITÀ INTEGRATE)</span>
+        <span id="activePersonaBadge">RUOLO: OSPITE 18+</span>
+      </div>
+      <div class="role-pills" id="roleSelector">
+        <button class="role-btn active" data-role="Ospite 18+" onclick="selectRole('Ospite 18+')">👤 Ospite</button>
+        <button class="role-btn" data-role="Fan Velvet" onclick="selectRole('Fan Velvet')">💎 Fan</button>
+        <button class="role-btn" data-role="Slave / Sub" onclick="selectRole('Slave / Sub')">⛓️ Slave</button>
+        <button class="role-btn" data-role="Front-End Sovereign" onclick="selectRole('Front-End Sovereign')">🖥️ Front-End</button>
+        <button class="role-btn" data-role="Mistress / Sovereign" onclick="selectRole('Mistress / Sovereign')">👑 Mistress</button>
+        <button class="role-btn" data-role="CPWI (Crypto Porn Weed Influencer)" onclick="selectRole('CPWI (Crypto Porn Weed Influencer)')">🌿 CPWI</button>
+      </div>
+    </div>
+
+    <!-- BARRA IDENTITÀ ATTIVA -->
+    <div class="auth-bar">
+      <input type="text" id="globalOvInput" placeholder="Inserisci ID Globale (OV-XXXX-VELVET o 4 char)" maxlength="24" />
+      <button class="btn b-red" type="button" onclick="loadUserProfile()">Carica Profilo</button>
+      <button class="btn b-wa" type="button" onclick="switchTab('tab-id')">+ Nuovo ID Reale</button>
+    </div>
+
+    <!-- NAVIGAZIONE A SCHEDE -->
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="tab-overview" onclick="switchTab('tab-overview')">👤 Profilo</button>
+      <button class="tab-btn" data-tab="tab-id" onclick="switchTab('tab-id')">🗝️ ID &amp; Loggia</button>
+      <button class="tab-btn" data-tab="tab-radar" onclick="switchTab('tab-radar')">🩸 Radar 30km</button>
+      <button class="tab-btn" data-tab="tab-bridge" onclick="switchTab('tab-bridge')">🌉 X·WA·TG</button>
+      <button class="tab-btn" data-tab="tab-shop" onclick="switchTab('tab-shop')">🖤 Shop &amp; Swap</button>
+      <button class="tab-btn" data-tab="tab-statute" onclick="switchTab('tab-statute')">📜 Statuto 18+</button>
+    </nav>
+
+    <!-- 1. PROFILO & AZIONI DEDICATE AL RUOLO -->
+    <section class="section active" id="tab-overview">
+      <div class="sec-head">
+        <h2>👤 Stato Utente &amp; Modalità Operativa</h2>
+        <span class="tag" id="profStatusTag">OSPITE 18+</span>
+      </div>
+
+      <div class="persona-banner">
+        <div>
+          <strong id="personaTitle">Versione Ospite 18+</strong>
+          <p id="personaDesc">Esplora il portale, verifica l'ID $OV, consulta il raggio di 30 km e accedi ai varchi 18+ consensuali.</p>
+        </div>
+        <button class="btn b-gold" style="width:auto;padding:0.38rem 0.65rem;" type="button" onclick="applyRoleToId()">Salva Ruolo su ID</button>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi"><small>SIGILLO $OV</small><strong id="kpiOv">--</strong></div>
+        <div class="kpi"><small>RUOLO ATTIVO</small><strong id="kpiRole">Ospite 18+</strong></div>
+        <div class="kpi"><small>DEVOTION</small><strong id="kpiDevotion">0</strong></div>
+        <div class="kpi"><small>RADAR 30KM</small><strong id="kpiRadar">NON ATTIVO</strong></div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi"><small>WALLET SOLANA</small><strong id="kpiWallet">--</strong></div>
+        <div class="kpi"><small>WHATSAPP</small><strong id="kpiWa">--</strong></div>
+        <div class="kpi"><small>HANDLE X</small><strong id="kpiX">--</strong></div>
+        <div class="kpi"><small>TELEGRAM</small><strong id="kpiTg">--</strong></div>
+      </div>
+
+      <div class="r3" id="roleQuickActions">
+        <a class="btn b-gold" id="profLodgeBtn" href="/lodge-card.html" target="_blank">🃏 Lodge Card ↗</a>
+        <a class="btn b-wa" href="https://whatsapp.com/channel/0029Vb9Rbee89inrYLhdem1n" target="_blank">🖤 Canale WA 18+ ↗</a>
+        <a class="btn b-purp" href="https://discord.gg/4CGZrAAxaq" target="_blank">⚡ Discord Velvet ↗</a>
+      </div>
+
+      <div class="out" id="overviewConsole">Seleziona una delle 6 versioni (Ospite, Fan, Slave, Front-End, Mistress, CPWI) oppure carica il tuo ID $OV.</div>
+    </section>
+
+    <!-- 2. EMISSIONE ID GLOBALE REALE & LOGGIA -->
+    <section class="section" id="tab-id">
+      <div class="sec-head">
+        <h2>🗝️ Emissione ID Globale Reale ($OV) &amp; Loggia</h2>
+        <span class="tag">SHA-256 · SOLANA</span>
+      </div>
+
+      <div class="r2">
+        <input type="text" id="mintWallet" placeholder="Wallet Solana (per verifica $OV / $DSN)" />
+        <select id="mintRole">
+          <option value="Ospite 18+">Versione: Ospite 18+</option>
+          <option value="Fan Velvet">Versione: Fan Velvet</option>
+          <option value="Slave / Sub">Versione: Slave / Sub</option>
+          <option value="Front-End Sovereign">Versione: Front-End Sovereign</option>
+          <option value="Mistress / Sovereign">Versione: Mistress / Sovereign</option>
+          <option value="CPWI (Crypto Porn Weed Influencer)">Versione: CPWI (Crypto Porn Weed Influencer)</option>
+        </select>
+      </div>
+
+      <div class="r3">
+        <input type="text" id="mintWa" placeholder="WhatsApp (+39... / +44...)" />
+        <input type="text" id="mintX" placeholder="Handle X (@...)" />
+        <input type="text" id="mintTg" placeholder="Telegram (@...)" />
+      </div>
+
+      <div class="r2">
+        <button class="btn b-wa" type="button" onclick="issueGlobalIdFromPanel()">⚡ Genera / Aggiorna ID Globale Reale</button>
+        <a class="btn b-gold" id="idLodgeBtn" href="/lodge-card.html" target="_blank">🃏 Apri Lodge Card ↗</a>
+      </div>
+
+      <div class="out" id="idConsole">Sigillo OV-XXXX-VELVET collegato a ruolo, wallet e canali reali.</div>
+    </section>
+
+    <!-- 3. MEAT RADAR 30 KM -->
+    <section class="section" id="tab-radar">
+      <div class="sec-head">
+        <h2>🩸 Meat Radar 30 km — Prossimità &amp; Sottomissione WA</h2>
+        <span class="tag">RAGGIO 30 KM</span>
+      </div>
+
+      <div class="r3">
+        <input type="text" id="radLat" placeholder="Latitudine (es. 45.03)" />
+        <input type="text" id="radLon" placeholder="Longitudine (es. 9.28)" />
+        <button class="btn b-dim" type="button" onclick="getUserGPS()">📍 GPS Browser</button>
+      </div>
+
+      <div class="r3">
+        <button class="btn b-red" type="button" onclick="activateUserPulse()">🩸 Attiva Segnale (Pulse)</button>
+        <button class="btn b-wa" type="button" onclick="scanUserRadar()">📡 Scansiona 30 km</button>
+        <a class="btn b-dim" href="https://wa.me/447742507902?text=!optoutloc" target="_blank">🔒 Esci (!optoutloc)</a>
+      </div>
+
+      <div class="out" id="radConsole">Coordinate arrotondate a 2 decimali per privacy.</div>
+      <div class="list-box" id="radList"></div>
+    </section>
+
+    <!-- 4. OMNI HANDLE BRIDGE -->
+    <section class="section" id="tab-bridge">
+      <div class="sec-head">
+        <h2>🌉 Omni Handle Bridge — X · WhatsApp · Telegram</h2>
+        <span class="tag">CROSS-CHANNEL</span>
+      </div>
+
+      <div class="r3">
+        <input type="text" id="brgX" placeholder="Handle X (@...)" />
+        <input type="text" id="brgWa" placeholder="WhatsApp (+44... / +39...)" />
+        <input type="text" id="brgTg" placeholder="Telegram (@...)" />
+      </div>
+
+      <button class="btn b-red" type="button" onclick="saveBridgeLinks()">🔗 Unifica Handle su Nexus</button>
+
+      <div class="r3">
+        <input type="text" id="brgTo" placeholder="Destinatario (OV-ID / @handle / vuoto)" />
+        <input type="text" id="brgText" placeholder="Messaggio o drop cross-canale..." />
+        <select id="brgTargets">
+          <option value="whatsapp,telegram,x">WA + TG + X</option>
+          <option value="whatsapp,telegram">WA + TG</option>
+          <option value="whatsapp">Solo WhatsApp</option>
+          <option value="telegram">Solo Telegram</option>
+          <option value="x">Solo Coda X</option>
+        </select>
+      </div>
+
+      <button class="btn b-wa" type="button" onclick="sendBridgeDispatch()">⚡ Invia Dispatch Unificato</button>
+      <div class="out" id="brgConsole">Instradamento diretto tra X, WhatsApp e Telegram.</div>
+    </section>
+
+    <!-- 5. SHOP 18+, SLAVE MONEY & ZSWAP -->
+    <section class="section" id="tab-shop">
+      <div class="sec-head">
+        <h2>🖤 Quick Shop 18+ · Slave Money · ZSwap Hub</h2>
+        <span class="tag">SOL · $OV · $DSN</span>
+      </div>
+
+      <div class="r2">
+        <a class="btn b-red" href="/shop.html?item=PHOTO-VIDEO-PACK&sol=0.12" target="_blank">📸 Foto &amp; Video 18+ (0.12 SOL) ↗</a>
+        <a class="btn b-red" href="/shop.html?item=INTIMO-WORN-DROP&sol=0.35" target="_blank">👙 Intimo Esclusivo (0.35 SOL) ↗</a>
+      </div>
+
+      <div class="r2">
+        <a class="btn b-gold" href="/shop.html?item=SLAVE-TRIBUTE-BASE&sol=0.10" target="_blank">⛓️ Slave Money Base (0.10 SOL) ↗</a>
+        <a class="btn b-gold" href="/shop.html?item=SLAVE-TRIBUTE-SUPREMO&sol=0.50" target="_blank">👑 Slave Money Supremo (0.50 SOL) ↗</a>
+      </div>
+
+      <div class="r3">
+        <a class="btn b-cyan" href="https://swap.x-zdos.it/" target="_blank">⚡ ZSwap Hub ($OV / $DSN) ↗</a>
+        <button class="btn b-dim" type="button" onclick="copyVal('2EN6Y1zM4yyt41gE2muzdJSAgRCAZiXqnmkgpbrspump', 'CA $OV')">Copia CA $OV</button>
+        <button class="btn b-dim" type="button" onclick="copyVal('6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD', 'Wallet Tesoreria')">Copia Tesoreria</button>
+      </div>
+
+      <div class="out" id="shopTabConsole">Pagamenti non-custodial verificati su Solana Mainnet.</div>
+    </section>
+
+    <!-- 6. STATUTO 18+ -->
+    <section class="section" id="tab-statute">
+      <div class="sec-head">
+        <h2>📜 Statuto Sovrano Velvet City &amp; Our Velvet (18+)</h2>
+        <span class="tag">CONSENSUAL ONLY</span>
+      </div>
+      <div class="statute-list">
+        <div class="statute-item"><strong>1. Realtà Diretta:</strong> Abolito il gioco. Ogni profilo, radar entro 30 km, sessione e transazione è reale e verificabile (<em>Build what you can prove</em>).</div>
+        <div class="statute-item"><strong>2. Consenso 18+ Revocabile:</strong> Solo adulti maggiorenni con consenso esplicito e revocabile in qualsiasi momento (<code>!abort</code> / <code>!optoutloc</code>).</div>
+        <div class="statute-item"><strong>3. Privacy Geodetica:</strong> Coordinate arrotondate a 2 decimali; nessuna esposizione non consensuale.</div>
+        <div class="statute-item"><strong>4. Economia Solana:</strong> Scambi, drop e tributi su <code>SOL</code>, <code>$OV</code> e <code>$DSN</code> verso tesoreria non-custodial.</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_OV = "zdos_velvet_ov_id";
+    const STORAGE_ROLE = "zdos_velvet_role";
+
+    const ROLE_META = {
+      "Ospite 18+": {
+        title: "Versione Ospite 18+",
+        desc: "Ingresso base 18+ consensuale: verifica l'ID $OV, consulta il Radar 30km e accedi allo Shop.",
+        ctaHtml:
+          '<button class="btn b-wa" type="button" onclick="switchTab(\'tab-id\')">🗝️ Forgia ID $OV</button>' +
+          '<button class="btn b-red" type="button" onclick="switchTab(\'tab-radar\')">🩸 Apri Radar 30km</button>' +
+          '<a class="btn b-gold" href="/shop.html" target="_blank">🖤 Shop 18+ ↗</a>'
+      },
+      "Fan Velvet": {
+        title: "Versione Fan Velvet",
+        desc: "Supporto diretto e drop esclusivi: sblocca pack foto/video, intimo e token $OV / $DSN su ZSwap.",
+        ctaHtml:
+          '<a class="btn b-red" href="/shop.html?item=PHOTO-VIDEO-PACK&sol=0.12" target="_blank">📸 Pack Media 18+ ↗</a>' +
+          '<a class="btn b-cyan" href="https://swap.x-zdos.it/" target="_blank">⚡ ZSwap $OV/$DSN ↗</a>' +
+          '<a class="btn b-wa" href="https://whatsapp.com/channel/0029Vb9Rbee89inrYLhdem1n" target="_blank">🖤 Canale WA ↗</a>'
+      },
+      "Slave / Sub": {
+        title: "Versione Slave / Sub",
+        desc: "Sottomissione consensuale online su WhatsApp e prossimità 30 km, tributi Slave Money e Devotion.",
+        ctaHtml:
+          '<button class="btn b-red" type="button" onclick="switchTab(\'tab-radar\')">🩸 Segnale &amp; Radar 30km</button>' +
+          '<a class="btn b-gold" href="/shop.html?item=SLAVE-TRIBUTE-BASE&sol=0.10" target="_blank">⛓️ Slave Money ↗</a>' +
+          '<a class="btn b-wa" href="https://wa.me/447742507902?text=!pulse" target="_blank">📲 Ponte WA ↗</a>'
+      },
+      "Front-End Sovereign": {
+        title: "Versione Front-End Sovereign",
+        desc: "Controllo interfaccia e varchi web: Command Deck, Lodge Card, Portale ourvelvet.online e ID $OV.",
+        ctaHtml:
+          '<a class="btn b-cyan" href="/dashboard.html" target="_blank">🖥️ Command Deck ↗</a>' +
+          '<a class="btn b-gold" href="/lodge-card.html" target="_blank">🃏 Lodge Card ↗</a>' +
+          '<a class="btn b-dim" href="https://ourvelvet.online/" target="_blank">🏛️ Portale Web ↗</a>'
+      },
+      "Mistress / Sovereign": {
+        title: "Versione Mistress / Sovereign",
+        desc: "Direzione della Loggia e agganci diretti: scansione Radar 30km, !lock su WhatsApp, dispatch X·WA·TG e tesoreria.",
+        ctaHtml:
+          '<button class="btn b-red" type="button" onclick="switchTab(\'tab-radar\')">📡 Scansiona &amp; Aggancia</button>' +
+          '<button class="btn b-purp" type="button" onclick="switchTab(\'tab-bridge\')">🌉 Dispatch X·WA·TG</button>' +
+          '<a class="btn b-gold" href="/shop.html?item=SLAVE-TRIBUTE-SUPREMO&sol=0.50" target="_blank">👑 Tributi &amp; Shop ↗</a>'
+      },
+      "CPWI (Crypto Porn Weed Influencer)": {
+        title: "Versione CPWI · Crypto Porn Weed Influencer",
+        desc: "Hub influencer 18+ crypto & lifestyle: unifica handle X/WA/TG, lancia drop su Shop/ZSwap e coordina la community.",
+        ctaHtml:
+          '<button class="btn b-purp" type="button" onclick="switchTab(\'tab-bridge\')">🌉 Bridge X·WA·TG</button>' +
+          '<a class="btn b-red" href="/shop.html" target="_blank">🔥 Drop &amp; Media 18+ ↗</a>' +
+          '<a class="btn b-cyan" href="https://swap.x-zdos.it/" target="_blank">⚡ Token $OV / $DSN ↗</a>'
+      }
+    };
+
+    function normOv(raw) {
+      let v = String(raw || "").trim().toUpperCase().replace(/[^A-Z0-9-]/g, "");
+      if (/^[A-Z0-9]{4}$/.test(v)) v = "OV-" + v + "-VELVET";
+      return v;
+    }
+
+    function selectRole(roleName) {
+      const meta = ROLE_META[roleName] || ROLE_META["Ospite 18+"];
+      localStorage.setItem(STORAGE_ROLE, roleName);
+
+      document.querySelectorAll(".role-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.role === roleName);
+      });
+
+      const sel = document.getElementById("mintRole");
+      if (sel) sel.value = roleName;
+
+      document.getElementById("activePersonaBadge").textContent = "RUOLO: " + roleName.toUpperCase();
+      document.getElementById("hdrSub").textContent = "VERSIONE ATTIVA: " + roleName.toUpperCase() + " · DIRECT REALITY";
+      document.getElementById("personaTitle").textContent = meta.title;
+      document.getElementById("personaDesc").textContent = meta.desc;
+      document.getElementById("roleQuickActions").innerHTML = meta.ctaHtml;
+
+      const kpiRole = document.getElementById("kpiRole");
+      if (kpiRole && kpiRole.textContent === "--") kpiRole.textContent = roleName;
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      const sec = document.getElementById(tabId);
+      const btn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+      if (sec) sec.classList.add("active");
+      if (btn) btn.classList.add("active");
+    }
+
+    function setActiveOv(ovId) {
+      if (!ovId) return;
+      document.getElementById("globalOvInput").value = ovId;
+      localStorage.setItem(STORAGE_OV, ovId);
+      const url = "/lodge-card.html?ov=" + encodeURIComponent(ovId);
+      document.getElementById("topLodgeLink").href = url;
+    }
+
+    async function applyRoleToId() {
+      const ovId = normOv(document.getElementById("globalOvInput").value);
+      const role = localStorage.getItem(STORAGE_ROLE) || document.getElementById("mintRole").value;
+      const out = document.getElementById("overviewConsole");
+      if (!ovId) {
+        out.className = "out err";
+        out.textContent = "❌ Inserisci prima un ID OV-XXXX-VELVET per salvare il ruolo sul Nexus.";
+        return;
+      }
+      out.className = "out";
+      out.textContent = "⏳ Salvataggio ruolo '" + role + "' su " + ovId + "...";
+      try {
+        const res = await fetch("/api/global-id/issue", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ovId, role, consent18Plus: true })
+        });
+        const d = await res.json();
+        if (res.ok && d.ok) {
+          out.className = "out ok";
+          out.textContent = "✅ Ruolo aggiornato su " + d.ovId + ": " + role;
+          loadUserProfile();
+        } else {
+          out.className = "out err";
+          out.textContent = "❌ " + (d.error || "Errore aggiornamento ruolo.");
+        }
+      } catch (e) {
+        out.className = "out err";
+        out.textContent = "⚠️ Errore connessione al Nexus.";
+      }
+    }
+
+    async function loadUserProfile() {
+      const ovId = normOv(document.getElementById("globalOvInput").value);
+      const out = document.getElementById("overviewConsole");
+      if (!ovId) {
+        out.className = "out err";
+        out.textContent = "❌ Inserisci un sigillo OV-XXXX-VELVET valido.";
+        return;
+      }
+      setActiveOv(ovId);
+      out.className = "out";
+      out.textContent = "⏳ Caricamento profilo per " + ovId + "...";
+
+      try {
+        const res = await fetch("/api/user/profile/" + encodeURIComponent(ovId));
+        const d = await res.json();
+        if (!res.ok || !d.ok) {
+          out.className = "out err";
+          out.textContent = "❌ " + (d.error || "Profilo non trovato.");
+          return;
+        }
+        const u = d.profile;
+        const activeRole = u.meatRole || localStorage.getItem(STORAGE_ROLE) || "Ospite 18+";
+        selectRole(activeRole);
+
+        document.getElementById("hdrTitle").textContent = "VELVET // " + u.ovId;
+        document.getElementById("profStatusTag").textContent = u.status || "VERIFIED";
+        document.getElementById("kpiOv").textContent = u.ovId;
+        document.getElementById("kpiRole").textContent = activeRole;
+        document.getElementById("kpiDevotion").textContent = u.devotion ?? 0;
+        document.getElementById("kpiRadar").textContent = u.location ? (u.location.lat + ", " + u.location.lon + " (30km)") : "SPENTO";
+        document.getElementById("kpiWallet").textContent = u.wallet ? (u.wallet.slice(0, 6) + "..." + u.wallet.slice(-4)) : "Non collegato";
+        document.getElementById("kpiWa").textContent = u.channels?.waPhone || "--";
+        document.getElementById("kpiX").textContent = u.channels?.xHandle || "--";
+        document.getElementById("kpiTg").textContent = u.channels?.tgUser || "--";
+
+        if (u.wallet) document.getElementById("mintWallet").value = u.wallet;
+        if (u.channels?.waPhone) { document.getElementById("mintWa").value = u.channels.waPhone; document.getElementById("brgWa").value = u.channels.waPhone; }
+        if (u.channels?.xHandle) { document.getElementById("mintX").value = u.channels.xHandle; document.getElementById("brgX").value = u.channels.xHandle; }
+        if (u.channels?.tgUser) { document.getElementById("mintTg").value = u.channels.tgUser; document.getElementById("brgTg").value = u.channels.tgUser; }
+
+        out.className = "out ok";
+        out.innerHTML = "✅ <strong>" + u.ovId + "</strong> · Ruolo: <strong>" + activeRole + "</strong> · Ordini: <strong>" + (d.ordersCount ?? 0) + "</strong> · Segnali: <strong>" + (d.signalsCount ?? 0) + "</strong>";
+      } catch (e) {
+        out.className = "out err";
+        out.textContent = "⚠️ Errore connessione al Nexus.";
+      }
+    }
+
+    async function issueGlobalIdFromPanel() {
+      const wallet = document.getElementById("mintWallet").value.trim();
+      const role = document.getElementById("mintRole").value;
+      const waPhone = document.getElementById("mintWa").value.trim();
+      const xHandle = document.getElementById("mintX").value.trim();
+      const tgUser = document.getElementById("mintTg").value.trim();
+      const out = document.getElementById("idConsole");
+      out.className = "out";
+      out.textContent = "⚡ Emissione ID Globale Reale...";
+      try {
+        const res = await fetch("/api/global-id/issue", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ wallet, role, waPhone, xHandle, tgUser, consent18Plus: true })
+        });
+        const data = await res.json();
+        if (res.ok && data.ok) {
+          setActiveOv(data.ovId);
+          selectRole(role);
+          out.className = "out ok";
+          out.innerHTML = "✅ <strong>ID EMESSO:</strong> " + data.ovId + " (" + role + ") · Hash: <code>" + data.passportHash.slice(0, 14) + "...</code>";
+          loadUserProfile();
+        } else {
+          out.className = "out err";
+          out.textContent = "❌ " + (data.error || "Errore emissione.");
+        }
+      } catch (e) { out.className = "out err"; out.textContent = "⚠️ Errore /api/global-id/issue."; }
+    }
+
+    function getUserGPS() {
+      const out = document.getElementById("radConsole");
+      if (!navigator.geolocation) { out.className = "out err"; out.textContent = "❌ GPS non supportato."; return; }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          document.getElementById("radLat").value = pos.coords.latitude.toFixed(2);
+          document.getElementById("radLon").value = pos.coords.longitude.toFixed(2);
+          out.className = "out ok";
+          out.textContent = "✅ Coordinate pronte: " + pos.coords.latitude.toFixed(2) + ", " + pos.coords.longitude.toFixed(2);
+        },
+        (err) => { out.className = "out err"; out.textContent = "⚠️ GPS negato (" + err.message + ")."; },
+        { enableHighAccuracy: false, timeout: 8000 }
+      );
+    }
+
+    async function activateUserPulse() {
+      const ovId = normOv(document.getElementById("globalOvInput").value);
+      const lat = document.getElementById("radLat").value.trim();
+      const lon = document.getElementById("radLon").value.trim();
+      const role = localStorage.getItem(STORAGE_ROLE) || document.getElementById("mintRole").value;
+      const out = document.getElementById("radConsole");
+      if (!ovId || !lat || !lon) { out.className = "out err"; out.textContent = "❌ Servono ID $OV, Lat e Lon."; return; }
+      out.className = "out";
+      try {
+        const res = await fetch("/api/meat-radar/pulse", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ovId, lat, lon, role, mode: "WA-LIVE + IRL-30KM" })
+        });
+        const d = await res.json();
+        if (res.ok && d.ok) {
+          out.className = "out ok";
+          out.textContent = "✅ Segnale attivo per " + d.ovId + " (" + d.location.lat + ", " + d.location.lon + ")";
+          loadUserProfile();
+          scanUserRadar();
+        } else { out.className = "out err"; out.textContent = "❌ " + (d.error || "Errore pulse."); }
+      } catch (e) { out.className = "out err"; out.textContent = "⚠️ Errore /api/meat-radar/pulse."; }
+    }
+
+    async function scanUserRadar() {
+      const ovId = normOv(document.getElementById("globalOvInput").value);
+      const out = document.getElementById("radConsole");
+      const list = document.getElementById("radList");
+      if (!ovId) { out.className = "out err"; out.textContent = "❌ Inserisci ID $OV."; return; }
+      list.innerHTML = "";
+      try {
+        const res = await fetch("/api/meat-radar/scan/" + encodeURIComponent(ovId));
+        const d = await res.json();
+        if (!res.ok || !d.ok) { out.className = "out err"; out.textContent = "❌ " + (d.error || "Errore scansione."); return; }
+        out.className = "out ok";
+        out.textContent = "🩸 Rilevati " + d.count + " segnali entro 30 km.";
+        if (!d.targets || !d.targets.length) {
+          list.innerHTML = '<div class="row-item"><span>Nessun altro utente attivo entro 30 km al momento.</span></div>';
+          return;
+        }
+        d.targets.forEach(t => {
+          const item = document.createElement("div");
+          item.className = "row-item";
+          const waUrl = "https://wa.me/447742507902?text=" + encodeURIComponent("!lock " + t.ovId + " Sottomissione Diretta WA");
+          item.innerHTML =
+            '<span><strong>' + t.ovId + '</strong> · ' + t.distanceKm + ' km · ' + t.role + ' · Dev:' + t.devotion + '</span>' +
+            '<div style="display:flex;gap:0.35rem;">' +
+              '<a class="btn b-wa" style="width:auto;padding:0.26rem 0.5rem;font-size:0.68rem;" href="' + waUrl + '" target="_blank">Aggancia WA ↗</a>' +
+              '<a class="btn b-gold" style="width:auto;padding:0.26rem 0.5rem;font-size:0.68rem;" href="/lodge-card.html?ov=' + encodeURIComponent(t.ovId) + '" target="_blank">Card</a>' +
+            '</div>';
+          list.appendChild(item);
+        });
+      } catch (e) { out.className = "out err"; out.textContent = "⚠️ Errore /api/meat-radar/scan."; }
+    }
+
+    async function saveBridgeLinks() {
+      const ovId = normOv(document.getElementById("globalOvInput").value);
+      const xHandle = document.getElementById("brgX").value.trim();
+      const waPhone = document.getElementById("brgWa").value.trim();
+      const tgUser = document.getElementById("brgTg").value.trim();
+      const out = document.getElementById("brgConsole");
+      try {
+        const res = await fetch("/api/bridge/link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ovId, xHandle, waPhone, tgUser })
+        });
+        const d = await res.json();
+        if (res.ok && d.ok && d.user) {
+          setActiveOv(d.user.ovId);
+          out.className = "out ok";
+          out.textContent = "✅ Collegati su " + d.user.ovId + " | Token: " + (d.user.bridgeToken || "-");
+          loadUserProfile();
+        } else { out.className = "out err"; out.textContent = "❌ " + (d.error || "Errore bridge."); }
+      } catch (e) { out.className = "out err"; out.textContent = "⚠️ Errore /api/bridge/link."; }
+    }
+
+    async function sendBridgeDispatch() {
+      const fromId = normOv(document.getElementById("globalOvInput").value) || document.getElementById("brgX").value.trim();
+      const toId = document.getElementById("brgTo").value.trim();
+      const message = document.getElementById("brgText").value.trim();
+      const targets = document.getElementById("brgTargets").value.split(",").filter(Boolean);
+      const out = document.getElementById("brgConsole");
+      if (!message) { out.className = "out err"; out.textContent = "❌ Scrivi un messaggio."; return; }
+      try {
+        const res = await fetch("/api/bridge/dispatch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fromId, toId: toId || null, targets, message })
+        });
+        const d = await res.json();
+        if (res.ok && d.ok) {
+          const r = d.delivery.results || {};
+          out.className = "out ok";
+          out.textContent = "🚀 " + d.delivery.id + " -> WA:" + (r.whatsapp || "-") + " | TG:" + (r.telegram || "-") + " | X:" + (r.x || "-");
+          document.getElementById("brgText").value = "";
+        } else { out.className = "out err"; out.textContent = "❌ " + (d.error || "Errore dispatch."); }
+      } catch (e) { out.className = "out err"; out.textContent = "⚠️ Errore /api/bridge/dispatch."; }
+    }
+
+    function copyVal(text, label) {
+      navigator.clipboard.writeText(text).then(() => {
+        const out = document.getElementById("shopTabConsole");
+        out.className = "out ok";
+        out.textContent = "📋 " + label + " copiato: " + text;
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedRole = localStorage.getItem(STORAGE_ROLE) || "Ospite 18+";
+      selectRole(savedRole);
+      const params = new URLSearchParams(window.location.search);
+      const qOv = normOv(params.get("ov") || localStorage.getItem(STORAGE_OV) || "");
+      if (qOv) {
+        setActiveOv(qOv);
+        loadUserProfile();
+      }
+    });
+  </script>
+<script src="https://ourvelvet.online/mint-lsd/lsd-live-widget.js?v=1" defer></script>
+</body>
+</html>

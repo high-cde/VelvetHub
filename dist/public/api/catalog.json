@@ -1,0 +1,80 @@
+{
+  "ecosystem": "OurVelvet // Velvet City",
+  "version": "2.0.0",
+  "policy": { "min_age": 18, "explicit_consent": true, "safeword": "ROSSO" },
+  "referral_wallet": "6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD",
+  "items": [
+    {
+      "id": "gen-img-01",
+      "category": "Generatori AI (Img & Video)",
+      "badge": "AI STUDIO · 18+",
+      "name": "Crimson Render & Uncensored Visual Lab",
+      "desc": "Generazione immagini e video cyber-goth, latex e velluto ad alta fedeltà senza filtri inutili (solo 18+).",
+      "reward_ov": 40,
+      "launch_url": "https://ourvelvet.online/hub/?section=ai-gen"
+    },
+    {
+      "id": "vgirl-vboy-02",
+      "category": "V-Girl & V-Boy AI",
+      "badge": "COMPANION · 18+",
+      "name": "Velvet V-Girl / V-Boy Interactive Matrix",
+      "desc": "Partner virtuali personalizzabili con memoria persistente, roleplay 18+ e controllo safeword ROSSO.",
+      "reward_ov": 35,
+      "launch_url": "https://ourvelvet.online/hub/?section=v-companions"
+    },
+    {
+      "id": "bdsm-dom-03",
+      "category": "BDSM, Fetish & Mistress",
+      "badge": "BDSM · ROSSO",
+      "name": "Rubina Mistress & Sovereign Protocol Lab",
+      "desc": "Sessioni Dominazione/Sottomissione 18+, contratti consensuali, task list e comandi Platinum Supremo.",
+      "reward_ov": 50,
+      "launch_url": "https://ourvelvet.online/hub/?section=bdsm-protocol"
+    },
+    {
+      "id": "homemade-vid-04",
+      "category": "Homemade & Human Video 18+",
+      "badge": "CREATOR · 18+",
+      "name": "Red Velvet Homemade & Creator Vault",
+      "desc": "Video reali verificati 18+, clip amatoriali autentiche e archivi creator con consenso esplicito certificato.",
+      "reward_ov": 45,
+      "launch_url": "https://ourvelvet.online/hub/?section=homemade-vault"
+    },
+    {
+      "id": "voice-audio-05",
+      "category": "Voice AI & ASMR 18+",
+      "badge": "AUDIO · 18+",
+      "name": "Nocturne Voice & Binaural Roleplay",
+      "desc": "Sintesi vocale immersiva, sessioni guidate e tracce dark-cyber per stanze private 18+.",
+      "reward_ov": 30,
+      "launch_url": "https://ourvelvet.online/hub/?section=voice-lab"
+    },
+    {
+      "id": "vr-live-06",
+      "category": "Live Rooms & Velvet Radar 3D",
+      "badge": "LIVE 3D · 18+",
+      "name": "Red Velvet Live Club & Meat Radar",
+      "desc": "Stanze live, ambienti 3D e connessioni verificate con privacy by design e safeword ROSSO.",
+      "reward_ov": 60,
+      "launch_url": "https://ourvelvet.online/hub/?section=live-club"
+    },
+    {
+      "id": "story-engine-07",
+      "category": "AI Erotica & Interactive Fiction",
+      "badge": "STORY AI · 18+",
+      "name": "Velvet Noir Story & Scenario Weaver",
+      "desc": "Sceneggiature interattive 18+ multi-personaggio con limiti negoziati e consenso esplicito.",
+      "reward_ov": 25,
+      "launch_url": "https://ourvelvet.online/hub/?section=story-weaver"
+    },
+    {
+      "id": "ov-swap-quest-08",
+      "category": "Solana $OV & Quest Bridge",
+      "badge": "WEB3 · $OV",
+      "name": "ZSwap Hub & $OV Liquidity Portal",
+      "desc": "Scambia e gestisci $OV e $DSN su Solana tramite Jupiter con verifica rischi integrata.",
+      "reward_ov": 50,
+      "launch_url": "https://swap.x-zdos.it/?ref=6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD"
+    }
+  ]
+}

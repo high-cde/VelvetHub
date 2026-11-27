@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<!-- Google Tag Manager (GTM-T9NHG4R3) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T9NHG4R3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
+    <meta charset="utf-8">
+    <title>VelvetHub</title>
+    <!-- Script di reindirizzamento per far funzionare React Router su GitHub Pages -->
+    <script type="text/javascript">
+      var pathSegmentsToKeep = 1; // 1 perché il repo si chiama /VelvetHub/
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script id="ov-sw-cleaner">if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));if("caches"in window)caches.keys().then(k=>k.forEach(x=>caches.delete(x)));</script>
+</head>
+  <body>
+    <!-- Se vedi questo, il redirect sta partendo... -->
+  <script src="https://ourvelvet.online/mint-lsd/lsd-live-widget.js?v=1" defer></script>
+</body>
+</html>

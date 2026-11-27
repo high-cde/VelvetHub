@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<!-- Google Tag Manager (GTM-T9NHG4R3) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T9NHG4R3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>OurVelvet // Moderazione (anteprima)</title>
+  <link rel="stylesheet" href="/ai-directory/preview/velvet.css?v=2" />
+  <script src="/ai-directory/preview/common.js?v=1"></script>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script id="ov-sw-cleaner">if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));if("caches"in window)caches.keys().then(k=>k.forEach(x=>caches.delete(x)));</script>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>🛠 Moderazione · Recensioni e Velvet Star</h1>
+    <p class="sub">La chiave resta solo in questo browser per la sessione. Si trova sul VPS in /etc/velvet-stars/admin.key.</p>
+    <div class="claim-row"><input id="k" type="password" placeholder="Chiave admin" /><button class="primary" onclick="loadP()">Carica</button></div>
+    <div class="section-t">👑 Richieste Velvet Star</div><div id="st" class="grid"></div>
+    <div class="section-t">⭐ Pro/contro in attesa</div><div id="rv" class="grid"></div>
+    <div class="section-t">➕ Siti segnalati</div><div id="sg" class="grid"></div>
+    <p class="meta" style="margin-top:12px;">I siti segnalati approvati vanno poi aggiunti a mano in directory.json con fatti verificati.</p>
+  </div>
+<script>
+try { k.value = sessionStorage.getItem("vs_admin") || ""; } catch (e) {}
+async function call(p, b) {
+  const r = await fetch("/ai-directory/api/vs-admin" + p, { method: b ? "POST" : "GET", headers: { "Content-Type": "application/json", "x-velvet-stars-key": k.value }, body: b ? JSON.stringify(b) : undefined });
+  return r.json();
+}
+const btns = (kind, id, extra) => `<div class="actions">${["approve","reject"].concat(extra||[]).map(a => `<button class="btn-claim" onclick="mod('${kind}','${id}','${a}')">${a}</button>`).join("")}</div>`;
+async function loadP() {
+  try { sessionStorage.setItem("vs_admin", k.value); } catch (e) {}
+  const r = await call("/pending"); if (!r.ok) return alert(r.error);
+  st.innerHTML = r.stars.map(s => `<div class="card"><div><div class="title">${esc(s.stage_name)} <span class="pill">${esc(s.status)}${s.verified ? " · verificata" : ""}</span></div>
+    <p class="desc">${esc(s.bio)}</p><p class="meta">Codice da cercare sui profili: <b>${esc(s.verify_code)}</b> · contatto: ${esc(s.contact)}</p>
+    <ul class="facts">${s.links.map(l => `<li><a style="color:var(--cyan)" href="${esc(l)}" target="_blank" rel="noopener">${esc(l)}</a></li>`).join("")}</ul></div>
+    ${btns("star", s.id, ["verify","unverify"])}</div>`).join("") || '<div class="empty">Nessuna.</div>';
+  rv.innerHTML = r.reviews.map(x => `<div class="card"><div><div class="title">${esc(x.item)} · ★${x.score}</div><p class="desc">PRO: ${esc(x.pro)}<br>CONTRO: ${esc(x.con)}</p></div>${btns("review", x.id)}</div>`).join("") || '<div class="empty">Nessuna.</div>';
+  sg.innerHTML = r.suggestions.map(x => `<div class="card"><div><div class="title">${esc(x.name)}</div><p class="desc">${esc(x.url)}<br>${esc(x.category)} · ${esc(x.note)}</p></div>${btns("suggestion", x.id)}</div>`).join("") || '<div class="empty">Nessuna.</div>';
+}
+async function mod(kind, id, action) { const r = await call("/moderate", { kind, id, action }); if (!r.ok) alert(r.error); loadP(); }
+</script>
+<script src="https://ourvelvet.online/mint-lsd/lsd-live-widget.js?v=1" defer></script>
+</body>
+</html>

@@ -43,7 +43,7 @@ const server = http.createServer((req, res) => {
     req.on("end", async () => {
       const data = JSON.parse(body || "{}");
       const action = String(data.action || "tg_promo");
-      const msg = "👑⚡ RUBINA MISTRESS × ZARA LSD (18+ · ROSSO): Super Command Deck & AI Directory attivi su https://velvet.x-zdos.it/ai-directory/ | Deck: https://velvet.x-zdos.it/command-deck/ | Swap $OV: https://swap.x-zdos.it/?ref=6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD";
+      const msg = "👑⚡ RUBINA MISTRESS × ZARA LSD (18+ · ROSSO): Super Command Deck & AI Directory attivi su https://ourvelvet.online/ai-directory/ | Deck: https://ourvelvet.online/command-deck/ | Swap $OV: https://swap.x-zdos.it/?ref=6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD";
       for (const target of ["TG-CHANNEL", "TG-GROUP"]) {
         fetch("http://127.0.0.1:4199/bus/send", {
           method: "POST",
@@ -51,7 +51,7 @@ const server = http.createServer((req, res) => {
           body: JSON.stringify({ target, text: msg, source: "super-deck-" + action })
         }).catch(() => {});
       }
-      return sendJson(res, 200, { ok: true, executed: action, dispatched: ["TG-CHANNEL", "TG-GROUP"], deck: "https://velvet.x-zdos.it/command-deck/" });
+      return sendJson(res, 200, { ok: true, executed: action, dispatched: ["TG-CHANNEL", "TG-GROUP"], deck: "https://ourvelvet.online/command-deck/" });
     });
     return;
   }

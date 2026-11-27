@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<!-- Google Tag Manager (GTM-T9NHG4R3) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T9NHG4R3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>OurVelvet // Recensioni siti AI 18+ (anteprima)</title>
+  <link rel="stylesheet" href="/ai-directory/preview/velvet.css?v=2" />
+  <script src="/ai-directory/preview/common.js?v=1"></script>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script id="ov-sw-cleaner">if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));if("caches"in window)caches.keys().then(k=>k.forEach(x=>caches.delete(x)));</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-bar">
+      <span class="badge-18">18+ ONLY · CONSENSO ESPLICITO · SAFEWORD: ROSSO</span>
+      <span class="preview-tag">ANTEPRIMA · NON PUBBLICA</span>
+    </div>
+    <div class="nav">
+      <a class="tab" href="/">🥀 Home OurVelvet</a>
+      <a class="tab" href="/#real-videoteca">📼 Videoteca</a>
+      <a class="tab" href="/ai-directory/">AI Directory (attuale)</a>
+      <a class="tab on" href="/ai-directory/preview/">⭐ Recensioni siti 18+</a>
+      <a class="tab " href="/velvet-star/">👑 Velvet Star</a>
+    </div>
+
+    <h1>🥀 OURVELVET // SITI AI 18+ · SCHEDE E VOTI</h1>
+    <p class="sub">Schede di siti e strumenti AI per adulti, divise per categoria. Ogni scheda riporta solo quello che il sito dichiara, con data di verifica e link ufficiale. Il punteggio nasce solo dai voti degli utenti 18+.</p>
+    <div class="rules" id="disc"><strong>AVVISO:</strong> caricamento…</div>
+    <div id="tabs" class="tabs"></div>
+    <div class="controls"><input id="q" type="text" placeholder="Cerca per nome, categoria o funzione…" oninput="render()" /></div>
+    <div id="grid" class="grid"></div>
+
+    <div class="section-t">🧩 Moduli OurVelvet</div>
+    <p class="sub">I moduli interni già presenti nella AI Directory, senza modifiche.</p>
+    <div id="mods" class="grid"></div>
+
+    <div class="claim-box" id="voteBox">
+      <h2>⭐ Vota una scheda</h2>
+      <p class="sub" style="margin-bottom:8px;">Un voto per persona e per scheda (puoi cambiarlo). Pro e contro compaiono dopo la moderazione.</p>
+      <input id="voteItem" type="text" placeholder="Seleziona una scheda sopra" readonly style="width:100%;" />
+      <div class="stars-in claim-row" id="starsIn"></div>
+      <div class="claim-row"><input id="pro" maxlength="160" placeholder="Un pro (facoltativo)" /><input id="con" maxlength="160" placeholder="Un contro (facoltativo)" /></div>
+      <label class="chk"><input id="vAdult" type="checkbox" style="flex:0 0 auto;width:18px;height:18px;" /> Ho almeno 18 anni, rispetto il consenso esplicito e la safeword ROSSO.</label>
+      <div class="claim-row"><button class="primary" onclick="vote()">Invia voto</button></div>
+      <code id="voteOut" class="out">Scegli una scheda con “Vota”.</code>
+    </div>
+
+    <div class="claim-box">
+      <h2>➕ Segnala un sito</h2>
+      <p class="sub" style="margin-bottom:8px;">Lo pubblichiamo solo dopo aver verificato i fatti. Non accettiamo strumenti per spogliare o manipolare foto di persone reali.</p>
+      <div class="claim-row"><input id="sName" maxlength="80" placeholder="Nome del sito" /><input id="sUrl" placeholder="https://…" /></div>
+      <div class="claim-row"><select id="sCat"></select></div>
+      <div class="claim-row"><textarea id="sNote" maxlength="300" rows="2" placeholder="Perché merita una scheda (facoltativo)"></textarea></div>
+      <label class="chk"><input id="sAdult" type="checkbox" style="flex:0 0 auto;width:18px;height:18px;" /> Ho almeno 18 anni, rispetto il consenso esplicito e la safeword ROSSO.</label>
+      <div class="claim-row"><button class="primary" onclick="suggest()">Invia segnalazione</button></div>
+      <code id="sOut" class="out">—</code>
+    </div>
+
+    <div class="section-t">❓ Domande frequenti</div>
+    <div class="faq">
+      <details><summary>Come nasce il punteggio?</summary>È la media dei voti da 1 a 5 lasciati dagli utenti. Compare solo da 3 voti in su; prima la scheda mostra “nessun punteggio”. Non ci sono voti della redazione.</details>
+      <details><summary>Chi scrive le schede?</summary>Lo staff OurVelvet, riportando quello che il sito dichiara sulla propria homepage, con la data di verifica. I servizi possono cambiare: controlla sempre sul sito ufficiale.</details>
+      <details><summary>OurVelvet guadagna da questi link?</summary>No, i link in questa anteprima sono diretti, senza affiliazione.</details>
+      <details><summary>Cosa non elenchiamo?</summary>Strumenti per spogliare, fare face-swap o manipolare foto di persone reali senza consenso, e qualsiasi cosa che coinvolga minori o personaggi dall'aspetto minorile. Usa “Segnala un sito” per farci rimuovere una scheda.</details>
+      <details><summary>E VELVET ($OV)?</summary>VELVET è il gettone di comunità di OurVelvet su Solana: nessun rendimento promesso. Questa pagina non chiede pagamenti.</details>
+    </div>
+    <p class="meta" style="margin:18px 0;">OurVelvet · ZDOS1.3 · solo 18+ · safeword ROSSO</p>
+  </div>
+<script>
+let DIR = { items: [] }, CAT = "ALL", SEL = null, SCORE = 0;
+const fmtScore = i => i.score == null ? `<span class="score none">Nessun punteggio · ${i.votes} vot${i.votes === 1 ? "o" : "i"} (servono 3)</span>` : `<span class="score">★ ${i.score}/5 · ${i.votes} voti</span>`;
+async function load() {
+  DIR = await api("/directory");
+  if (!DIR.ok) { document.getElementById("grid").innerHTML = `<div class="empty">Directory non disponibile: ${esc(DIR.error)}</div>`; return; }
+  document.getElementById("disc").innerHTML = "<strong>AVVISO:</strong> " + esc(DIR.disclaimer);
+  document.getElementById("sCat").innerHTML = DIR.categories.map(c => `<option>${esc(c)}</option>`).join("") + "<option>Altro</option>";
+  tabs(); render();
+  const cat = await api("/catalog");
+  document.getElementById("mods").innerHTML = (cat.items || []).map(i => `
+    <div class="card"><div><div class="card-top"><span class="cat">${esc(i.category)}</span><span class="pill">${esc(i.badge)}</span></div>
+    <div class="title">${esc(i.name)}</div><p class="desc">${esc(i.desc)}</p></div>
+    <div class="actions"><a class="btn-link" href="${esc(i.launch_url)}" target="_blank" rel="noopener">Apri ↗</a></div></div>`).join("") || `<div class="empty">Nessun modulo.</div>`;
+}
+function tabs() {
+  const cats = ["ALL", ...DIR.categories];
+  document.getElementById("tabs").innerHTML = cats.map(c => `<button class="tab ${c === CAT ? "active" : ""}" data-c="${esc(c)}">${c === "ALL" ? "Tutte le categorie" : esc(c)}</button>`).join("");
+  document.querySelectorAll("#tabs .tab").forEach(b => b.onclick = () => { CAT = b.dataset.c; tabs(); render(); });
+}
+function render() {
+  const q = document.getElementById("q").value.toLowerCase();
+  const list = DIR.items.filter(i => (CAT === "ALL" || i.category === CAT) && (!q || (i.name + " " + i.category + " " + i.facts.join(" ")).toLowerCase().includes(q)));
+  document.getElementById("grid").innerHTML = list.map((i, n) => `
+    <div class="card"><div>
+      <div class="card-top"><span class="cat">${esc(i.category)}</span><span class="pill">18+</span></div>
+      <div class="row"><span class="rank">${n + 1}</span><div style="flex:1">
+        <div class="title">${esc(i.name)}</div>${fmtScore(i)}</div></div>
+      <ul class="facts" style="margin-top:8px;">${i.facts.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
+      ${(i.pros.length || i.cons.length) ? `<div class="pc" style="margin-top:8px;"><div><b class="p">PRO</b><br>${i.pros.map(esc).join("<br>") || "—"}</div><div><b class="c">CONTRO</b><br>${i.cons.map(esc).join("<br>") || "—"}</div></div>` : `<p class="meta" style="margin-top:8px;">Pro e contro: ancora nessuna recensione approvata.</p>`}
+      <p class="meta" style="margin-top:8px;">Verificato il ${esc(i.verified_at)} · fonte: ${esc(i.source)}</p>
+    </div>
+    <div class="actions"><a class="btn-link" href="${esc(i.url)}" target="_blank" rel="noopener nofollow">Sito ufficiale ↗</a><button class="btn-claim" data-id="${esc(i.id)}">Vota</button></div></div>`).join("") || `<div class="empty">Nessuna scheda trovata.</div>`;
+  document.querySelectorAll("#grid .btn-claim").forEach(b => b.onclick = () => pick(b.dataset.id));
+}
+function pick(id) {
+  SEL = DIR.items.find(x => x.id === id); SCORE = 0;
+  document.getElementById("voteItem").value = SEL ? SEL.name : "";
+  stars(); document.getElementById("voteBox").scrollIntoView({ behavior: "smooth" });
+}
+function stars() {
+  document.getElementById("starsIn").innerHTML = [1,2,3,4,5].map(s => `<button class="${s <= SCORE ? "sel" : ""}" data-s="${s}">★</button>`).join("");
+  document.querySelectorAll("#starsIn button").forEach(b => b.onclick = () => { SCORE = +b.dataset.s; stars(); });
+}
+async function vote() {
+  const out = document.getElementById("voteOut");
+  if (!SEL) return out.textContent = "Seleziona prima una scheda.";
+  if (!SCORE) return out.textContent = "Scegli da 1 a 5 stelle.";
+  const a = document.getElementById("vAdult").checked;
+  const r = await api("/directory/vote", { item: SEL.id, score: SCORE, pro: document.getElementById("pro").value, con: document.getElementById("con").value, adult: a, consent: a, rosso: a });
+  out.textContent = r.ok ? "✅ " + r.note : "⚠️ " + r.error;
+  if (r.ok) load();
+}
+async function suggest() {
+  const a = document.getElementById("sAdult").checked;
+  const r = await api("/directory/suggest", { name: sName.value, url: sUrl.value, category: sCat.value, note: sNote.value, adult: a, consent: a, rosso: a });
+  document.getElementById("sOut").textContent = r.ok ? "✅ " + r.note : "⚠️ " + r.error;
+}
+stars(); load();
+</script>
+<!-- ZDOS-UNIFIED-COINS-V1 -->
+<div id="zdos-coin-registry" data-coins="BONK,OV,DSN,LSD,L$D,XZSOL,CAKE,WBNB,SOL" data-lsd-peg="0.0064" data-zx-pay="https://zx.x-zdos.it/" style="display:none;">
+  ZDOS Assets: BONK · $OV · $DSN · Dom-Coin L$D (€0.0064) · $xzSOL · CAKE · WBNB · SOL · ZX Pay https://zx.x-zdos.it/
+</div>
+<script src="https://x-zdos.it/api/monetary/sdk.js" defer></script>
+<script src="https://ourvelvet.online/mint-lsd/lsd-live-widget.js?v=1" defer></script>
+</body>
+</html>

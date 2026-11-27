@@ -2,7 +2,7 @@
   "updated": "2026-11-21 02:16:47",
   "domains": [
     {
-      "server_name": "velvet.x-zdos.it",
+      "server_name": "ourvelvet.online",
       "listen": [
         "80",
         "[::]:80"
@@ -14,7 +14,7 @@
       "locations": []
     },
     {
-      "server_name": "velvet.x-zdos.it",
+      "server_name": "ourvelvet.online",
       "listen": [
         "443 ssl",
         "[::]:443 ssl"

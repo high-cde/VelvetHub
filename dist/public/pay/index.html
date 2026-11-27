@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<!-- Google Tag Manager (GTM-T9NHG4R3) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T9NHG4R3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Velvet Pay — Sovereign Crypto Banking, Phantom &amp; Cash App DeFi</title>
+  <style>
+    :root {
+      --bg: #09080d;
+      --surface: #14121d;
+      --surface-2: #1c1929;
+      --surface-3: #262238;
+      --border: rgba(255, 255, 255, 0.09);
+      --phantom: #ab9ff2;
+      --phantom-2: #7c6df7;
+      --cash: #00d64f;
+      --cash-dark: #04210e;
+      --gold: #f5c451;
+      --cyan: #22d3ee;
+      --rose: #fb7185;
+      --text: #f8f7fc;
+      --muted: #a19bb8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: radial-gradient(circle at 50% -15%, #2a1f47 0%, var(--bg) 50%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      padding-bottom: 96px;
+    }
+    .app-shell { max-width: 560px; margin: 0 auto; padding: 14px 16px; }
+    @media (min-width: 960px) { .app-shell { max-width: 1020px; padding: 24px; } }
+
+    /* TOP BAR AD ALTO CONTRASTO */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 6px 2px 16px;
+    }
+    .account-pill {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 1px solid rgba(171, 159, 242, 0.28);
+      padding: 6px 14px 6px 6px; border-radius: 999px; cursor: pointer;
+      color: var(--text);
+    }
+    .avatar-ring {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--phantom), var(--phantom-2));
+      display: grid; place-items: center; font-weight: 900; font-size: 0.85rem; color: #09080d;
+      overflow: hidden;
+    }
+    .avatar-ring img { width: 100%; height: 100%; object-fit: cover; }
+    .acc-meta { display: flex; flex-direction: column; text-align: left; }
+    .acc-name { font-size: 0.86rem; font-weight: 800; color: #ffffff; letter-spacing: -0.01em; }
+    .acc-addr { font-size: 0.72rem; color: var(--phantom); font-family: ui-monospace, monospace; }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .pill-btn {
+      background: var(--surface); border: 1px solid var(--border); color: #ffffff;
+      padding: 8px 13px; border-radius: 999px; font-size: 0.78rem; font-weight: 700;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .pill-btn.phantom {
+      border-color: rgba(171, 159, 242, 0.5);
+      background: linear-gradient(135deg, rgba(171,159,242,0.18), rgba(124,109,247,0.12));
+      color: #ffffff;
+    }
+
+    /* HERO BALANCE + SPARKLINE + 4 AZIONI CASH/PHANTOM */
+    .hero-card {
+      background: linear-gradient(165deg, #1d182e 0%, #12101b 100%);
+      border: 1px solid rgba(171, 159, 242, 0.25);
+      border-radius: 28px; padding: 22px 20px 18px; margin-bottom: 16px;
+      box-shadow: 0 22px 48px rgba(0,0,0,0.5);
+    }
+    .hero-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem; color: var(--muted); font-weight: 700; }
+    .net-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(0, 214, 79, 0.12); color: var(--cash);
+      padding: 3px 9px; border-radius: 999px; font-size: 0.72rem;
+    }
+    .balance-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 6px; }
+    .balance-amount { font-size: 2.55rem; font-weight: 800; letter-spacing: -0.035em; color: #fff; }
+    .balance-pnl { font-size: 0.84rem; font-weight: 700; color: var(--cash); display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+    .pnl-pill { background: rgba(0, 214, 79, 0.16); color: var(--cash); padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; }
+
+    /* SPARKLINE SVG */
+    .chart-box { margin: 14px 0 8px; }
+    .chart-svg { width: 100%; height: 64px; display: block; overflow: visible; }
+    .tf-row { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; }
+    .tf-btn {
+      background: none; border: none; color: var(--muted); font-size: 0.7rem; font-weight: 800;
+      padding: 3px 8px; border-radius: 8px; cursor: pointer;
+    }
+    .tf-btn.active { background: rgba(171, 159, 242, 0.18); color: var(--phantom); }
+
+    /* 4 TASTI CIRCOLARI STILE PHANTOM / CASH APP */
+    .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+    .quick-btn {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: 20px;
+      padding: 12px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: #fff; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.15s;
+    }
+    .quick-btn:hover { background: var(--surface-3); border-color: var(--phantom); transform: translateY(-1px); }
+    .quick-ico {
+      width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 1.05rem;
+      background: rgba(171, 159, 242, 0.16); color: var(--phantom);
+    }
+    .quick-ico.cash { background: rgba(0, 214, 79, 0.16); color: var(--cash); }
+
+    /* CASH APP VIRTUAL BLACK CARD */
+    .cash-card {
+      background: linear-gradient(135deg, #1b1926 0%, #0d0c12 60%, #241c11 100%);
+      border: 1px solid rgba(245, 196, 81, 0.35);
+      border-radius: 22px; padding: 18px; margin-bottom: 16px;
+      display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden;
+    }
+    .cash-card-top { display: flex; justify-content: space-between; align-items: center; }
+    .cashtag { font-weight: 800; font-size: 0.9rem; color: var(--cash); letter-spacing: 0.02em; }
+    .card-num { font-family: ui-monospace, monospace; font-size: 1.02rem; letter-spacing: 0.14em; color: #f3e8d2; }
+    .card-foot { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted); }
+
+    /* VIEWS & NAVIGATION */
+    .view { display: none; }
+    .view.active { display: block; }
+    .sub-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; scrollbar-width: none; }
+    .sub-pills::-webkit-scrollbar { display: none; }
+    .sub-pill {
+      white-space: nowrap; padding: 8px 14px; border-radius: 999px; font-size: 0.78rem; font-weight: 700;
+      background: var(--surface); border: 1px solid var(--border); color: var(--muted); cursor: pointer;
+    }
+    .sub-pill.active { background: var(--phantom); color: #09080d; border-color: var(--phantom); }
+
+    .search-wrap { position: relative; margin-bottom: 12px; }
+    .search-input {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 12px 16px 12px 40px; color: #fff; font-size: 0.88rem; outline: none;
+    }
+    .search-input:focus { border-color: var(--phantom); }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+
+    /* ASSET LIST CON LOGHI SVG AD ALTA NITIDEZZA */
+    .asset-list { display: flex; flex-direction: column; gap: 8px; }
+    .asset-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      padding: 12px 14px; transition: 0.15s; cursor: pointer;
+    }
+    .asset-row:hover { background: var(--surface-2); border-color: rgba(171,159,242,0.4); }
+    .asset-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .coin-logo {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      display: grid; place-items: center; position: relative;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+    }
+    .coin-logo svg { width: 24px; height: 24px; }
+    .chain-badge {
+      position: absolute; bottom: -1px; right: -1px; width: 16px; height: 16px; border-radius: 50%;
+      background: #14f195; color: #05140c; font-size: 9px; font-weight: 900; display: grid; place-items: center;
+      border: 2px solid var(--surface);
+    }
+    .asset-info { display: flex; flex-direction: column; min-width: 0; }
+    .asset-title { font-size: 0.95rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; }
+    .apy-tag {
+      font-size: 0.68rem; font-weight: 800; padding: 2px 7px; border-radius: 6px;
+      background: rgba(0, 214, 79, 0.15); color: var(--cash);
+    }
+    .apy-tag.gold { background: rgba(245, 196, 81, 0.18); color: var(--gold); }
+    .apy-tag.cyan { background: rgba(34, 211, 238, 0.16); color: var(--cyan); }
+    .asset-sub { font-size: 0.76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .asset-right { text-align: right; flex-shrink: 0; }
+    .asset-val { font-size: 0.95rem; font-weight: 800; color: #fff; }
+    .asset-chg { font-size: 0.76rem; font-weight: 700; color: var(--cash); }
+    .asset-chg.neg { color: var(--rose); }
+
+    /* JUPITER SWAP & STAKING CARDS */
+    .panel-card {
+      background: var(--surface); border: 1px solid rgba(171,159,242,0.26); border-radius: 24px; padding: 18px;
+      margin-bottom: 14px;
+    }
+    .swap-box {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: 18px; padding: 14px; margin-bottom: 8px;
+    }
+    .swap-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 8px; }
+    .swap-input {
+      background: transparent; border: none; color: #fff; font-size: 1.5rem; font-weight: 800; width: 55%; outline: none;
+    }
+    .token-select {
+      background: var(--surface-3); color: #fff; border: 1px solid var(--border);
+      padding: 8px 12px; border-radius: 999px; font-weight: 800; font-size: 0.84rem;
+    }
+    .flip-wrap { display: flex; justify-content: center; margin: -14px 0 -6px; position: relative; z-index: 2; }
+    .flip-btn {
+      width: 36px; height: 36px; border-radius: 50%; background: var(--surface-3);
+      border: 2px solid var(--surface); color: var(--phantom); font-weight: 900; cursor: pointer;
+    }
+    .cta-primary {
+      width: 100%; border: none; border-radius: 16px; padding: 14px; font-size: 0.95rem; font-weight: 800;
+      background: linear-gradient(90deg, var(--phantom), var(--phantom-2)); color: #09080d; cursor: pointer; margin-top: 10px;
+    }
+    .cta-cash {
+      width: 100%; border: none; border-radius: 16px; padding: 13px; font-size: 0.9rem; font-weight: 800;
+      background: var(--cash); color: var(--cash-dark); cursor: pointer; margin-top: 10px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 720px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+    .field-input {
+      width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px;
+      padding: 11px 14px; color: #fff; font-size: 0.86rem; margin-top: 8px; outline: none;
+    }
+    .field-input:focus { border-color: var(--phantom); }
+
+    /* MODAL P2P CASH / QR */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+      display: none; place-items: center; z-index: 80; padding: 16px;
+    }
+    .modal-backdrop.open { display: grid; }
+    .modal-card {
+      width: 100%; max-width: 420px; background: var(--surface); border: 1px solid rgba(171,159,242,0.35);
+      border-radius: 26px; padding: 22px;
+    }
+
+    /* BOTTOM DOCK */
+    .bottom-dock {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(12, 11, 18, 0.94); backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border);
+    }
+    .dock-inner {
+      max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 6px 12px;
+    }
+    .dock-btn {
+      background: none; border: none; color: var(--muted); display: flex; flex-direction: column;
+      align-items: center; gap: 4px; font-size: 0.68rem; font-weight: 800; cursor: pointer;
+    }
+    .dock-btn.active { color: var(--phantom); }
+    .dock-btn span.ico { font-size: 1.2rem; }
+
+    .sys-pill {
+      margin-top: 16px; padding: 10px 14px; border-radius: 14px; font-size: 0.76rem;
+      background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+  </style>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script id="ov-sw-cleaner">if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));if("caches"in window)caches.keys().then(k=>k.forEach(x=>caches.delete(x)));</script>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <button class="account-pill" onclick="switchView('account')">
+        <div class="avatar-ring" id="top-avatar">OV</div>
+        <div class="acc-meta">
+          <span class="acc-name" id="top-name">OurVelvet Sovereign ▾</span>
+          <span class="acc-addr" id="wallet-short">6C61wD...Kn2bsD</span>
+        </div>
+      </button>
+      <div class="top-actions">
+        <a class="pill-btn" href="/">Hub</a>
+        <button class="pill-btn phantom" id="btn-phantom">👻 Connetti</button>
+      </div>
+    </div>
+
+    <!-- HERO WALLET & SPARKLINE -->
+    <div class="hero-card">
+      <div class="hero-top">
+        <span>PATRIMONIO TOTALE · CASH &amp; DEFI</span>
+        <span class="net-badge">● Solana + Z-Pool</span>
+      </div>
+      <div class="balance-row">
+        <div class="balance-amount" id="total-balance">€ 14.820,50</div>
+      </div>
+      <div class="balance-pnl">
+        <span id="pnl-text">+€ 642,10 (24h)</span>
+        <span class="pnl-pill">+4.53% APY Medi</span>
+      </div>
+
+      <div class="chart-box">
+        <svg class="chart-svg" viewBox="0 0 400 70" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00d64f" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#00d64f" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <path id="spark-area" d="M0,55 L45,48 L95,52 L145,36 L195,40 L250,24 L305,28 L355,14 L400,8 L400,70 L0,70 Z" fill="url(#sparkGrad)"/>
+          <path id="spark-line" d="M0,55 L45,48 L95,52 L145,36 L195,40 L250,24 L305,28 L355,14 L400,8" fill="none" stroke="#00d64f" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        <div class="tf-row">
+          <button class="tf-btn active" onclick="setTf('1G','+€ 642,10 (24h)',this)">1G</button>
+          <button class="tf-btn" onclick="setTf('1S','+€ 1.490,80 (7g)',this)">1S</button>
+          <button class="tf-btn" onclick="setTf('1M','+€ 3.120,00 (30g)',this)">1M</button>
+          <button class="tf-btn" onclick="setTf('1A','+€ 8.940,40 (1a)',this)">1A</button>
+        </div>
+      </div>
+
+      <div class="quick-grid">
+        <button class="quick-btn" onclick="openCashModal('send')">
+          <span class="quick-ico cash">↗</span>
+          <span>Invia Cash</span>
+        </button>
+        <button class="quick-btn" onclick="openCashModal('receive')">
+          <span class="quick-ico">↙</span>
+          <span>Ricevi QR</span>
+        </button>
+        <button class="quick-btn" onclick="switchView('swap')">
+          <span class="quick-ico">⇄</span>
+          <span>Jupiter Swap</span>
+        </button>
+        <button class="quick-btn" onclick="switchView('defi')">
+          <span class="quick-ico cash">⚡</span>
+          <span>Z-Pool Stake</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CASH APP VIRTUAL CARD -->
+    <div class="cash-card">
+      <div class="cash-card-top">
+        <span class="cashtag" id="cashtag-label">$ourvelvet · Velvet Cash Card</span>
+        <span style="font-size:0.74rem;font-weight:800;color:var(--gold);">VISA / SOLANA DEBIT</span>
+      </div>
+      <div class="card-num">•••• •••• •••• 8844 &nbsp;&nbsp; EXP 11/29</div>
+      <div class="card-foot">
+        <span>Instant EURC / USDC / $OV Settlement</span>
+        <button class="pill-btn" style="padding:4px 10px;font-size:0.72rem;" onclick="openCashModal('receive')">Mostra Indirizzo</button>
+      </div>
+    </div>
+
+    <!-- VIEW 1: ASSET (68 Z-POOL TOKENS + AZIONI TOKENIZZATE + PERPS CON LOGHI SVG) -->
+    <section id="view-wallet" class="view active">
+      <div class="sub-pills">
+        <button class="sub-pill active" onclick="filterCategory('all', this)">Tutti (82 Asset)</button>
+        <button class="sub-pill" onclick="filterCategory('zpool', this)">🪙 68 Z-Pool Tokens</button>
+        <button class="sub-pill" onclick="filterCategory('stocks', this)">📈 Azioni &amp; Titoli APY</button>
+        <button class="sub-pill" onclick="filterCategory('perps', this)">🔥 Perps Solana</button>
+      </div>
+
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="asset-search" type="text" placeholder="Cerca token, azione tokenizzata (NVDAx, TSLAx), ticker o APY..." />
+      </div>
+
+      <div class="asset-list" id="asset-list"></div>
+    </section>
+
+    <!-- VIEW 2: JUPITER AGGREGATOR SWAP -->
+    <section id="view-swap" class="view">
+      <div class="panel-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <strong style="font-size:1.05rem;">🪐 Jupiter Ultra + Z-Pool Router</strong>
+          <span class="apy-tag">Auto-Slippage 0.3%</span>
+        </div>
+        <div class="swap-box">
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);">
+            <span>Paghi</span><span>Disponibile: 18.40 SOL</span>
+          </div>
+          <div class="swap-row">
+            <input class="swap-input" id="swap-in" type="number" value="1.0" step="0.1" />
+            <select class="token-select" id="swap-from">
+              <option value="SOL">◎ SOL · Solana</option>
+              <option value="USDC">$ USDC · Cash</option>
+              <option value="OV">♥ $OV · OurVelvet</option>
+              <option value="DSN">◈ $DSN · ZDOS</option>
+              <option value="HOLD">♥ $HOLD · Fisso €0,064</option>
+            </select>
+          </div>
+        </div>
+        <div class="flip-wrap"><button class="flip-btn" onclick="flipSwap()">⇅</button></div>
+        <div class="swap-box">
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);">
+            <span>Ricevi (Best Route)</span><span>Staking APY: +24.8%</span>
+          </div>
+          <div class="swap-row">
+            <input class="swap-input" id="swap-out" type="text" value="14.280,00" readonly />
+            <select class="token-select" id="swap-to">
+              <option value="OV">♥ $OV · OurVelvet</option>
+              <option value="DSN">◈ $DSN · ZDOS</option>
+              <option value="HOLD">♥ $HOLD · Fisso €0,064</option>
+              <option value="NVDAx">📈 NVDAx · Stock</option>
+              <option value="TBILLx">🏛️ TBILLx · Treasury</option>
+            </select>
+          </div>
+        </div>
+        <button class="cta-primary" onclick="execJupiterSwap()">Conferma Swap su Phantom + Jupiter</button>
+      </div>
+    </section>
+
+    <!-- VIEW 3: Z-POOL STAKING DEFI & AI TRADING -->
+    <section id="view-defi" class="view">
+      <div class="panel-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <strong>⚡ Calcolatore Z-Pool Liquid Staking</strong>
+          <span class="apy-tag">24.8% APY</span>
+        </div>
+        <input class="field-input" id="stake-amt" type="number" value="1000" placeholder="Importo in EUR / USDC / $OV" oninput="calcStakeYield()" />
+        <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:0.84rem;color:var(--muted);">
+          <span>Rendimento stimato annuo:</span>
+          <strong style="color:var(--cash);" id="stake-yield">+€ 248,00 / anno</strong>
+        </div>
+        <button class="cta-cash" onclick="alert('Stake su Z-Pool avviato tramite Phantom Wallet')">Metti in Stake su Z-Pool</button>
+      </div>
+
+      
+      <div class="panel-card" style="border-color:rgba(245,196,81,0.48);margin-top:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <strong>♥ $HOLD — Velvet Hold SexCoin (ZLang · Z-xSolana · Base $OV)</strong>
+          <span class="apy-tag gold">PREZZO FISSO € 0,064 · 32.0% APY</span>
+        </div>
+        <p style="font-size:0.82rem;color:var(--muted);margin-top:8px;line-height:1.5;">
+          Prezzo fisso reale di <strong>€ 0,064</strong> per 1 $HOLD ancorato a <strong>$OV</strong> (<code>2EN6Y1zM4yyt41gE2muzdJSAgRCAZiXqnmkgpbrspump</code>) su runtime <strong>ZLang / Z-xSolana</strong>.
+          Supporta adattamento multi-chain (Solana, Polygon, Base, BNB), mining ibrido (PoW/CPU-GPU, Human Mining, Z-Pool &amp; AI Compute) e abbonamenti/servizi AI di terze parti con protocollo <strong>SAFEWORD: HOLD</strong>.
+        </p>
+        <div class="grid-2" style="margin-top:10px;">
+          <button class="cta-cash" onclick="alert('$HOLD @ Prezzo Fisso €0,064 (ancorato a $OV) — Miner ZLang/Z-xSolana pronto')">Avvia Mining $HOLD (€0,064)</button>
+          <button class="cta-primary" onclick="alert('Abbonamenti AI Terze Parti in $HOLD attivi (Safeword HOLD)')">Abbonamenti AI Terzi ($HOLD)</button>
+        </div>
+      </div>
+
+      
+      <div class="panel-card" id="hold-sovereign-suite" style="border-color:rgba(245,196,81,0.5);margin-top:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <strong>♥ $HOLD — Velvet Hold SexCoin (ZLang · Z-xSolana · Base $OV)</strong>
+          <span class="apy-tag gold">PREZZO FISSO € 0,064 · 32.0% APY</span>
+        </div>
+        <p style="font-size:0.82rem;color:var(--muted);margin-top:8px;line-height:1.5;">
+          Ancorato a <strong>$OV</strong> (<code>2EN6Y1zM4yyt41gE2muzdJSAgRCAZiXqnmkgpbrspump</code>) su runtime <strong>ZLang / Z-xSolana</strong>.
+          Multi-chain (Solana, Polygon, Base, BNB), mining ibrido (PoW CPU/GPU, Human Mining 18+, Z-Pool Stake, AI Compute) e abbonamenti AI di terze parti con protocollo <strong>SAFEWORD: HOLD</strong>.
+        </p>
+
+        <div class="grid-2" style="margin-top:10px;">
+          <div class="swap-box" style="margin-bottom:0;">
+            <div style="font-size:0.74rem;color:var(--gold);font-weight:800;">PREZZO FISSO REALE (€) &amp; EQUIVALENTE $OV</div>
+            <input class="field-input" id="hold-fixed-eur" type="number" step="0.001" value="0.064" oninput="recalcHoldOv()" placeholder="Prezzo fisso 1 $HOLD in EUR" />
+            <input class="field-input" id="hold-qty-input" type="number" step="10" value="100" oninput="recalcHoldOv()" placeholder="Quantità $HOLD" />
+            <div style="margin-top:8px;font-size:0.8rem;color:var(--cash);font-weight:700;" id="hold-ov-calc">
+              100 $HOLD = € 6,40 · Equivalente ≈ 152,38 $OV
+            </div>
+          </div>
+
+          <div class="swap-box" style="margin-bottom:0;">
+            <div style="font-size:0.74rem;color:var(--cyan);font-weight:800;">MULTI-MODE HYBRID MINER (ZLANG)</div>
+            <select class="field-input" id="hold-mine-mode">
+              <option value="pow_gpu">PoW CPU / GPU Miner</option>
+              <option value="human_mining">Human Mining (18+ Consensuale)</option>
+              <option value="zpool_stake">Z-Pool Liquidity Staking</option>
+              <option value="ai_compute">AI Compute / Inference Node</option>
+            </select>
+            <button class="cta-cash" onclick="runHoldMiner()">Avvia Miner $HOLD</button>
+            <button class="pill-btn" style="width:100%;justify-content:center;margin-top:6px;border-color:rgba(251,113,133,0.45);color:var(--rose);" onclick="alert('SAFEWORD: HOLD attivato — operazioni e rinnovi AI sospesi')">🛑 SAFEWORD: HOLD (Stop/Lock)</button>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div style="font-size:0.76rem;color:var(--gold);font-weight:800;margin-bottom:8px;">SERVIZI &amp; ABBONAMENTI AI DI TERZE PARTI (PAGABILI IN $HOLD)</div>
+          <div class="grid-2">
+            <div class="swap-box" style="margin-bottom:0;">
+              <strong>Velvet-Grok2 &amp; Zara AGI</strong>
+              <p style="font-size:0.76rem;color:var(--muted);margin:4px 0 8px;">Abbonamento mensile AGI &amp; feed 18+ · 150 $HOLD (€ 9,60)</p>
+              <button class="cta-primary" onclick="subHoldAi('Velvet-Grok2 & Zara AGI', 150)">Abbonati in $HOLD</button>
+            </div>
+            <div class="swap-box" style="margin-bottom:0;">
+              <strong>K.I.R.A. Anti-Risk &amp; Signal AI</strong>
+              <p style="font-size:0.76rem;color:var(--muted);margin:4px 0 8px;">Pass 6 mesi copy-trade &amp; anti-rischio · 50 $HOLD (€ 3,20)</p>
+              <button class="cta-primary" onclick="subHoldAi('K.I.R.A. Anti-Risk AI', 50)">Abbonati in $HOLD</button>
+            </div>
+            <div class="swap-box" style="margin-bottom:0;">
+              <strong>Zhepir Network AI Router</strong>
+              <p style="font-size:0.76rem;color:var(--muted);margin:4px 0 8px;">Routing cross-chain 68 token · 80 $HOLD (€ 5,12)</p>
+              <button class="cta-primary" onclick="subHoldAi('Zhepir Network AI', 80)">Abbonati in $HOLD</button>
+            </div>
+            <div class="swap-box" style="margin-bottom:0;">
+              <strong>Studio 18+ Visual &amp; Voice Synth</strong>
+              <p style="font-size:0.76rem;color:var(--muted);margin:4px 0 8px;">Generazione media &amp; sintesi vocale · 200 $HOLD (€ 12,80)</p>
+              <button class="cta-primary" onclick="subHoldAi('Studio 18+ Synth AI', 200)">Abbonati in $HOLD</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel-card">
+          <span class="apy-tag cyan">ZHEPIR NETWORK AI · €5</span>
+          <h3 style="margin:8px 0 6px;">Piano Zhepir Network AI (€5)</h3>
+          <p style="font-size:0.82rem;color:var(--muted);">Routing predittivo sui 68 token Z-Pool, arbitraggio Jupiter e ribilanciamento APY automatico.</p>
+          <button class="cta-primary" onclick="alert('Attivazione Zhepir Network AI (€5) via Phantom / $OV')">Attiva Zhepir (€5)</button>
+        </div>
+        <div class="panel-card">
+          <span class="apy-tag gold">K.I.R.A. TRADING AI · €3 / 6 MESI</span>
+          <h3 style="margin:8px 0 6px;">K.I.R.A. Copy-Paste &amp; Anti-Risk</h3>
+          <p style="font-size:0.82rem;color:var(--muted);">Copy-trade su Perps Solana e Z-Pool con protezione anti-rischio e stop-loss automatico (€3 ogni 6 mesi).</p>
+          <button class="cta-cash" onclick="alert('Attivazione K.I.R.A. Trading AI (€3 / 6 mesi)')">Attiva K.I.R.A. (€3)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: 6 TIER DI DEPOSITO -->
+    <section id="view-tiers" class="view">
+      <div class="grid-2">
+        <div class="panel-card"><span class="apy-tag">TIER 1 · PLAN A START</span><h3 style="margin:8px 0 6px;">Plan A — Cash &amp; Wallet</h3><p style="font-size:0.82rem;color:var(--muted);">Onboarding Phantom + Proton Mail, Cash Card virtuale, swap base 68 Z-Pool token.</p></div>
+        <div class="panel-card"><span class="apy-tag">TIER 2 · PLAN A PRO</span><h3 style="margin:8px 0 6px;">Plan A — Creator Pro</h3><p style="font-size:0.82rem;color:var(--muted);">Incassi diretti $OV / $DSN / Stars, fee ridotte Jupiter e azioni tokenizzate frazionate.</p></div>
+        <div class="panel-card"><span class="apy-tag gold">TIER 3 · PLUS MARGIN</span><h3 style="margin:8px 0 6px;">Plus — Perps &amp; Stocks</h3><p style="font-size:0.82rem;color:var(--muted);">Perps Solana-native fino a 10x, portafoglio NVDAx/TSLAx/TBILLx e boost Radar.</p></div>
+        <div class="panel-card"><span class="apy-tag gold">TIER 4 · PLUS VAULT</span><h3 style="margin:8px 0 6px;">Plus — DeFi Liquidity</h3><p style="font-size:0.82rem;color:var(--muted);">APY maggiorato +3% su Z-Pool Staking e protezione anti-slippage.</p></div>
+        <div class="panel-card"><span class="apy-tag cyan">TIER 5 · PREMIUM</span><h3 style="margin:8px 0 6px;">Premium — Sovereign</h3><p style="font-size:0.82rem;color:var(--muted);">Leva 20x su Perps, zero commissioni swap e badge Platinum Supremo.</p></div>
+        <div class="panel-card"><span class="apy-tag cyan">TIER 6 · VELVET BLACK</span><h3 style="margin:8px 0 6px;">Premium — Velvet Black</h3><p style="font-size:0.82rem;color:var(--muted);">Linea Agency dedicata, vault privato xCLOUD e gestione multi-wallet.</p></div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: CLONE ACCOUNT PHANTOM & PROFILO -->
+    <section id="view-account" class="view">
+      <div class="panel-card">
+        <span class="apy-tag">CLONE ACCOUNT PHANTOM · ONBOARDING</span>
+        <h3 style="margin:8px 0 6px;">Identità Sovrana, Social &amp; Sicurezza 2FA</h3>
+        <p style="font-size:0.82rem;color:var(--muted);">Configura il tuo profilo Velvet Pay collegato a Phantom e Proton Mail.</p>
+        <input class="field-input" id="acc-display" type="text" placeholder="Nome Account (es. OurVelvet Sovereign)" />
+        <input class="field-input" id="acc-proton" type="email" placeholder="Email Proton (es. nome@proton.me)" />
+        <input class="field-input" id="acc-bio" type="text" placeholder="Bio breve / Ruolo" />
+        <input class="field-input" id="acc-socials" type="text" placeholder="Handle X · Our Velvet · Telegram · Discord" />
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+          <button class="pill-btn phantom" onclick="toggleSecurity('Passkey / Biometric')">🔐 Passkey / Biometric: ATTIVO</button>
+          <button class="pill-btn" onclick="toggleSecurity('2FA Authenticator')">📲 2FA: ATTIVO</button>
+        </div>
+        <button class="cta-cash" onclick="saveAccountProfile()">Salva &amp; Sincronizza Account</button>
+      </div>
+    </section>
+
+    <div class="sys-pill">
+      <span>Velvet Pay Sovereign Engine · Jupiter + Z-Pool</span>
+      <span style="color:var(--cash);font-weight:800;" id="api-health">● PHANTOM + Z-POOL LIVE</span>
+    </div>
+  </div>
+
+  <!-- MODALE INVIA / RICEVI CASH -->
+  <div class="modal-backdrop" id="cash-modal" onclick="if(event.target===this)closeCashModal()">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <strong id="modal-title">Invia Cash / Crypto</strong>
+        <button class="pill-btn" onclick="closeCashModal()">✕</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM DOCK -->
+  <nav class="bottom-dock">
+    <div class="dock-inner">
+      <button class="dock-btn active" data-view="wallet" onclick="switchView('wallet')"><span class="ico">💎</span><span>Asset</span></button>
+      <button class="dock-btn" data-view="swap" onclick="switchView('swap')"><span class="ico">⇄</span><span>Swap</span></button>
+      <button class="dock-btn" data-view="defi" onclick="switchView('defi')"><span class="ico">⚡</span><span>DeFi / AI</span></button>
+      <button class="dock-btn" data-view="tiers" onclick="switchView('tiers')"><span class="ico">💳</span><span>Cash Tier</span></button>
+      <button class="dock-btn" data-view="account" onclick="switchView('account')"><span class="ico">👤</span><span>Account</span></button>
+    </div>
+  </nav>
+
+  <script>
+    const SVG_ICONS = {
+      OV: '<svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.4-9.2-8.4C1.2 9.6 3.1 6 6.6 6c2 0 3.7 1.1 5.4 2.9C13.7 7.1 15.4 6 17.4 6c3.5 0 5.4 3.6 3.8 6.6C19 16.6 12 21 12 21z" fill="#fff"/></svg>',
+      DSN: '<svg viewBox="0 0 24 24" fill="none"><polygon points="12,2 22,12 12,22 2,12" stroke="#fff" stroke-width="2.4" fill="rgba(255,255,255,0.2)"/></svg>',
+      SOL: '<svg viewBox="0 0 24 24" fill="none"><path d="M4 7h14l2-2H6L4 7zm0 12h14l2-2H6l-2 2zm16-6H6l-2 2h14l2-2z" fill="#fff"/></svg>',
+      USDC: '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2"/><text x="12" y="16" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">$</text></svg>',
+      JUP: '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" fill="#fff"/><ellipse cx="12" cy="12" rx="10" ry="3.5" transform="rotate(-20 12 12)" stroke="#fff" stroke-width="1.8"/></svg>',
+      STOCK: '<svg viewBox="0 0 24 24" fill="none"><path d="M4 17l5-5 4 3 7-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      PERP: '<svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="#fff"/></svg>'
+    };
+
+    const CORE_ASSETS = [
+      { sym: "OV", name: "OurVelvet Token · Solana", cat: "zpool", apy: "24.8% APY", price: "€ 0,042", chg: "+12.4%", grad: "linear-gradient(135deg,#ec4899,#8b5cf6)", svg: SVG_ICONS.OV },
+            { sym: "HOLD", name: "Velvet Hold SexCoin · Prezzo Fisso ZLang/Z-xSolana (Base $OV)", cat: "zpool", apy: "32.0% APY", price: "€ 0,064", chg: "FISSO", grad: "linear-gradient(135deg,#991b1b,#f5c451)", svg: '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" stroke="#f5c451" stroke-width="1.6" fill="#0c090d"/><path d="M12 18.2s-4.8-3-6.3-5.7C4.8 10.7 6 8.3 8.3 8.3c1.3 0 2.5.7 3.7 2 1.2-1.3 2.4-2 3.7-2 2.3 0 3.5 2.4 2.6 4.2-1.5 2.7-6.3 5.7-6.3 5.7z" fill="#e11d48"/><circle cx="7.2" cy="12.2" r="2.1" stroke="#f472b6" stroke-width="1.5"/><circle cx="16.8" cy="12.2" r="2.1" stroke="#f472b6" stroke-width="1.5"/><path d="M9.3 12.2h5.4" stroke="#f472b6" stroke-width="1.3" stroke-dasharray="1.5 1.2"/></svg>' },
+      { sym: "DSN", name: "ZDOS Sovereign Token", cat: "zpool", apy: "21.5% APY", price: "€ 0,089", chg: "+9.8%", grad: "linear-gradient(135deg,#06b6d4,#10b981)", svg: SVG_ICONS.DSN },
+      { sym: "SOL", name: "Solana Native", cat: "zpool", apy: "7.4% APY", price: "€ 184,20", chg: "+5.1%", grad: "linear-gradient(135deg,#9945ff,#14f195)", svg: SVG_ICONS.SOL },
+      { sym: "USDC", name: "USD Coin · Cash Reserve", cat: "zpool", apy: "5.2% APY", price: "€ 0,94", chg: "+0.01%", grad: "linear-gradient(135deg,#2775ca,#3b82f6)", svg: SVG_ICONS.USDC },
+      { sym: "JUP", name: "Jupiter Aggregator", cat: "zpool", apy: "14.2% APY", price: "€ 1,18", chg: "+6.7%", grad: "linear-gradient(135deg,#10b981,#22d3ee)", svg: SVG_ICONS.JUP },
+      { sym: "NVDAx", name: "NVIDIA Tokenized Stock", cat: "stocks", apy: "6.8% APY", price: "€ 134,50", chg: "+3.9%", grad: "linear-gradient(135deg,#76b900,#15803d)", svg: SVG_ICONS.STOCK },
+      { sym: "TSLAx", name: "Tesla Tokenized Stock", cat: "stocks", apy: "5.5% APY", price: "€ 298,10", chg: "+4.2%", grad: "linear-gradient(135deg,#e11d48,#9f1239)", svg: SVG_ICONS.STOCK },
+      { sym: "AAPLx", name: "Apple Tokenized Stock", cat: "stocks", apy: "4.9% APY", price: "€ 212,40", chg: "+1.4%", grad: "linear-gradient(135deg,#64748b,#1e293b)", svg: SVG_ICONS.STOCK },
+      { sym: "SPYx", name: "S&P 500 Tokenized ETF", cat: "stocks", apy: "6.1% APY", price: "€ 548,00", chg: "+1.1%", grad: "linear-gradient(135deg,#2563eb,#1d4ed8)", svg: SVG_ICONS.STOCK },
+      { sym: "TBILLx", name: "US Treasury Cash Note", cat: "stocks", apy: "4.85% APY", price: "€ 94,10", chg: "+0.04%", grad: "linear-gradient(135deg,#d97706,#b45309)", svg: SVG_ICONS.USDC },
+      { sym: "XAUx", name: "Gold Bullion RWA", cat: "stocks", apy: "3.4% APY", price: "€ 2.480,00", chg: "+1.8%", grad: "linear-gradient(135deg,#f59e0b,#78350f)", svg: SVG_ICONS.STOCK },
+      { sym: "SOL-PERP", name: "Solana Perpetual 20x", cat: "perps", apy: "Funding +0.004%", price: "€ 184,35", chg: "+5.3%", grad: "linear-gradient(135deg,#7c3aed,#db2777)", svg: SVG_ICONS.PERP },
+      { sym: "BTC-PERP", name: "Bitcoin Perpetual 20x", cat: "perps", apy: "Funding +0.003%", price: "€ 88.400,00", chg: "+2.9%", grad: "linear-gradient(135deg,#f97316,#ea580c)", svg: SVG_ICONS.PERP },
+      { sym: "OV-PERP", name: "OurVelvet Perp 10x", cat: "perps", apy: "Funding +0.006%", price: "€ 0,042", chg: "+12.8%", grad: "linear-gradient(135deg,#ec4899,#be185d)", svg: SVG_ICONS.PERP }
+    ];
+
+    const EXTRA_ZPOOL = [
+      "USDT","RAY","BONK","WIF","PYTH","JTO","RENDER","HNT","MOBILE","IOT","ORCA","DRIFT","KMNO","TNSR","W",
+      "ZEUS","CLOUD","IO","NOS","SHDW","GRASS","POPCAT","MEW","BOME","SLERF","MYRO","SAMO","FIDA","STEP","MNDE",
+      "MSOL","JITOSOL","BSOL","INF","LST","EURC","WBTC","WETH","LINK","UNI","AAVE","ARB","OP","POL","AVAX",
+      "SUI","APT","TIA","SEI","INJ","NEAR","TON","TRX","XRP","ADA","DOGE","PEPE","SHIB","FET","TAO","AKT","AR","FIL"
+    ].map((sym, idx) => ({
+      sym,
+      name: `${sym} · Z-Pool Liquidity`,
+      cat: "zpool",
+      apy: `${(6.4 + (idx % 14) * 1.1).toFixed(1)}% APY`,
+      price: `€ ${(0.18 + (idx % 25) * 1.35).toFixed(2)}`,
+      chg: idx % 5 === 0 ? "-1.2%" : `+${(1.4 + (idx % 8) * 0.9).toFixed(1)}%`,
+      grad: `linear-gradient(135deg, hsl(${(idx * 37) % 360}, 72%, 46%), hsl(${(idx * 37 + 55) % 360}, 68%, 28%))`,
+      label: sym.slice(0, 4)
+    }));
+
+    const ALL_ASSETS = [...CORE_ASSETS, ...EXTRA_ZPOOL];
+    let currentCat = "all";
+
+    function renderAssets() {
+      const q = (document.getElementById("asset-search").value || "").trim().toLowerCase();
+      const list = document.getElementById("asset-list");
+      const filtered = ALL_ASSETS.filter(a => {
+        const matchCat = currentCat === "all" || a.cat === currentCat;
+        const matchQ = !q || a.sym.toLowerCase().includes(q) || a.name.toLowerCase().includes(q) || a.apy.toLowerCase().includes(q);
+        return matchCat && matchQ;
+      });
+
+      list.innerHTML = filtered.map(a => `
+        <div class="asset-row" onclick="switchView('swap')">
+          <div class="asset-left">
+            <div class="coin-logo" style="background:${a.grad}">
+              ${a.svg ? a.svg : `<span style="font-weight:900;font-size:0.78rem;color:#fff;">${a.label}</span>`}
+              <span class="chain-badge">S</span>
+            </div>
+            <div class="asset-info">
+              <div class="asset-title">
+                <span>${a.sym}</span>
+                <span class="apy-tag ${a.cat==='stocks'?'gold':''}">${a.apy}</span>
+              </div>
+              <span class="asset-sub">${a.name}</span>
+            </div>
+          </div>
+          <div class="asset-right">
+            <div class="asset-val">${a.price}</div>
+            <div class="asset-chg ${a.chg.startsWith('-')?'neg':''}">${a.chg}</div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function filterCategory(cat, el) {
+      currentCat = cat;
+      document.querySelectorAll(".sub-pill").forEach(b => b.classList.remove("active"));
+      if (el) el.classList.add("active");
+      renderAssets();
+    }
+
+    function switchView(viewName) {
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.querySelectorAll(".dock-btn").forEach(b => b.classList.remove("active"));
+      const target = document.getElementById("view-" + viewName);
+      if (target) target.classList.add("active");
+      const dock = document.querySelector(`.dock-btn[data-view="${viewName}"]`);
+      if (dock) dock.classList.add("active");
+    }
+
+    function setTf(tf, txt, btn) {
+      document.querySelectorAll(".tf-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("pnl-text").textContent = txt;
+    }
+
+    function flipSwap() {
+      const f = document.getElementById("swap-from");
+      const t = document.getElementById("swap-to");
+      const tmp = f.value;
+      if ([...f.options].some(o => o.value === t.value)) f.value = t.value;
+      if ([...t.options].some(o => o.value === tmp)) t.value = tmp;
+    }
+
+    function calcStakeYield() {
+      const v = parseFloat(document.getElementById("stake-amt").value) || 0;
+      document.getElementById("stake-yield").textContent = "+€ " + (v * 0.248).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " / anno";
+    }
+
+    function execJupiterSwap() {
+      const amt = document.getElementById("swap-in").value;
+      const from = document.getElementById("swap-from").value;
+      const to = document.getElementById("swap-to").value;
+      alert(`Jupiter + Z-Pool Route pronta: ${amt} ${from} -> ${to}. Firma su Phantom Wallet.`);
+    }
+
+    function openCashModal(mode) {
+      const m = document.getElementById("cash-modal");
+      const title = document.getElementById("modal-title");
+      const body = document.getElementById("modal-body");
+      if (mode === "send") {
+        title.textContent = "Invia Cash / $OV / $DSN (P2P Instant)";
+        body.innerHTML = `
+          <input class="field-input" placeholder="Destinatario ($cashtag, @handle o indirizzo Solana)" />
+          <input class="field-input" type="number" placeholder="Importo in EUR / USDC / $OV" />
+          <button class="cta-cash" onclick="alert('Invio P2P pronto su Phantom');closeCashModal()">Invia Ora (Zero Fee)</button>
+        `;
+      } else {
+        title.textContent = "Ricevi Cash & Crypto (Solana / Z-Pool)";
+        body.innerHTML = `
+          <p style="font-size:0.82rem;color:var(--muted);margin-bottom:10px;">Indirizzo Sovrano Solana &amp; Z-Pool:</p>
+          <div style="background:var(--surface-2);padding:12px;border-radius:14px;font-family:monospace;font-size:0.78rem;word-break:break-all;color:var(--phantom);">6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD</div>
+          <button class="cta-primary" onclick="navigator.clipboard?.writeText('6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD');alert('Indirizzo copiato!')">Copia Indirizzo</button>
+        `;
+      }
+      m.classList.add("open");
+    }
+
+    function closeCashModal() {
+      document.getElementById("cash-modal").classList.remove("open");
+    }
+
+    function toggleSecurity(label) {
+      alert(label + " verificato e attivo sul dispositivo.");
+    }
+
+    function saveAccountProfile() {
+      const name = document.getElementById("acc-display").value.trim() || "OurVelvet Sovereign";
+      const proton = document.getElementById("acc-proton").value.trim();
+      const bio = document.getElementById("acc-bio").value.trim();
+      const socials = document.getElementById("acc-socials").value.trim();
+      localStorage.setItem("velvet_pay_profile", JSON.stringify({ name, proton, bio, socials }));
+      document.getElementById("top-name").textContent = name + " ▾";
+      alert("Profilo Sovrano salvato e sincronizzato!");
+    }
+
+    (function hydrateProfile() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("velvet_pay_profile") || "null");
+        if (saved) {
+          document.getElementById("top-name").textContent = saved.name + " ▾";
+          document.getElementById("acc-display").value = saved.name || "";
+          document.getElementById("acc-proton").value = saved.proton || "";
+          document.getElementById("acc-bio").value = saved.bio || "";
+          document.getElementById("acc-socials").value = saved.socials || "";
+        }
+      } catch (e) {}
+    })();
+
+    document.getElementById("asset-search").addEventListener("input", renderAssets);
+    renderAssets();
+
+    document.getElementById("swap-in").addEventListener("input", e => {
+      const v = parseFloat(e.target.value) || 0;
+      document.getElementById("swap-out").value = (v * 14280).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    });
+
+    document.getElementById("btn-phantom").addEventListener("click", async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const resp = await window.solana.connect();
+          const pk = resp.publicKey.toString();
+          document.getElementById("wallet-short").textContent = pk.slice(0, 6) + "..." + pk.slice(-6);
+          document.getElementById("btn-phantom").textContent = "👻 Connesso";
+        } catch (err) {
+          alert("Connessione Phantom annullata.");
+        }
+      } else {
+        window.open("https://phantom.app/", "_blank");
+      }
+    });
+  
+    function recalcHoldOv() {
+      const px = parseFloat(document.getElementById("hold-fixed-eur")?.value) || 0.064;
+      const qty = parseFloat(document.getElementById("hold-qty-input")?.value) || 0;
+      const ovSpot = 0.042;
+      const eurTot = qty * px;
+      const ovEq = eurTot / ovSpot;
+      const el = document.getElementById("hold-ov-calc");
+      if (el) {
+        el.textContent = `${qty} $HOLD = € ${eurTot.toFixed(2).replace(".", ",")} · Equivalente ≈ ${ovEq.toFixed(2).replace(".", ",")} $OV`;
+      }
+    }
+    function runHoldMiner() {
+      const mode = document.getElementById("hold-mine-mode")?.value || "pow_gpu";
+      const px = parseFloat(document.getElementById("hold-fixed-eur")?.value) || 0.064;
+      alert(`Miner $HOLD avviato in modalità [${mode}] · Prezzo fisso di riferimento € ${px.toFixed(3)} (Base $OV).`);
+    }
+    function subHoldAi(serviceName, costHold) {
+      const px = parseFloat(document.getElementById("hold-fixed-eur")?.value) || 0.064;
+      const eur = (costHold * px).toFixed(2).replace(".", ",");
+      alert(`Abbonamento AI terzo "${serviceName}" selezionato: ${costHold} $HOLD (€ ${eur}) · Protetto da SAFEWORD: HOLD.`);
+    }
+
+  </script>
+<!-- ZDOS-UNIFIED-COINS-V1 -->
+<div id="zdos-coin-registry" data-coins="BONK,OV,DSN,LSD,L$D,XZSOL,CAKE,WBNB,SOL" data-lsd-peg="0.0064" data-zx-pay="https://zx.x-zdos.it/" style="display:none;">
+  ZDOS Assets: BONK · $OV · $DSN · Dom-Coin L$D (€0.0064) · $xzSOL · CAKE · WBNB · SOL · ZX Pay https://zx.x-zdos.it/
+</div>
+<script src="https://x-zdos.it/api/monetary/sdk.js" defer></script>
+<script src="https://ourvelvet.online/mint-lsd/lsd-live-widget.js?v=1" defer></script>
+</body>
+</html>

@@ -3,11 +3,11 @@
 
 ---
 
-## 🔹 Dominio: `velvet.x-zdos.it`
+## 🔹 Dominio: `ourvelvet.online`
 - **Listen:** `80, [::]:80`
 - **Redirect server:** `301 https://$host$request_uri`
 
-## 🔹 Dominio: `velvet.x-zdos.it`
+## 🔹 Dominio: `ourvelvet.online`
 - **Listen:** `443 ssl, [::]:443 ssl`
 - **Root statica:** `/var/www/velvethub/dist/public`
 - **Redirect server:** `301 /hub/`

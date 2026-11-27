@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<!-- Google Tag Manager (GTM-T9NHG4R3) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T9NHG4R3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>OurVelvet // Velvet Star (anteprima)</title>
+  <link rel="stylesheet" href="/ai-directory/preview/velvet.css?v=2" />
+  <script src="/ai-directory/preview/common.js?v=1"></script>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script id="ov-sw-cleaner">if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));if("caches"in window)caches.keys().then(k=>k.forEach(x=>caches.delete(x)));</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-bar">
+      <span class="badge-18">18+ ONLY · CONSENSO ESPLICITO · SAFEWORD: ROSSO</span>
+      <span class="preview-tag">ANTEPRIMA · NON PUBBLICA</span>
+    </div>
+    <div class="nav">
+      <a class="tab" href="/">🥀 Home OurVelvet</a>
+      <a class="tab" href="/#real-videoteca">📼 Videoteca</a>
+      <a class="tab" href="/ai-directory/">AI Directory (attuale)</a>
+      <a class="tab " href="/ai-directory/preview/">⭐ Recensioni siti 18+</a>
+      <a class="tab on" href="/ai-directory/preview/stars.html">👑 Velvet Star</a>
+    </div>
+
+    <h1>👑 VELVET STAR // CREATOR 18+ DI OURVELVET</h1>
+    <p class="sub">Profili di creator adulti che hanno scelto di esserci. Ogni profilo nasce da una richiesta della star stessa, viene verificato dallo staff e si cancella quando vuole lei. Classifica e “emergenti” si basano solo sui like reali.</p>
+    <div class="rules"><strong>REGOLE:</strong> solo maggiorenni, solo contenuti propri e consensuali, nessun minore né aspetto minorile, safeword <strong>ROSSO</strong> sempre valida. OurVelvet non genera contenuti espliciti: li caricano le star sui propri canali. Nessun profilo viene creato copiando persone da altri siti.</div>
+    <div class="stats" style="margin-bottom:12px;"><span class="stat-pill" id="stTot">Star: …</span></div>
+
+    <div class="section-t">🌱 Emergenti (ultimi 30 giorni)</div>
+    <div id="emerg" class="grid"></div>
+    <div class="section-t">🏆 Classifica</div>
+    <div id="rank" class="grid"></div>
+
+    <div class="claim-box" id="claimBox">
+      <h2>✨ Diventa Velvet Star</h2>
+      <p class="sub" style="margin-bottom:8px;">Compila il profilo. Riceverai un codice da pubblicare su uno dei tuoi profili: così lo staff verifica che sei davvero tu.</p>
+      <div class="claim-row"><input id="cName" maxlength="40" placeholder="Nome d'arte *" /><input id="cContact" maxlength="80" placeholder="Contatto per lo staff (Telegram/email, non pubblico)" /></div>
+      <div class="claim-row"><textarea id="cBio" maxlength="400" rows="3" placeholder="Bio (max 400 caratteri, niente contenuti espliciti)"></textarea></div>
+      <div class="claim-row"><textarea id="cLinks" rows="2" placeholder="I tuoi profili pubblici, uno per riga (https://…) *"></textarea></div>
+      <div class="claim-row"><input id="cFan" maxlength="300" placeholder="Link OnlyFans o Fansly (facoltativo, https://onlyfans.com/… o https://fansly.com/…)" style="width:100%;" /></div>
+      <p class="meta">Il link OnlyFans/Fansly è facoltativo, resta un collegamento in uscita e non ospitiamo i tuoi contenuti. Accettiamo solo quei due domini.</p>
+      <p class="meta">Categorie (max 4):</p><div class="tabs" id="cCats"></div>
+      <div class="claim-row">
+        <select id="cMode"><option value="umano">Rispondo io</option><option value="ai">Persona AI dichiarata</option><option value="ibrido">Ibrido: AI + io quando voglio</option></select>
+        <input id="cWallet" maxlength="50" placeholder="Wallet Solana per supporto in VELVET (facoltativo)" />
+      </div>
+      <div class="claim-row"><input id="cPersona" maxlength="200" placeholder="Tono della persona AI, se la usi (es. ironica, diretta)" style="width:100%;" /></div>
+      <label class="chk"><input type="checkbox" class="cc" data-k="adult" style="flex:0 0 auto;width:18px;height:18px;" /> Ho almeno 18 anni.</label>
+      <label class="chk"><input type="checkbox" class="cc" data-k="own_content" style="flex:0 0 auto;width:18px;height:18px;" /> I profili indicati sono miei e i contenuti sono miei o ne ho i diritti.</label>
+      <label class="chk"><input type="checkbox" class="cc" data-k="no_minors" style="flex:0 0 auto;width:18px;height:18px;" /> Nessun minore e nessun aspetto minorile nei miei contenuti.</label>
+      <label class="chk"><input type="checkbox" class="cc" data-k="consent" style="flex:0 0 auto;width:18px;height:18px;" /> Tutte le persone nei miei contenuti sono adulte e consenzienti.</label>
+      <label class="chk"><input type="checkbox" class="cc" data-k="rosso" style="flex:0 0 auto;width:18px;height:18px;" /> Accetto la safeword ROSSO.</label>
+      <label class="chk"><input type="checkbox" class="cc" data-k="publish_ok" style="flex:0 0 auto;width:18px;height:18px;" /> Autorizzo OurVelvet a pubblicare questo profilo dopo la verifica.</label>
+      <div class="claim-row"><button class="primary" onclick="claim()">Invia richiesta</button></div>
+      <code id="cOut" class="out">—</code>
+    </div>
+
+    <details class="admin" style="margin-bottom:18px;">
+      <summary>🗑️ Cancella il mio profilo</summary>
+      <div class="claim-row"><input id="delTok" placeholder="delete_token ricevuto alla richiesta" /><button class="primary" onclick="del()">Cancella</button></div>
+      <code id="delOut" class="out">Il profilo e i suoi like vengono eliminati subito.</code>
+    </details>
+    <p class="meta" style="margin:18px 0;">OurVelvet · ZDOS1.3 · solo 18+ · safeword ROSSO · VELVET ($OV) è un gettone di comunità, nessun rendimento.</p>
+  </div>
+
+  <div class="modal" id="modal" onclick="if(event.target===this)this.classList.remove('open')"><div class="box" id="mbox"></div></div>
+<script>
+let D = { ranking: [], emerging: [], categories: [] }, CATS = new Set();
+const ini = n => esc((n || "?").trim().slice(0, 1).toUpperCase());
+const mode = m => ({ umano: "Risponde lei/lui", ai: "Persona AI dichiarata", ibrido: "Ibrido AI + umano" }[m] || m);
+function card(s, n) {
+  return `<div class="card"><div>
+    <div class="row">${n != null ? `<span class="rank">${n}</span>` : ""}<div class="avatar">${ini(s.stage_name)}</div>
+    <div style="flex:1"><div class="title">${esc(s.stage_name)} ${s.verified ? '<span class="pill">VERIFICATA</span>' : ""}</div>
+    <div class="cat">${s.categories.map(esc).join(" · ") || "—"}</div></div></div>
+    <p class="desc" style="margin-top:8px;">${esc(s.bio).slice(0, 140)}${s.bio.length > 140 ? "…" : ""}</p></div>
+    <div class="actions"><button class="like" data-like="${esc(s.id)}">♥ ${s.likes}</button><button class="btn-link" data-open="${esc(s.id)}">Profilo</button></div></div>`;
+}
+async function load() {
+  D = await api("/stars");
+  if (!D.ok) { document.getElementById("rank").innerHTML = `<div class="empty">Non disponibile: ${esc(D.error)}</div>`; return; }
+  document.getElementById("stTot").textContent = `Star approvate: ${D.total}`;
+  const none = `<div class="empty">Ancora nessuna Velvet Star approvata. Le prime arrivano dalle richieste qui sotto: niente profili di esempio.</div>`;
+  document.getElementById("rank").innerHTML = D.ranking.map((s, i) => card(s, i + 1)).join("") || none;
+  document.getElementById("emerg").innerHTML = D.emerging.map(s => card(s)).join("") || `<div class="empty">Nessuna star nuova negli ultimi 30 giorni.</div>`;
+  document.querySelectorAll("[data-like]").forEach(b => b.onclick = () => like(b.dataset.like));
+  document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => open_(b.dataset.open));
+  if (!document.getElementById("cCats").children.length) {
+    document.getElementById("cCats").innerHTML = D.categories.map(c => `<button class="tab" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+    document.querySelectorAll("[data-cat]").forEach(b => b.onclick = () => {
+      const c = b.dataset.cat; if (CATS.has(c)) CATS.delete(c); else if (CATS.size < 4) CATS.add(c);
+      b.classList.toggle("active", CATS.has(c));
+    });
+  }
+}
+function open_(id) {
+  const s = D.ranking.find(x => x.id === id); if (!s) return;
+  document.getElementById("mbox").innerHTML = `
+    <div class="row"><div class="avatar">${ini(s.stage_name)}</div><div><div class="title">${esc(s.stage_name)} ${s.verified ? '<span class="pill">VERIFICATA</span>' : ""}</div>
+    <div class="cat">${s.categories.map(esc).join(" · ")}</div></div></div>
+    <p class="desc" style="margin:12px 0;">${esc(s.bio)}</p>
+    <p class="meta">Risposte: ${esc(mode(s.reply_mode))}${s.persona ? " · tono: " + esc(s.persona) : ""}</p>
+    <p class="meta">Su OurVelvet dal ${esc((s.since || "").slice(0, 10))} · ♥ ${s.likes} (${s.likes_7d} questa settimana)</p>
+    <div class="section-t" style="font-size:14px;">Canali ufficiali</div>
+    <div class="actions" style="flex-direction:column;">${s.links.map(l => `<a class="btn-link" href="${esc(l)}" target="_blank" rel="noopener nofollow">${esc(new URL(l).hostname)} ↗</a>`).join("")}</div>
+    ${s.fan_link ? `<div class="section-t" style="font-size:14px;">Supporto sul sito della creator</div><p class="meta">Link in uscita: i contenuti stanno su ${esc(s.fan_label || "quel sito")}, non su OurVelvet.</p><div class="actions"><a class="btn-link" href="${esc(s.fan_link)}" target="_blank" rel="noopener nofollow">${esc(s.fan_label || "Profilo")} ↗</a></div>` : ""}
+    ${s.wallet ? `<p class="meta" style="margin-top:12px;">Supporto in VELVET (invio volontario dal tuo wallet, nessun rendimento):</p><code class="out">${esc(s.wallet)}</code>` : ""}
+    <div class="actions"><button class="like" data-like2="${esc(s.id)}">♥ Mi piace</button><button class="btn-link" onclick="document.getElementById('modal').classList.remove('open')">Chiudi</button></div>`;
+  document.querySelector("[data-like2]").onclick = () => like(s.id);
+  document.getElementById("modal").classList.add("open");
+}
+async function like(id) {
+  const r = await api("/stars/like", { id, adult: is18() });
+  if (!r.ok) return alert(r.error);
+  document.getElementById("modal").classList.remove("open"); load();
+}
+async function claim() {
+  const d = { stage_name: cName.value, bio: cBio.value, links: cLinks.value.split(/\s+/).filter(Boolean), categories: [...CATS],
+    reply_mode: cMode.value, wallet: cWallet.value.trim(), persona: cPersona.value, contact: cContact.value, fan_link: cFan.value.trim() };
+  document.querySelectorAll(".cc").forEach(c => d[c.dataset.k] = c.checked);
+  const r = await api("/stars/claim", d);
+  document.getElementById("cOut").textContent = r.ok ? `✅ ${r.note}\nCodice verifica: ${r.verify_code}\ndelete_token (salvalo): ${r.delete_token}` : "⚠️ " + r.error;
+}
+async function del() {
+  const r = await api("/stars/delete", { delete_token: delTok.value.trim() });
+  document.getElementById("delOut").textContent = r.ok ? "✅ " + r.note : "⚠️ " + r.error; if (r.ok) load();
+}
+load();
+</script>
+<script src="https://ourvelvet.online/mint-lsd/lsd-live-widget.js?v=1" defer></script>
+</body>
+</html>

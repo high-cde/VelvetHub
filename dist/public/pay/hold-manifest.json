@@ -1,0 +1,41 @@
+{
+  "symbol": "HOLD",
+  "name": "Velvet Hold SexCoin",
+  "runtime": "zlang-zxsolana",
+  "safeword": "HOLD",
+  "base_anchor": {
+    "token": "OV",
+    "mint": "2EN6Y1zM4yyt41gE2muzdJSAgRCAZiXqnmkgpbrspump",
+    "dsn_mint": "35w74RT77BPSYNpmzpvxmR9wu2ihpgzubKy4bkGHR3F4",
+    "treasury_wallet": "6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD"
+  },
+  "fixed_pricing": {
+    "enabled": true,
+    "fixed_price_eur": 0.064,
+    "ov_reference_eur": 0.042,
+    "dsn_reference_eur": 0.089,
+    "formula": "ov_amount = (hold_amount * fixed_price_eur) / ov_reference_eur"
+  },
+  "multi_chain_adapters": ["solana", "polygon", "base", "bnb"],
+  "hybrid_mining": {
+    "pow_cpu_gpu": true,
+    "human_mining_18_plus": true,
+    "zpool_liquidity_staking": true,
+    "ai_compute_inference": true
+  },
+  "third_party_ai_subscriptions": {
+    "enabled": true,
+    "settlement_token": "HOLD",
+    "safeword_hold_pause": true,
+    "providers": [
+      {"id": "velvet-grok2-agi", "name": "Velvet-Grok2 & Zara AGI Engine", "tier": "Abbonamento Mensile / Token", "hold_cost": 150, "eur_equiv": 9.60},
+      {"id": "kira-sentinel-ai", "name": "K.I.R.A. Anti-Risk & Signal AI", "tier": "6 Mesi / Copy-Trade Pass", "hold_cost": 50, "eur_equiv": 3.20},
+      {"id": "zhepir-router-ai", "name": "Zhepir Network AI Liquidity Router", "tier": "Pass Mensile Multi-Pool", "hold_cost": 80, "eur_equiv": 5.12},
+      {"id": "studio18-synth-ai", "name": "Studio 18+ Visual & Voice Synth AI", "tier": "Pack Crediti Generazione", "hold_cost": 200, "eur_equiv": 12.80}
+    ]
+  },
+  "zpool_listing": {
+    "listed": true,
+    "apy_percent": 32.0
+  }
+}
